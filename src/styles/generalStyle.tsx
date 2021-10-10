@@ -7,7 +7,6 @@ const generalStyle = StyleSheet.create({
         alignItems:"center"
     },
     contentImgLogo:{
-        backgroundColor:'Transparent',
         width:250,
         height:150,
         marginBottom:70
@@ -17,32 +16,34 @@ const generalStyle = StyleSheet.create({
         height: '100%',
         resizeMode: 'stretch'
     },
-    /*contentInput:{
-        backgroundColor:'rgba(86, 86, 86, 0.5)',
-        alignItems:'center',
-        marginBottom:20,
-        width:400,
-    },
-    inputText:{
-        height:40,
-        width:'75%',
-        color:'white', 
-    },*/
     contentInputs:{
         width:400,
         alignItems:'center'
     },
     contentInput:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
         width:'75%',
         marginBottom:20,
         height:40,
         backgroundColor:'rgba(86, 86, 86, 0.5)',
-        alignItems:'flex-start'
+        alignItems:'center',
+        paddingHorizontal:4,
     },
+    contentIcon:{
+            marginHorizontal:5,
+            color:'white'
+        },
     inputText:{
         height:40,
         width:'50%',
         color:'white', 
+        outlineStyle: "none",
+        //borderColor:'none',
+    },
+    inputFocus: {
+        //
     },
     contentBottomLogin:{
         alignItems:'center',
@@ -66,7 +67,7 @@ const generalStyle = StyleSheet.create({
         elevation: 4,
     },
     textBottomColor:{
-        fontSize:20,
+        fontSize:17,
         fontWeight:'600',
         color:'white',
     },
