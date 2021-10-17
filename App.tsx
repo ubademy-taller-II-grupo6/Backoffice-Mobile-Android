@@ -8,6 +8,7 @@ import { Inicio } from './src/screens/Inicio';
 export default function App() {
   return (
         <NavigationContainer>
+          <StatusBar backgroundColor="rgba(28, 166, 206, 1)"></StatusBar>
           <InicioNavigator/>
         </NavigationContainer>
       
