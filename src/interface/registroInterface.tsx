@@ -1,5 +1,6 @@
 export interface registerInterface {
-    user:String,
+    name:String,
+    lastname:String
     email:String,
     passward:{
         show:Boolean,
@@ -9,4 +10,14 @@ export interface registerInterface {
         show:Boolean,
         content:String
     },
+    profile:any
 }
+
+export interface register{
+    name: String
+    lastname: String
+    email: String
+    password: String
+    profile: String
+}
+

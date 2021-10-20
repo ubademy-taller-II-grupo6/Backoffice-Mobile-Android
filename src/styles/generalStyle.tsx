@@ -6,6 +6,18 @@ const generalStyle = StyleSheet.create({
         height: '100%',
         alignItems:"center"
     },
+    loader:{
+        position:'absolute',
+        top:'50%',
+        fontSize:100,
+        left:'50%'
+    },
+    buttomReturn:{
+        marginTop:80,
+        fontSize:25,
+        fontWeight:'700',
+        color:'rgba(28, 166, 206, 1)',
+    },
     contentImgLogo:{
         width:250,
         height:150,
@@ -31,15 +43,31 @@ const generalStyle = StyleSheet.create({
         alignItems:'center',
         paddingHorizontal:4,
     },
-    contentIcon:{
-            marginHorizontal:5,
-            color:'white'
+    contentPicker:{
+        width:'75%',
+        padding:0,
+        height:40,
+        backgroundColor:'rgba(86, 86, 86, 0.5)',
+        marginBottom:20,
+        alignItems:'center',
+        flexDirection:'row',
+    },
+    contentIconReturn:{
+            marginHorizontal:0,
+            paddingStart:20,
+            color:'#363636',
+            width:'100%',
+            alignItems:'flex-start',
         },
+    contentIcon:{
+        marginHorizontal:5,
+        color:'white'
+    },
     inputText:{
         height:40,
         width:'50%',
         color:'white', 
-        outlineStyle: "none",
+        //outlineStyle: "none",
         //borderColor:'none',
     },
     inputFocus: {

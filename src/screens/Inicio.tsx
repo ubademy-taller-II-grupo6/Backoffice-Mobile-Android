@@ -1,15 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { RooteStackParams } from '../interface/navigatorLogin';
 import generalStyle from '../styles/generalStyle';
 import inicioStyle from '../styles/inicioStyle';
 
-interface Props extends NativeStackScreenProps<any,any>{};
+interface Props extends NativeStackScreenProps<RooteStackParams,'Inicio'>{};
 
 export const Inicio = ({navigation}:Props) => {
-
-    let imageTop = '../assets/header.png';
-    let logoApiUbademy = '../../assets/ubademyLogo.png';
 
     return (
             <View style={generalStyle.content}>
