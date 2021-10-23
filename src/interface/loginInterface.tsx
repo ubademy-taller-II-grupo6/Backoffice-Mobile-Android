@@ -1,4 +1,15 @@
 export interface loginInterface {
-    email:String,
-    password:String
+    email:{
+        value:string,
+        isValid:boolean,
+        hasFocus:boolean,
+        isFocus:boolean,
+    },
+    password:{
+        value:string,
+        isValid:boolean,
+        hasFocus:boolean,
+        isFocus:boolean,
+        show:boolean
+    }
 }

@@ -12,6 +12,32 @@ const registroStyle = StyleSheet.create({
         color:'red',
         backgroundColor:'red',
         alignItems:'center'
+    },
+    contentChexbox:{
+        display:"flex",
+        justifyContent:"flex-start",
+        flexDirection:"row",
+        alignItems:"center",
+        color:'red'
+    },
+    contentChexboxes:{
+        display:"flex",
+        justifyContent:"flex-start",
+        width:'75%',
+        marginBottom:20,
+        alignItems:"center",
+        flexDirection:'row',
+        flexWrap:'nowrap',
+    },
+    conditionPassword:{
+        fontWeight:'700'
+    },
+    ss:{
+        display:"flex",
+        flexWrap:'nowrap',
+        width:"90%",
+        fontFamily:'',
+        color:'#3b5998'
     }
 })
 

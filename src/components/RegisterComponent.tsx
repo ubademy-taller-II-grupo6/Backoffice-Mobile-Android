@@ -1,73 +1,30 @@
-import React, { useState } from 'react';
-import { View,Text, Image, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { View,Text, Image,TextInput, TouchableOpacity} from 'react-native';
 import generalStyle from '../styles/generalStyle';
 import { Ionicons } from '@expo/vector-icons';
 import { useForm } from '../hooks/useForm';
-import { registerInterface } from '../interface/registroInterface';
 import { uiService }  from '../service/uiService';
 import registroStyle from '../styles/registroStyle';
 import {loginApi} from '../api/loginApi'
 import { LoaderComponent } from './LoaderComponent';
+import Checkbox from 'expo-checkbox';
 
 export const RegisterComponent = () => {
-    let initialState:registerInterface={
-        name:"",
-        lastname:"",
-        email:"",
-        passward:{
-            show:false,
-            content:""
-        },
-        rePassward:{
-            show:false,
-            content:""
-        },
-        profile:null
-    }
 
-    const [loader, setloader] = useState(false)
-    const {register,updateState} = useForm(initialState)
-
+    const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit} = useForm()
     let submitForm = async() => {
+        console.log("dss")
         setloader(true)
-        if(register.email==""||register.lastname==""||register.profile==""
-        ||register.lastname==""){
-            console.log("ddd")
+        if(!register.email.isValid||!register.name.isValid||!register.lastname.isValid||!register.password.isValid||!register.rePassword.isValid){
+            errorSubmit()
             setloader(false)
-            uiService().alertaInformativa("","Todos los campos son Obligatorios")
             return ;
         }
         let x=null
-        console.log("getMovies")
         let y = await loginApi()
         setloader(false)
-        console.log(y)
-
         uiService().alertaInformativa("","Usted se registro con éxito")
     }
-
-    let updatePassward=(campo:string)=>{
-        let newRegister={
-            show:(campo=='rePassward')?!register.rePassward.show:!register.passward.show,
-            content:""
-        }
-        updateState(newRegister,campo)
-    }
-
-    let onchangeForm=(value:string='',campo:string)=>{
-        let update:any=(campo=='rePassward'||campo=='passward')?{
-            show:(campo=='rePassward')?register.rePassward.show:register.passward.show,
-            content:value
-        }:value
-        update=(campo=='user'||campo=='email'||campo=='lastname')?value:update
-        updateState(update,campo)
-    }
-    
-    let changeProfile=(value:string)=>{
-        let campo='profile'
-        updateState(value,campo)
-    }
-    
     return (
         <View style={generalStyle.content}>
             {loader==true?<LoaderComponent/>:<View></View>}
@@ -75,76 +32,143 @@ export const RegisterComponent = () => {
                 <Image 
                     style={generalStyle.imgLogo}
                     source={require('../../assets/ubademyLogo.png')} />    
-            </View>
-            <View style={generalStyle.contentInputs}>
-                <View 
-                    style={generalStyle.contentInput}
-                >
+            </View> 
+            <View  style={generalStyle.contentInputs}>
+                <View style={[(register.name.isFocus&&register.name.isValid)?generalStyle.inputFocus:
+                            ((register.name.isFocus&&!register.name.isValid)
+                            ||(register.name.hasFocus&&!register.name.isValid))
+                            ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
                     <TextInput
-                            style={generalStyle.inputText}
-                            placeholder='Nombre'
-                            placeholderTextColor = "white"
-                            onChangeText = {(text)=>onchangeForm(text,'name')}
+                       style={generalStyle.inputText}
+                        placeholder='Nombre'
+                        placeholderTextColor = "white"
+                        onFocus={()=>{
+                            changeFocus('name',true)
+                        }}
+                        onChangeText={(text)=>{
+                            changeValue('name',text)
+                        }}
+                        onBlur={()=>{
+                            changeFocus('name',false)
+                        }}
                     /> 
                     <Ionicons style={generalStyle.contentIcon} name="person-circle" size={20} />    
                 </View>
                 <View 
-                    style={generalStyle.contentInput}
+                    style={[(register.lastname.isFocus&&register.lastname.isValid)?generalStyle.inputFocus:
+                        ((register.lastname.isFocus&&!register.lastname.isValid)
+                        ||(register.lastname.hasFocus&&!register.lastname.isValid))
+                        ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}
                 >
                     <TextInput
                             style={generalStyle.inputText}
                             placeholder='Apellido'
                             placeholderTextColor = "white"
-                            onChangeText = {(text)=>onchangeForm(text,'lastname')}
+                            onFocus={()=>{
+                                changeFocus('lastname',true)
+                            }}
+                            onChangeText={(text)=>{
+                                changeValue('lastname',text)
+                            }}
+                            onBlur={()=>{
+                                changeFocus('lastname',false)
+                            }}
                     /> 
                     <Ionicons style={generalStyle.contentIcon} name="person-circle" size={20} />    
                 </View>
                 <View 
-                    style={generalStyle.contentInput}
+                    style={[(register.email.isFocus&&register.email.isValid)?generalStyle.inputFocus:
+                        ((register.email.isFocus&&!register.email.isValid)
+                        ||(register.email.hasFocus&&!register.email.isValid))
+                        ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}
                 >
                     <TextInput
                         style={generalStyle.inputText}
                         placeholder='Correo'
                         placeholderTextColor = "white"
-                        onChangeText = {(text)=>onchangeForm(text,'email')}
+                        onFocus={()=>{
+                            changeFocus('email',true)
+                        }}
+                        onChangeText={(text)=>{
+                            changeValue('email',text)
+                        }}
+                        onBlur={()=>{
+                            changeFocus('email',false)
+                        }}
                         keyboardType='email-address'
                     />  
                     <Ionicons style={generalStyle.contentIcon} name="mail" size={20} />  
                 </View>
                 <View 
-                    style={generalStyle.contentInput}
+                    style={[(register.password.isFocus&&register.password.isValid)?generalStyle.inputFocus:
+                        ((register.password.isFocus&&!register.password.isValid)
+                        ||(register.password.hasFocus&&!register.password.isValid))
+                        ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}
                 >
-
                     <TextInput
                         style={generalStyle.inputText}
                         placeholder='Contraseña'
                         placeholderTextColor = "white"
-                        secureTextEntry ={register.passward.show?false:true}
-                        onChangeText = {(text)=>onchangeForm(text,'passward')}
+                        secureTextEntry ={register.password.show?false:true}
+                        onChangeText={(text)=>{
+                            changeValue('password',text)
+                        }}
+                        onFocus={()=>{
+                            changeFocus('password',true)
+                        }}
+                        onBlur={()=>{
+                            changeFocus('password',false)
+                        }}
                     /> 
-                    <Ionicons name={register.passward.show?"eye":"eye-off"} style={generalStyle.contentIcon} size={20} 
-                        onPress={()=>updatePassward('passward')}/>   
+                    <Ionicons name={register.password.show?"eye":"eye-off"} style={generalStyle.contentIcon} size={20} 
+                        onPress={()=>showPassword('password')}/>   
 
                 </View>
-                <Text>La contraseña debe tener una Mayuscula</Text>
                 <View 
-                    style={generalStyle.contentInput}
+                    style={[(register.rePassword.isFocus&&register.rePassword.isValid)?generalStyle.inputFocus:
+                        ((register.rePassword.isFocus&&!register.rePassword.isValid)
+                        ||(register.rePassword.hasFocus&&!register.rePassword.isValid))
+                        ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}
                 >
-
                     <TextInput
-                        onChangeText = {(text)=>onchangeForm(text,'rePassward')}
                         style={[generalStyle.inputText,]}
                         placeholder='re-Contraseña'
                         placeholderTextColor = "white"
                         underlineColorAndroid="transparent"
-                        secureTextEntry ={register.rePassward.show?false:true}
+                        secureTextEntry ={register.rePassword.show?false:true}
+                        onChangeText={(text)=>{
+                            changeValue('rePassword',text)
+                        }}
+                        onFocus={()=>{
+                            changeFocus('rePassword',true)
+                        }}
+                        onBlur={()=>{
+                            changeFocus('rePassword',false)
+                        }}
                     />   
-                    <Ionicons name={register.rePassward.show?"eye":"eye-off"} style={generalStyle.contentIcon} size={20} 
-                        onPress={()=>updatePassward('rePassward')}/> 
+                    <Ionicons name={register.rePassword.show?"eye":"eye-off"} style={generalStyle.contentIcon} size={20} 
+                        onPress={()=>showPassword('rePassword')}/> 
+                </View>
+                <View style={[registroStyle.contentChexboxes]}>
+                    <View>
+                    <Checkbox
+                        value={register.password.isValid}
+                        disabled={true}
+                        color={(register.password.hasFocus&&register.password.isValid)?'green':
+                        (register.password.hasFocus&&!register.password.isValid)?'red':'black'}
+                    />    
+                    </View>
+                    <View style={registroStyle.ss}>
+                    <Text style={registroStyle.conditionPassword}>La contraseña debe tener Mínimo 8 caracteres, al menos una letra mayúscula, una letra minúscula, un número y un carácter especial</Text>
+                    </View>
+                    
+                    
                 </View> 
-                <Text>Las Contraseñas no </Text>
             </View>
-            
+            {/* <Text>**************</Text>
+            <Text>{JSON.stringify(register.password)}</Text>
+            <Text>**************</Text>
+            <Text>{JSON.stringify(register.rePassword)}</Text> */}
             <View style={generalStyle.contentBottomLogin} >
                 <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{submitForm()}}>
                     <Text style={generalStyle.textBottomColor}>REGISTRARSE</Text>
@@ -156,7 +180,6 @@ export const RegisterComponent = () => {
                     <Text style={generalStyle.textBottomColor}>REGISTRARSE CON GOOGLE</Text>
                 </TouchableOpacity>    
             </View>
-
         </View>
     )
 }

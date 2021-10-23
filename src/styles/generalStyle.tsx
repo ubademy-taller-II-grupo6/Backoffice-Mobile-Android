@@ -65,13 +65,16 @@ const generalStyle = StyleSheet.create({
     },
     inputText:{
         height:40,
-        width:'50%',
-        color:'white', 
-        //outlineStyle: "none",
-        //borderColor:'none',
+        width:'90%',
+        color:'white',
+    },
+    inputFocusError: {
+        borderColor:"red",
+        borderBottomWidth:2,
     },
     inputFocus: {
-        //
+        borderColor:"green",
+        borderBottomWidth:2,
     },
     contentBottomLogin:{
         alignItems:'center',
