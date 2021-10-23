@@ -20,6 +20,7 @@ export const loginService = () => {
     }
 
     const [login, setLogin] = useState(initialState)
+    const [loader, setloader] = useState(false)
 
     let showPassword = () => {
         let newCampo = {
@@ -71,11 +72,20 @@ export const loginService = () => {
             setLogin({...login,password:newCampo})
         }
     }
+    let errorSubmit= ()=>{
+        let newLogin = {...login}
+        newLogin.email.hasFocus=true
+        newLogin.password.hasFocus=true
+        setLogin(newLogin)
+    }
 
     return {
         showPassword,
         login,
         changeValue,
-        changeFocus
+        changeFocus,
+        setloader,
+        errorSubmit,
+        loader
     }
 }

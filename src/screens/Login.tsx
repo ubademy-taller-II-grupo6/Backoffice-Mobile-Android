@@ -7,13 +7,32 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/core';
 import { RooteStackParams } from '../interface/navigatorLogin';
 import { loginService } from '../service/loginService';
+import registroStyle from '../styles/registroStyle';
+import { uiService } from '../service/uiService';
+import { loginApi } from '../api/loginApi';
+import { LoaderComponent } from '../components/LoaderComponent';
 interface Props extends NativeStackScreenProps<RooteStackParams,'Login'>{};
 
 
 export const Login = ({navigation}:Props) => {
-    const { showPassword,login,changeValue,changeFocus } = loginService()
+    const { showPassword,login,changeValue,changeFocus,setloader,errorSubmit,loader} = loginService()
+    let submitForm = async() => {
+        console.log("dss")
+        setloader(true)
+        if(!login.email.isValid||!login.password.isValid){
+            console.log("error")
+            errorSubmit()
+            setloader(false)
+            return ;
+        }
+        let x=null
+        let y = await loginApi()
+        setloader(false)
+        uiService().alertaInformativa("","Usted se registro con éxito")
+    }
     return (
         <View style={generalStyle.content}>
+            {loader==true?<LoaderComponent/>:<View></View>}
             <View style={generalStyle.contentIconReturn}>
                 <Ionicons name={"chevron-back-outline"} style={generalStyle.buttomReturn} size={20} 
                             onPress={()=>navigation.navigate('Inicio')}/>     
@@ -69,13 +88,18 @@ export const Login = ({navigation}:Props) => {
                 </View>    
             </View>
             
-            <View style={generalStyle.contentBottomLogin} >
-                <TouchableOpacity style={generalStyle.bottomLogin}>
+            <View style={generalStyle.contentBottomLogin}>
+                <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{submitForm()}}>
                     <Text style={generalStyle.textBottomColor}>INICIAR SESIÓN</Text>
                 </TouchableOpacity>    
             </View>
             <Text>Recuperar Contraseña</Text>
-          
+
+            <View style={generalStyle.contentBottomLogin} >
+                <TouchableOpacity style={[generalStyle.bottomLogin,registroStyle.google]}>
+                    <Text style={generalStyle.textBottomColor}>REGISTRARSE CON GOOGLE</Text>
+                </TouchableOpacity>    
+            </View>
         </View>
     )
 }
