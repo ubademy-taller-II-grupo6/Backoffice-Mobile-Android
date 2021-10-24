@@ -2,7 +2,7 @@ import React from 'react';
 import { View,Text, Image,TextInput, TouchableOpacity} from 'react-native';
 import generalStyle from '../styles/generalStyle';
 import { Ionicons } from '@expo/vector-icons';
-import { useForm } from '../hooks/useForm';
+import { registerService } from '../service/registerService';
 import { uiService }  from '../service/uiService';
 import registroStyle from '../styles/registroStyle';
 import {loginApi} from '../api/loginApi'
@@ -11,7 +11,7 @@ import Checkbox from 'expo-checkbox';
 
 export const RegisterComponent = () => {
 
-    const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit} = useForm()
+    const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit} = registerService()
     let submitForm = async() => {
         console.log("dss")
         setloader(true)
