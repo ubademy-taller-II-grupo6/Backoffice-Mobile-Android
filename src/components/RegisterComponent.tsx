@@ -11,7 +11,7 @@ import Checkbox from 'expo-checkbox';
 
 export const RegisterComponent = () => {
 
-    const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit} = registerService()
+    const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit,onPress,state,signOutAsync,signOutAsync2,userGoogle} = registerService()
     let submitForm = async() => {
         console.log("dss")
         setloader(true)
@@ -176,10 +176,26 @@ export const RegisterComponent = () => {
             </View>
 
             <View style={generalStyle.contentBottomLogin} >
-                <TouchableOpacity style={[generalStyle.bottomLogin,registroStyle.google]}>
+                <TouchableOpacity onPress={()=>onPress()} style={[generalStyle.bottomLogin,registroStyle.google]}>
                     <Text style={generalStyle.textBottomColor}>REGISTRARSE CON GOOGLE</Text>
                 </TouchableOpacity>    
             </View>
+
+            <View style={generalStyle.contentBottomLogin} >
+                <TouchableOpacity onPress={()=>signOutAsync()} style={[generalStyle.bottomLogin,registroStyle.google]}>
+                    <Text style={generalStyle.textBottomColor}>desploguearse 1 CON GOOGLE</Text>
+                </TouchableOpacity>    
+            </View>
+
+            <View style={generalStyle.contentBottomLogin} >
+                <TouchableOpacity onPress={()=>signOutAsync2()} style={[generalStyle.bottomLogin,registroStyle.google]}>
+                    <Text style={generalStyle.textBottomColor}>desploguearse 2 CON GOOGLE</Text>
+                </TouchableOpacity>    
+            </View>
+
+            <Text>{JSON.stringify(state)}</Text>
+            <Text>{JSON.stringify(userGoogle)}</Text>
+            <Text>sads</Text>
         </View>
     )
 }

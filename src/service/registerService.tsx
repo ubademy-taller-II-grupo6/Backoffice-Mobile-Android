@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { opcionValidation, registerInterface, validationInterface } from '../interface/registroInterface'
+import * as GoogleSignIn from 'expo-google-sign-in';
 
 export const registerService = () => {
+    let state = { user: null };
+    const [userGoogle, setUserGoogle] = useState({})
     let initialState:opcionValidation={
         name:{
             value:"",
@@ -164,6 +167,52 @@ export const registerService = () => {
         newRegister.rePassword.hasFocus=true
         setRegister(newRegister)
     }
+    let componentDidMount=() =>{
+        initAsync();
+      }
+    
+    let initAsync = async () => {
+        await GoogleSignIn.initAsync({
+        });
+        _syncUserWithStateAsync();
+      };
+    
+      let _syncUserWithStateAsync = async () => {
+        const user = await GoogleSignIn.signInSilentlyAsync();
+        setUserGoogle({ user });
+      };
+    
+      let signOutAsync = async () => {
+        await GoogleSignIn.signOutAsync();
+        setUserGoogle({ user: null });
+      };
+    
+      let signOutAsync2 = async () => {
+        await GoogleSignIn.disconnectAsync()
+        setUserGoogle({ user: null });
+      };
+    
+      let  signInAsync = async () => {
+        try {
+          await GoogleSignIn.askForPlayServicesAsync();
+          const { type, user } = await GoogleSignIn.signInAsync();
+          
+          if (type === 'success') {
+              alert('login:' + user);
+            _syncUserWithStateAsync();
+          }
+        } catch ({ message }) {
+          alert('login: Error:' + message);
+        }
+      };
+    
+      let   onPress = () => {
+        if (!state.user) {
+        //   signOutAsync();
+        // } else {
+          signInAsync();
+        }
+      };
     return {
         register,
         changeValue,
@@ -171,6 +220,11 @@ export const registerService = () => {
         loader,
         setloader,
         showPassword,
-        errorSubmit
+        errorSubmit,
+        onPress,
+        state,
+        userGoogle,
+        signOutAsync,
+        signOutAsync2
     }
 }
