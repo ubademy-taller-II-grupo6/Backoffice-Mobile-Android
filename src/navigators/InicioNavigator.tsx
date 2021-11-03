@@ -6,6 +6,7 @@ import { Registro } from '../screens/Registro';
 import { Home } from '../screens/Home';
 import { RooteStackParams } from '../interface/navigatorLogin';
 import { AuthContext } from '../context/AuthContext';
+import { Ubication } from '../screens/Ubication';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
@@ -52,6 +53,7 @@ export const InicioNavigator = () => {
             {
                 userContext.authState.isLoggedIn&&(
                     <>
+                        <Stack.Screen name="Ubication"  component={Ubication} />
                         <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
                     </>
                 )
