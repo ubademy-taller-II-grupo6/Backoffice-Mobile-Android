@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View,Text, TextInput, TouchableOpacity,Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import loginStyle from "../styles/loginStyle";
@@ -11,32 +11,35 @@ import registroStyle from '../styles/registroStyle';
 import { uiService } from '../service/uiService';
 import { loginApi } from '../api/loginApi';
 import { LoaderComponent } from '../components/LoaderComponent';
+import { AuthContext } from '../context/AuthContext';
 interface Props extends NativeStackScreenProps<RooteStackParams,'Login'>{};
 
 
 export const Login = ({navigation}:Props) => {
+    const authContext = useContext(AuthContext)
     const { showPassword,login,changeValue,changeFocus,setloader,errorSubmit,loader} = loginService()
     let submitForm = async() => {
-        console.log("dss")
         setloader(true)
         if(!login.email.isValid||!login.password.isValid){
+            uiService().alertaInformativa("","Usted se registro con éxito")
             console.log("error")
             errorSubmit()
             setloader(false)
             return ;
         }
-        let x=null
-        let y = await loginApi()
+        let data = await loginApi()
         setloader(false)
-        uiService().alertaInformativa("","Usted se registro con éxito")
+        authContext.signIn({
+            isLoggedIn:true,
+            username:"Rogger Paredes",
+            email:"rparedes@gmail.com",
+            potho:"string",
+            token:"string"
+        })
     }
     return (
         <View style={generalStyle.content}>
             {loader==true?<LoaderComponent/>:<View></View>}
-            <View style={generalStyle.contentIconReturn}>
-                <Ionicons name={"chevron-back-outline"} style={generalStyle.buttomReturn} size={20} 
-                            onPress={()=>navigation.navigate('Inicio')}/>     
-            </View>
             <View style={generalStyle.contentImgLogo}>
                 <Image 
                     style={generalStyle.imgLogo}
@@ -93,11 +96,11 @@ export const Login = ({navigation}:Props) => {
                     <Text style={generalStyle.textBottomColor}>INICIAR SESIÓN</Text>
                 </TouchableOpacity>    
             </View>
-            <Text>Recuperar Contraseña</Text>
+            <Text>Recuperar cantraseña</Text>
 
             <View style={generalStyle.contentBottomLogin} >
                 <TouchableOpacity style={[generalStyle.bottomLogin,registroStyle.google]}>
-                    <Text style={generalStyle.textBottomColor}>REGISTRARSE CON GOOGLE</Text>
+                    <Text style={generalStyle.textBottomColor}>INGRESAR CON GOOGLE</Text>
                 </TouchableOpacity>    
             </View>
         </View>

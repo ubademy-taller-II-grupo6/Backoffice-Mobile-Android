@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 const registroStyle = StyleSheet.create({
     google:{
-        backgroundColor:'rgb(219,68,55)',
+        backgroundColor:'rgb(218,76,53)',
     },
     facebook:{
         backgroundColor:'#3b5998',
