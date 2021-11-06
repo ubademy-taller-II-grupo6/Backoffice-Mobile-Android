@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { opcionValidation, registerInterface, validationInterface } from '../interface/registroInterface'
 import * as GoogleSignIn from 'expo-google-sign-in';
+import { registerWithGoogle, registerWithGoogleWeb } from '../../firebase';
 
 export const registerService = () => {
     let state = { user: null };
@@ -178,8 +179,14 @@ export const registerService = () => {
       };
     
       let _syncUserWithStateAsync = async () => {
-        const user = await GoogleSignIn.signInSilentlyAsync();
+        const user:any = await GoogleSignIn.signInSilentlyAsync();
         setUserGoogle({ user });
+        await alert('await GoogleSignIn.signInSilentlyAsync();:' );
+        await alert(user);
+        await alert('login:' + JSON.stringify(user, null, 2));
+        await alert(user.auth.idToken)
+        await alert(user.auth.accessToken)
+        registerWithGoogle(user.auth.idToken,user.auth.accessToken)
       };
     
       let signOutAsync = async () => {
@@ -194,11 +201,12 @@ export const registerService = () => {
     
       let  signInAsync = async () => {
         try {
-          await GoogleSignIn.askForPlayServicesAsync();
-          const { type, user } = await GoogleSignIn.signInAsync();
-          
+            const { type, user } = await GoogleSignIn.signInAsync();
           if (type === 'success') {
-              alert('login:' + user);
+            let idToken='1111'
+            let accessToken='1111'
+              await alert('login:' + JSON.stringify(user, null, 2));
+              await alert('_syncUserWithStateAsync:' );
             _syncUserWithStateAsync();
           }
         } catch ({ message }) {
@@ -213,6 +221,13 @@ export const registerService = () => {
           signInAsync();
         }
       };
+      let onPress2 = async () => {
+          console.log("onPress2")
+        //registerWithGoogle("1111111111","11111111111111")
+        let cre= await registerWithGoogleWeb()
+        setUserGoogle({ cre });
+        // await alert('login:' + JSON.stringify(cre, null, 2));
+      }
     return {
         register,
         changeValue,
@@ -225,6 +240,7 @@ export const registerService = () => {
         state,
         userGoogle,
         signOutAsync,
-        signOutAsync2
+        signOutAsync2,
+        onPress2
     }
 }

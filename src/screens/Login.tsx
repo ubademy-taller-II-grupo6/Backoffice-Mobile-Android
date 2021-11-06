@@ -19,12 +19,12 @@ export const Login = ({navigation}:Props) => {
     let submitForm = async() => {
         console.log("dss")
         setloader(true)
-        if(!login.email.isValid||!login.password.isValid){
+        /*if(!login.email.isValid||!login.password.isValid){
             console.log("error")
             errorSubmit()
             setloader(false)
             return ;
-        }
+        }*/
         let x=null
         let y = await loginApi()
         setloader(false)

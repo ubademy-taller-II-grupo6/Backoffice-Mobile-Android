@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/ubademyLogo.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.ubademy",
+      "package": "com.ubademy.group6",
       "googleServicesFile": "./google-services.json"
     },
     "web": {

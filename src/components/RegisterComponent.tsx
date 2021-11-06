@@ -8,19 +8,21 @@ import registroStyle from '../styles/registroStyle';
 import {loginApi} from '../api/loginApi'
 import { LoaderComponent } from './LoaderComponent';
 import Checkbox from 'expo-checkbox';
+import { signInAsync2 } from '../../firebase';
 
 export const RegisterComponent = () => {
 
-    const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit,onPress,state,signOutAsync,signOutAsync2,userGoogle} = registerService()
+    const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit,onPress,state,signOutAsync,signOutAsync2,userGoogle,onPress2} = registerService()
     let submitForm = async() => {
         console.log("dss")
         setloader(true)
-        if(!register.email.isValid||!register.name.isValid||!register.lastname.isValid||!register.password.isValid||!register.rePassword.isValid){
+        /*if(!register.email.isValid||!register.name.isValid||!register.lastname.isValid||!register.password.isValid||!register.rePassword.isValid){
             errorSubmit()
             setloader(false)
             return ;
         }
         let x=null
+        let y = await loginApi()*/
         let y = await loginApi()
         setloader(false)
         uiService().alertaInformativa("","Usted se registro con éxito")
@@ -182,6 +184,12 @@ export const RegisterComponent = () => {
             </View>
 
             <View style={generalStyle.contentBottomLogin} >
+                <TouchableOpacity onPress={()=>onPress2()} style={[generalStyle.bottomLogin,registroStyle.google]}>
+                    <Text style={generalStyle.textBottomColor}>REGISTRARSE CON GOOGLE Web</Text>
+                </TouchableOpacity>    
+            </View>
+
+            <View style={generalStyle.contentBottomLogin} >
                 <TouchableOpacity onPress={()=>signOutAsync()} style={[generalStyle.bottomLogin,registroStyle.google]}>
                     <Text style={generalStyle.textBottomColor}>desploguearse 1 CON GOOGLE</Text>
                 </TouchableOpacity>    
@@ -192,9 +200,13 @@ export const RegisterComponent = () => {
                     <Text style={generalStyle.textBottomColor}>desploguearse 2 CON GOOGLE</Text>
                 </TouchableOpacity>    
             </View>
-
+            <View style={generalStyle.contentBottomLogin} >
+                <TouchableOpacity onPress={()=>signInAsync2()} style={[generalStyle.bottomLogin,registroStyle.google]}>
+                    <Text style={generalStyle.textBottomColor}>sig 2 CON GOOGLE</Text>
+                </TouchableOpacity>    
+            </View>
             <Text>{JSON.stringify(state)}</Text>
-            <Text>{JSON.stringify(userGoogle)}</Text>
+            <Text>{JSON.stringify(userGoogle, null, 2)}</Text>
             <Text>sads</Text>
         </View>
     )
