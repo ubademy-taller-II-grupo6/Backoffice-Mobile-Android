@@ -21,7 +21,8 @@ const generalStyle = StyleSheet.create({
     contentImgLogo:{
         width:250,
         height:150,
-        marginBottom:70
+        marginBottom:70,
+        marginTop:30
     },
     imgLogo:{
         width: '100%',

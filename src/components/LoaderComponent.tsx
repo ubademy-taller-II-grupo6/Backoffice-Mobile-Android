@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActivityIndicator, Modal, View } from 'react-native'
+import { ActivityIndicator, Modal, Text, View } from 'react-native'
 import generalStyle from '../styles/generalStyle'
 
 export const LoaderComponent = () => {

@@ -2,14 +2,15 @@ import React, { useState } from 'react'
 import { createUserWithEmailAndPassword_ } from '../../firebase';
 
 export const loginApi =async  () => {
-   /* let response = await  fetch('https://reactnative.dev/movies.json', {
+    let response = await  fetch('https://ddf29908-ec42-4f78-9e68-e880d130ec20.mock.pstmn.io/Ubademy', {
       method: 'GET',
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
     });
-    let json = await response.json();*/
+    let json = await response.json();
     console.log("loginApi")
     let user = await createUserWithEmailAndPassword_("rparedestavara@gmail.com","1234567")
     //ToDo: Mandar al GateWay

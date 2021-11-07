@@ -12,8 +12,8 @@ export const Registro = ({navigation}:Props) => {
     return (
         <ScrollView>
             <View style={generalStyle.contentIconReturn}>
-                <Ionicons name={"chevron-back-outline"} style={generalStyle.buttomReturn} size={20} 
-                            onPress={()=>navigation.navigate('Inicio')}/>
+                {/* <Ionicons name={"chevron-back-outline"} style={generalStyle.buttomReturn} size={20} 
+                            onPress={()=>navigation.navigate('Inicio')}/> */}
             </View>
             <RegisterComponent/>
         </ScrollView>
