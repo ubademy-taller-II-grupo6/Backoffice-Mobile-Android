@@ -12,17 +12,17 @@ import { signInAsync2 } from '../../firebase';
 
 export const RegisterComponent = () => {
 
-    const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit,onPress,state,signOutAsync,signOutAsync2,userGoogle,onPress2} = registerService()
+    const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit,
+        onPress,state,signOutAsync,signOutAsync2,userGoogle,onPress2} = registerService()
     let submitForm = async() => {
-        console.log("dss")
         setloader(true)
-        /*if(!register.email.isValid||!register.name.isValid||!register.lastname.isValid||!register.password.isValid||!register.rePassword.isValid){
+        if(!register.email.isValid||!register.name.isValid||!register.lastname.isValid
+            ||!register.password.isValid||!register.rePassword.isValid){
             errorSubmit()
             setloader(false)
             return ;
         }
         let x=null
-        let y = await loginApi()*/
         let y = await loginApi()
         setloader(false)
         uiService().alertaInformativa("","Usted se registro con éxito")
@@ -167,10 +167,6 @@ export const RegisterComponent = () => {
                     
                 </View> 
             </View>
-            {/* <Text>**************</Text>
-            <Text>{JSON.stringify(register.password)}</Text>
-            <Text>**************</Text>
-            <Text>{JSON.stringify(register.rePassword)}</Text> */}
             <View style={generalStyle.contentBottomLogin} >
                 <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{submitForm()}}>
                     <Text style={generalStyle.textBottomColor}>REGISTRARSE</Text>
@@ -179,13 +175,13 @@ export const RegisterComponent = () => {
 
             <View style={generalStyle.contentBottomLogin} >
                 <TouchableOpacity onPress={()=>onPress()} style={[generalStyle.bottomLogin,registroStyle.google]}>
-                    <Text style={generalStyle.textBottomColor}>REGISTRARSE CON GOOGLE</Text>
+                    <Text style={generalStyle.textBottomColor}>CONTINUAR CON GOOGLE</Text>
                 </TouchableOpacity>    
             </View>
 
             <View style={generalStyle.contentBottomLogin} >
                 <TouchableOpacity onPress={()=>onPress2()} style={[generalStyle.bottomLogin,registroStyle.google]}>
-                    <Text style={generalStyle.textBottomColor}>REGISTRARSE CON GOOGLE Web</Text>
+                    <Text style={generalStyle.textBottomColor}>CONTINUAR CON GOOGLE Web</Text>
                 </TouchableOpacity>    
             </View>
 
@@ -207,7 +203,6 @@ export const RegisterComponent = () => {
             </View>
             <Text>{JSON.stringify(state)}</Text>
             <Text>{JSON.stringify(userGoogle, null, 2)}</Text>
-            <Text>sads</Text>
         </View>
     )
 }

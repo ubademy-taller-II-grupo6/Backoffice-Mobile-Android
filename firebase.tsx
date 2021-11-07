@@ -17,7 +17,7 @@ if(!Firebase){
 
 let authFirebase = firebase.auth()
 let authFirebase_ = firebase.auth
-var provider = new firebase.auth.GoogleAuthProvider();
+var providerGoogle = new firebase.auth.GoogleAuthProvider();
 
 export const createUserWithEmailAndPassword_ = (email:string, password:string) => authFirebase.createUserWithEmailAndPassword( email, password)
   .then((userCredential:any) => {
@@ -42,11 +42,12 @@ export const createUserWithEmailAndPassword_ = (email:string, password:string) =
   
 export const registerWithGoogle = async (idToken:string,accessToken:string)=>{
     let credential = authFirebase_.GoogleAuthProvider.credential(idToken,accessToken)
-    const googleProfileData = await firebase.auth().signInWithCredential(credential);
+    const googleProfileData = await firebase.auth().signInWithCredential(credential)
+    alert('googleProfileData:' + JSON.stringify(googleProfileData, null, 2));
     console.log("credential")
     console.log(credential)
     console.log(googleProfileData)
-    return firebase.auth().signInWithCredential(credential);
+    return googleProfileData//firebase.auth().signInWithCredential(credential);
     /*const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
     const googleProfileData = await firebase.auth().signInWithCredential(credential);
     this.onLoginSuccess.bind(this);*/
@@ -61,11 +62,11 @@ export const signInAsync2 =() =>{
 }
 
 export const registerWithGoogleWeb = ()=>{
-  authFirebase.signInWithPopup(provider)
+  authFirebase.signInWithPopup(providerGoogle)
   .then((result) => {
-    /** @type {firebase.auth.OAuthCredential} */
+    ///** @type {firebase.auth.OAuthCredential} */
     var credential = result.credential;
-    alert('login:' + JSON.stringify(credential, null, 2));
+    alert('login:' + JSON.stringify(result, null, 2));
     return credential
     console.log(credential)
     // This gives you a Google Access Token. You can use it to access the Google API.
