@@ -1,4 +1,7 @@
 import firebase from 'firebase';
+import { FirebaseResponseCode, ResponseDiccionary, ResponseRegisterEmailFirebase, UserFirebase } from './src/interface/AuthStateInterface';
+import { uiService }  from './src/service/uiService';
+
 require('firebase/auth')
 
 const firebaseConfig = {
@@ -11,30 +14,67 @@ const firebaseConfig = {
   measurementId: 'G-7085K4CLZJ',
 };
 let Firebase = null
-if(!Firebase){
+if(!firebase.apps.length){
     Firebase = firebase.initializeApp(firebaseConfig);
+}
+
+let firebaseResponseCode:FirebaseResponseCode = {
+  codes:[
+    {
+      code:"auth/email-already-in-use",
+      response:"El usuario ya esta registrado"
+    }
+  ]
 }
 
 let authFirebase = firebase.auth()
 let authFirebase_ = firebase.auth
 var providerGoogle = new firebase.auth.GoogleAuthProvider();
 
-export const createUserWithEmailAndPassword_ = (email:string, password:string) => authFirebase.createUserWithEmailAndPassword( email, password)
-  .then((userCredential:any) => {
-    // Signed in
-    console.log("userCredential")
-    console.log(userCredential)
-    const user = userCredential.user;
-  })
-  .catch((error:any) => {
-    console.log("catch")
-    console.log(error)
-    console.log(error.message)
-    console.log(error.code)
-  });
+export const createUserWithEmailAndPassword_ = async(email:string, password:string) => {
+  let response = await  authFirebase.createUserWithEmailAndPassword( email, password)
+    .then( (userCredential:any) => {
+      console.log(userCredential)
+      const user:any = userCredential;
+      uiService().alertaInformativa("","Registro éxitoso")
+      return user
+    })
+    .catch((error:any) => {
+      let encontrado = firebaseResponseCode.codes.find(x => x.code == error.code)
+      uiService().alertaInformativa("",encontrado!=undefined?encontrado.response:"")
+      return null
+    });  
+  return response
+}
+
+
+export const signInWithEmailAndPassword_ = (email:string, password:string) => firebase.auth().signInWithEmailAndPassword(email, password)
+.then((userCredential) => {
+  // Signed in
+  console.log(userCredential)
+  var user:any = userCredential.user;
+  // ...
+  return {
+    isError:false,
+    message:"",
+    user:user
+  }
+})
+.catch((error) => {
+  let messageError = "Error en la data"
+  if(error.message == "INVALID_PASSWORD" || error.message == "EMAIL_NOT_FOUND"){
+    messageError="Datos Invalidos"
+  }
+  let errorResponse = {
+    isError:true,
+    message:messageError,
+    user:null
+  }
+  return errorResponse
+});
+
 
   export const signOut_ = () => authFirebase.signOut().then(() => {
-    // Sign-out successful.
   }).catch((error) => {
     console.log(error.message)
     console.log(error.code)
@@ -42,11 +82,11 @@ export const createUserWithEmailAndPassword_ = (email:string, password:string) =
   
 export const registerWithGoogle = async (idToken:string,accessToken:string)=>{
     let credential = authFirebase_.GoogleAuthProvider.credential(idToken,accessToken)
-    const googleProfileData = await firebase.auth().signInWithCredential(credential)
-    alert('googleProfileData:' + JSON.stringify(googleProfileData, null, 2));
-    console.log("credential")
+    const googleProfileData = await firebase.auth().signInWithCredential(credential).then(data =>{ return data}).catch(error =>{return null})
+    // alert('googleProfileData:' + JSON.stringify(googleProfileData, null, 2));
+    /*console.log("credential")
     console.log(credential)
-    console.log(googleProfileData)
+    console.log(googleProfileData) */
     return googleProfileData//firebase.auth().signInWithCredential(credential);
     /*const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
     const googleProfileData = await firebase.auth().signInWithCredential(credential);
@@ -61,18 +101,19 @@ export const signInAsync2 =() =>{
     return firebase.auth().signInWithCredential(credential);
 }
 
-export const registerWithGoogleWeb = ()=>{
-  authFirebase.signInWithPopup(providerGoogle)
+export const registerWithGoogleWeb = async ()=>{
+  let data = await authFirebase.signInWithPopup(providerGoogle)
   .then((result) => {
     ///** @type {firebase.auth.OAuthCredential} */
     var credential = result.credential;
-    alert('login:' + JSON.stringify(result, null, 2));
-    return credential
+    console.log(result)
+    //alert('login:' + JSON.stringify(result, null, 2));
     console.log(credential)
     // This gives you a Google Access Token. You can use it to access the Google API.
     var token = credential;
     // The signed-in user info.
-    var user = result.user;
+    var user = result;
+    return result
     // ...
   }).catch((error) => {
     // Handle Errors here.
@@ -82,6 +123,9 @@ export const registerWithGoogleWeb = ()=>{
     var email = error.email;
     // The firebase.auth.AuthCredential type that was used.
     var credential = error.credential;
+    console.log("error")
+    return null
     // ...
   });
+  return data
 }

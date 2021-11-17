@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { View,Text, Image,TextInput, TouchableOpacity} from 'react-native';
 import generalStyle from '../styles/generalStyle';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,27 +9,103 @@ import {loginApi} from '../api/loginApi'
 import { LoaderComponent } from './LoaderComponent';
 import Checkbox from 'expo-checkbox';
 import { signInAsync2 } from '../../firebase';
+import { LoderContext } from '../context/LoderContext';
+import { AuthContext } from '../context/AuthContext';
 
 export const RegisterComponent = () => {
-
+    const [x, setx] = useState({})
+    const loderContext = useContext(LoderContext)
+    const authContext = useContext(AuthContext)
     const {register,changeValue,changeFocus,loader,setloader,showPassword,errorSubmit,
-        onPress,state,signOutAsync,signOutAsync2,userGoogle,onPress2} = registerService()
+        onPressWithGoogle,state,signOutAsync,signOutAsync2,userGoogle,onPress2} = registerService()
+    let onPress2_ = async( )=>{
+        loderContext.changeStateLoder(true)
+        let response:any =await onPress2()
+        console.log(response)
+        loderContext.changeStateLoder(false)
+        authContext.signIn({
+            isLoggedIn:true,
+            provider:"GOOGLE",
+            emailVerified:response.user.emailVerified,
+            username:response.user.displayName,
+            email:response.user.email,
+            potho:response.user.photoURL,
+            stsTokenManager:{
+                accessToken:response.credential.accessToken,
+                apiKey:"",
+                expirationTime:0,
+                refreshToken:response.user.refreshToken,
+                uid:response.user.uid
+            }
+        })
+        alert('onPressWithGoogle_:' + JSON.stringify(authContext.authState, null, 2));
+    }
+    let onPressWithGoogle_ = async () => {
+        loderContext.changeStateLoder(true)
+        let response =await onPressWithGoogle()
+        setx(response.user.stsTokenManager)
+        alert('onPressWithGoogle_ response:' + JSON.stringify(response, null, 2));
+        /*alert('onPressWithGoogle_:' + JSON.stringify(authContext.authState, null, 2));
+        alert('accessToken:' + JSON.stringify(response.user.stsTokenManager.accessToken, null, 2));
+        alert('apiKey:' + JSON.stringify(response.user.apiKey, null, 2));
+        alert('refreshToken:' + JSON.stringify(response.user.stsTokenManager.refreshToken, null, 2));
+        alert('uid:' + JSON.stringify(response.user.uid, null, 2));
+        alert('photoURL:' + JSON.stringify(response.user.photoURL, null, 2));
+        alert('displayName:' + JSON.stringify(response.user.displayName));
+        alert('email:' + JSON.stringify(response.user.email, null, 2));*/
+        loderContext.changeStateLoder(false)
+        authContext.signIn({
+            isLoggedIn:true,
+            provider:"GOOGLE",
+            username:response.user.displayName,
+            email:response.user.email,
+            emailVerified:true,
+            potho:response.user.photoURL,
+            stsTokenManager:{
+                accessToken:response.user.toJSON().stsTokenManager.accessToken,
+                apiKey:response.user.apiKey,
+                expirationTime:0,
+                refreshToken:response.user.toJSON().stsTokenManager.refreshToken,
+                uid:response.user.uid
+            }
+        })
+        alert('onPressWithGoogle_:' + JSON.stringify(authContext.authState, null, 2));
+    }
     let submitForm = async() => {
-        setloader(true)
-        if(!register.email.isValid||!register.name.isValid||!register.lastname.isValid
+        loderContext.changeStateLoder(true)
+        // setloader(true)
+        /*if(!register.email.isValid||!register.name.isValid||!register.lastname.isValid
             ||!register.password.isValid||!register.rePassword.isValid){
             errorSubmit()
-            setloader(false)
+            loderContext.changeStateLoder(false)
+            // setloader(false)
+            
             return ;
-        }
-        let x=null
-        let y = await loginApi()
-        setloader(false)
-        uiService().alertaInformativa("","Usted se registro con éxito")
+        }*/
+        let response:any = await loginApi().registerWithEmailFirebase(register.email.value,register.rePassword.value)
+        loderContext.changeStateLoder(false)
+        console.log(response)
+        authContext.signIn({
+            isLoggedIn:true,
+            provider:"EMAIL",
+            username:(response.user.displayName)?response.user.displayName:"",
+            email:response.user.email,
+            potho:response.user.photoURL,
+            emailVerified:response.user.emailVerified,
+            stsTokenManager:{
+                accessToken:"",
+                apiKey:response.user.apiKey,
+                expirationTime:0,
+                refreshToken:response.user.refreshToken,
+                uid:response.user.uid
+            }
+        })
+        
+        // uiService().alertaInformativa("",response)
     }
     return (
         <View style={generalStyle.content}>
-            {loader==true?<LoaderComponent/>:<View></View>}
+            {loderContext.loderState.isLoder==true?<LoaderComponent/>:<View></View>}
             <View style={generalStyle.contentImgLogo}>
                 <Image 
                     style={generalStyle.imgLogo}
@@ -174,13 +250,13 @@ export const RegisterComponent = () => {
             </View>
 
             <View style={generalStyle.contentBottomLogin} >
-                <TouchableOpacity onPress={()=>onPress()} style={[generalStyle.bottomLogin,registroStyle.google]}>
+                <TouchableOpacity onPress={()=>onPressWithGoogle_()} style={[generalStyle.bottomLogin,registroStyle.google]}>
                     <Text style={generalStyle.textBottomColor}>CONTINUAR CON GOOGLE</Text>
                 </TouchableOpacity>    
             </View>
 
             <View style={generalStyle.contentBottomLogin} >
-                <TouchableOpacity onPress={()=>onPress2()} style={[generalStyle.bottomLogin,registroStyle.google]}>
+                <TouchableOpacity onPress={()=>onPress2_()} style={[generalStyle.bottomLogin,registroStyle.google]}>
                     <Text style={generalStyle.textBottomColor}>CONTINUAR CON GOOGLE Web</Text>
                 </TouchableOpacity>    
             </View>
@@ -201,8 +277,10 @@ export const RegisterComponent = () => {
                     <Text style={generalStyle.textBottomColor}>sig 2 CON GOOGLE</Text>
                 </TouchableOpacity>    
             </View>
-            <Text>{JSON.stringify(state)}</Text>
+            <Text>{JSON.stringify(authContext.authState)}</Text>
             <Text>{JSON.stringify(userGoogle, null, 2)}</Text>
+            <Text>/*///***/</Text>
+            <Text>{JSON.stringify(x, null, 2)}</Text>
         </View>
     )
 }

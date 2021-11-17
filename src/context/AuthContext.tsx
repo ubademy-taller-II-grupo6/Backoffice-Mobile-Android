@@ -6,10 +6,18 @@ import { AuthReducer } from '../reducers/authReducer';
 
 export const authInitialState:AuthState={
     isLoggedIn:false,
-    username:"", 
+    emailVerified:false,
+    provider:"",
+    username:"",
     email:"",
     potho:"",
-    token:""
+    stsTokenManager:{
+        accessToken:"",
+        apiKey:"",
+        expirationTime:0,
+        refreshToken:"",
+        uid:""
+    }
 }
 
 

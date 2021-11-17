@@ -1,8 +1,8 @@
-export interface louderState{
-    isLouder:boolean
+export interface LoderState{
+    isLoder:boolean
 }
 
-export interface LouderContextProps{
-    louder:louderState,
-    changeStateLouder:()=>void
+export interface LoderContextProps{
+    loderState:LoderState,
+    changeStateLoder:(newValue:boolean)=>void
 }

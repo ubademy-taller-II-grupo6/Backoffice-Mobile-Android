@@ -1,7 +1,31 @@
-import React, { useState } from 'react'
-import { createUserWithEmailAndPassword_ } from '../../firebase';
+import React from 'react'
+import { createUserWithEmailAndPassword_, signInWithEmailAndPassword_ } from '../../firebase';
 
+export const loginApi = () => {
+
+  let registerWithEmailFirebase = async(email:string,password:string) => {
+    console.log("registerWithEmailFirebase")
+    let user = await createUserWithEmailAndPassword_(email,password)
+    console.log(user)
+    return user
+  }
+
+  let loginWithEmailFirebase = async(email:string,password:string) => {
+    console.log("loginWithEmailFirebase")
+    let user = await signInWithEmailAndPassword_(email,password)
+    console.log(user)
+    return user
+  }
+
+  return { 
+    registerWithEmailFirebase,
+    loginWithEmailFirebase
+  }
+}
+/*
 export const loginApi =async  () => {
+  const loderContext = useContext(LoderContext)
+  loderContext.changeStateLoder(true)
     let response = await  fetch('https://ddf29908-ec42-4f78-9e68-e880d130ec20.mock.pstmn.io/Ubademy', {
       method: 'GET',
       headers: {
@@ -17,6 +41,16 @@ export const loginApi =async  () => {
     console.log(user)
     verifyToken("")
     console.log("sssc")
+    loderContext.changeStateLoder(false)
+}
+
+export const registerWithEmailFirebase = () => {
+  const loderContext = useContext(LoderContext)
+
+  loderContext.changeStateLoder(true)
+
+
+  loderContext.changeStateLoder(false)
 }
 
 export const validateTokenGoogle = (idToken:string,body:any) => {
@@ -41,4 +75,4 @@ export const signOuthWithGoogle=()=>{
 
 export const verifyToken = (token:string) => {
   //todo pegarle al endPoint de Gateway
-}
+}*/

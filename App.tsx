@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { AuthProvider } from './src/context/AuthContext';
-import { LouderProvider } from './src/context/LouderContext';
+import { LoderProvider } from './src/context/LoderContext';
 import { InicioNavigator } from './src/navigators/InicioNavigator';
 export default function App() {
 
@@ -21,9 +21,9 @@ export default function App() {
 const AppState = ({children}:any)=>{
   return (
     <AuthProvider>
-      <LouderProvider>
+      <LoderProvider>
         {children}  
-      </LouderProvider>
+      </LoderProvider>
     </AuthProvider>
   )
 }
