@@ -1,10 +1,8 @@
 import React, { useContext } from 'react'
 import { View,Text, TextInput, TouchableOpacity,Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import loginStyle from "../styles/loginStyle";
 import generalStyle from "../styles/generalStyle";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/core';
 import { RooteStackParams } from '../interface/navigatorLogin';
 import { loginService } from '../service/loginService';
 import registroStyle from '../styles/registroStyle';
@@ -12,34 +10,70 @@ import { uiService } from '../service/uiService';
 import { loginApi } from '../api/loginApi';
 import { LoaderComponent } from '../components/LoaderComponent';
 import { AuthContext } from '../context/AuthContext';
+import { registerService } from '../service/registerService';
+import { LoderContext } from '../context/LoderContext';
 interface Props extends NativeStackScreenProps<RooteStackParams,'Login'>{};
 
-
+let letra = ""
 export const Login = ({navigation}:Props) => {
     const authContext = useContext(AuthContext)
+    const loderContext = useContext(LoderContext)
     const { showPassword,login,changeValue,changeFocus,setloader,errorSubmit,loader} = loginService()
+    const {onPressWithGoogle} = registerService()
     let submitForm = async() => {
-        setloader(true)
-        if(!login.email.isValid||!login.password.isValid){
-            uiService().alertaInformativa("","Usted se registro con éxito")
+        loderContext.changeStateLoder(true)
+        /*if(!login.email.isValid||!login.password.isValid){
             console.log("error")
             errorSubmit()
-            setloader(false)
+            loderContext.changeStateLoder(false)
             return ;
+        }*/
+        let data = await loginApi().loginWithEmailFirebase(login.email.value,login.password.value)
+        if(data.isError){
+            loderContext.changeStateLoder(false)
+            uiService().alertaInformativa("",data.message)
+            return
         }
-        let data = await loginApi()
-        setloader(false)
         authContext.signIn({
             isLoggedIn:true,
-            username:"Rogger Paredes",
-            email:"rparedes@gmail.com",
-            potho:"string",
-            token:"string"
+            provider:"EMAIL",
+            emailVerified:data.user.emailVerified,
+            username:"",
+            email:data.user.email,
+            potho:"",
+            stsTokenManager:{
+                accessToken:"",
+                apiKey:"",
+                expirationTime:0,
+                refreshToken:data.user.refreshToken,
+                uid:data.user.uid
+            }
+        })
+        loderContext.changeStateLoder(false)
+    }
+    let onPressWithGoogle_ = async() => {
+        loderContext.changeStateLoder(true)
+        let response = await onPressWithGoogle()
+        loderContext.changeStateLoder(false)
+        authContext.signIn({
+            isLoggedIn:true,
+            provider:"GOOGLE",
+            username:response.user.displayName,
+            email:response.user.email,
+            potho:response.user.photoURL,
+            emailVerified:response.user.emailVerified,
+            stsTokenManager:{
+                accessToken:response.user.stsTokenManager.accessToken,
+                apiKey:response.user.apiKey,
+                expirationTime:0,
+                refreshToken:response.user.stsTokenManager.refreshToken,
+                uid:response.user.uid
+            }
         })
     }
     return (
         <View style={generalStyle.content}>
-            {loader==true?<LoaderComponent/>:<View></View>}
+            {loderContext.loderState.isLoder==true?<LoaderComponent/>:<View></View>}
             <View style={generalStyle.contentImgLogo}>
                 <Image 
                     style={generalStyle.imgLogo}
@@ -99,7 +133,7 @@ export const Login = ({navigation}:Props) => {
             <Text>Recuperar cantraseña</Text>
 
             <View style={generalStyle.contentBottomLogin} >
-                <TouchableOpacity style={[generalStyle.bottomLogin,registroStyle.google]}>
+                <TouchableOpacity onPress={()=>onPressWithGoogle_()} style={[generalStyle.bottomLogin,registroStyle.google]}>
                     <Text style={generalStyle.textBottomColor}>INGRESAR CON GOOGLE</Text>
                 </TouchableOpacity>    
             </View>

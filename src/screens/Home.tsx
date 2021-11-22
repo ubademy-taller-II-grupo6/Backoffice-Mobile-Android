@@ -5,20 +5,6 @@ export const Home = () => {
     return (
         <View>
             <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
-            <Text>Estoy en la Home</Text>
 
         </View>
     )

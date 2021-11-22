@@ -7,10 +7,10 @@ const generalStyle = StyleSheet.create({
         alignItems:"center"
     },
     loader:{
-        position:'absolute',
-        top:'50%',
-        fontSize:100,
-        left:'50%'
+        //position:'absolute',
+        //top:'0%',
+        //fontSize:100,
+        //left:'0%'
     },
     buttomReturn:{
         marginTop:80,

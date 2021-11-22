@@ -2,10 +2,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { AuthProvider } from './src/context/AuthContext';
+import { LoderProvider } from './src/context/LoderContext';
 import { InicioNavigator } from './src/navigators/InicioNavigator';
-
 export default function App() {
+
   return (
+
         <NavigationContainer>
           <AppState>
             <StatusBar backgroundColor="rgba(28, 166, 206, 1)"></StatusBar>
@@ -19,7 +21,9 @@ export default function App() {
 const AppState = ({children}:any)=>{
   return (
     <AuthProvider>
-      {children}
+      <LoderProvider>
+        {children}  
+      </LoderProvider>
     </AuthProvider>
   )
 }
