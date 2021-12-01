@@ -7,12 +7,16 @@ import { Home } from '../screens/Home';
 import { RooteStackParams } from '../interface/navigatorLogin';
 import { AuthContext } from '../context/AuthContext';
 import { Ubication } from '../screens/Ubication';
+import { Permissions } from '../screens/Permissions';
+import { PermissionsContext } from '../context/PermissionsContext';
+import { TypeUser } from '../screens/TypeUser';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
 export const InicioNavigator = () => {
 
     const userContext = useContext(AuthContext)
+    const permissionContext = useContext(PermissionsContext)
     
     /*if(!userContext.authState.isLoggedIn){
         return (
@@ -44,6 +48,7 @@ export const InicioNavigator = () => {
             {
                 !userContext.authState.isLoggedIn&&(
                     <>
+                        
                         <Stack.Screen name="Inicio"component={Inicio} options={{ headerShown: false }} />
                         <Stack.Screen name="Login"  component={Login} options={{title:"Login"}}/>
                         <Stack.Screen name="Registro"  component={Registro}  options={{title:"Registro"}}/>
@@ -53,7 +58,9 @@ export const InicioNavigator = () => {
             {
                 userContext.authState.isLoggedIn&&(
                     <>
+                        {(permissionContext.permission.locationStatus!='granted')&&(<Stack.Screen name="Permissions" component={Permissions} />)}
                         <Stack.Screen name="Ubication"  component={Ubication} />
+                        <Stack.Screen name="TypeUser"  component={TypeUser} />
                         <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
                     </>
                 )

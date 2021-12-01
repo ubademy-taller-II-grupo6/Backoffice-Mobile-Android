@@ -103,6 +103,19 @@ const generalStyle = StyleSheet.create({
         fontWeight:'600',
         color:'white',
     },
+    buttonSiguiente:{
+        backgroundColor:"rgba(28, 166, 206, 1)",
+        padding:10,
+        borderRadius:20,
+        margin:10,
+        width:300,
+    },
+    textButtonSiguiente:{
+        color:'white',
+        width:'100%',
+        textAlign:'center',
+        fontWeight:'700'
+    }
 })
 
 export default generalStyle;

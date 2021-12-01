@@ -34,7 +34,7 @@ var providerGoogle = new firebase.auth.GoogleAuthProvider();
 export const createUserWithEmailAndPassword_ = async(email:string, password:string) => {
   let response = await  authFirebase.createUserWithEmailAndPassword( email, password)
     .then( (userCredential:any) => {
-      console.log(userCredential)
+      // console.log(userCredential)
       const user:any = userCredential;
       uiService().alertaInformativa("","Registro éxitoso")
       return user
@@ -51,7 +51,7 @@ export const createUserWithEmailAndPassword_ = async(email:string, password:stri
 export const signInWithEmailAndPassword_ = (email:string, password:string) => firebase.auth().signInWithEmailAndPassword(email, password)
 .then((userCredential) => {
   // Signed in
-  console.log(userCredential)
+  // console.log(userCredential)
   var user:any = userCredential.user;
   // ...
   return {
@@ -94,7 +94,7 @@ export const registerWithGoogle = async (idToken:string,accessToken:string)=>{
 }
 
 export const signInAsync2 =() =>{
-  console.log("signInAsync2")
+  // console.log("signInAsync2")
   let credential = authFirebase_.GoogleAuthProvider.credential("idToken","accessToken")
     console.log("credential")
     console.log(credential)

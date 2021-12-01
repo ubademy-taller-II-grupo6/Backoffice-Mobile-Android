@@ -3,5 +3,7 @@ export type RooteStackParams = {
     Login:undefined,
     Registro:undefined,
     Home:undefined,
-    Ubication:undefined
+    Ubication:undefined,
+    Permissions:undefined,
+    TypeUser:undefined
 }

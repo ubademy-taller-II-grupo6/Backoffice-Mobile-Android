@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { AuthProvider } from './src/context/AuthContext';
 import { LoderProvider } from './src/context/LoderContext';
+import { PermissionsProvider } from './src/context/PermissionsContext';
 import { InicioNavigator } from './src/navigators/InicioNavigator';
 export default function App() {
 
@@ -20,11 +21,13 @@ export default function App() {
 
 const AppState = ({children}:any)=>{
   return (
-    <AuthProvider>
-      <LoderProvider>
-        {children}  
-      </LoderProvider>
-    </AuthProvider>
+    <PermissionsProvider>
+      <AuthProvider>
+        <LoderProvider>
+          {children}  
+        </LoderProvider>
+      </AuthProvider>  
+    </PermissionsProvider>
   )
 }
 

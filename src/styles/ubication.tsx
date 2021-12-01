@@ -7,9 +7,16 @@ const ubicationStyle = StyleSheet.create({
         justifyContent: 'center',
       },
     map: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        width: '100%',
+        height: '90%',
       },
+    bottomConfirmation:{
+      position:'absolute',
+      zIndex:99999,
+      height:0,
+      right:50,
+      backgroundColor:'red'
+    }
 })
 
 export default ubicationStyle;

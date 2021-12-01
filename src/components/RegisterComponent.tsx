@@ -21,7 +21,7 @@ export const RegisterComponent = () => {
     let onPress2_ = async( )=>{
         loderContext.changeStateLoder(true)
         let response:any =await onPress2()
-        console.log(response)
+        //console.log(response)
         loderContext.changeStateLoder(false)
         authContext.signIn({
             isLoggedIn:true,
@@ -84,7 +84,7 @@ export const RegisterComponent = () => {
         }*/
         let response:any = await loginApi().registerWithEmailFirebase(register.email.value,register.rePassword.value)
         loderContext.changeStateLoder(false)
-        console.log(response)
+        //console.log(response)
         authContext.signIn({
             isLoggedIn:true,
             provider:"EMAIL",

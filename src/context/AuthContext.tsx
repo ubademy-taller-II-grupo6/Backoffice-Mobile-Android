@@ -27,7 +27,7 @@ export const AuthProvider = ({children}:any)=>{
 
     const [authState, dispatch] = useReducer(AuthReducer, authInitialState)
     const signIn = (payload:AuthState) => {
-        console.log(payload)
+        //console.log(payload)
         dispatch({type:'signIn',payload})
     }
     const lognOut = ()=>{

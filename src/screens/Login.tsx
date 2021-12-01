@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { View,Text, TextInput, TouchableOpacity,Image } from 'react-native'
+import { View,Text, TextInput, TouchableOpacity,Image, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import generalStyle from "../styles/generalStyle";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -72,71 +72,74 @@ export const Login = ({navigation}:Props) => {
         })
     }
     return (
-        <View style={generalStyle.content}>
-            {loderContext.loderState.isLoder==true?<LoaderComponent/>:<View></View>}
-            <View style={generalStyle.contentImgLogo}>
-                <Image 
-                    style={generalStyle.imgLogo}
-                    source={require('../../assets/ubademyLogo.png')} />    
-            </View>
-            <View style={generalStyle.contentInputs}>
-                <View style={[(login.email.isFocus&&login.email.isValid)?generalStyle.inputFocus:
-                        ((login.email.isFocus&&!login.email.isValid)
-                        ||(login.email.hasFocus&&!login.email.isValid))
-                        ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
-                    <TextInput
-                        style={generalStyle.inputText}
-                        placeholder='User'
-                        placeholderTextColor = "white"
-                        onChangeText={(text)=>{
-                            changeValue('email',text)
-                        }}
-                        onFocus={()=>{
-                            changeFocus('email',true)
-                        }}
-                        onBlur={()=>{
-                            changeFocus('email',false)
-                        }}
-                    />
-                    <Ionicons style={generalStyle.contentIcon} name="person-circle" size={20} />    
+        <ScrollView>
+            <View style={generalStyle.content}>
+                {loderContext.loderState.isLoder==true?<LoaderComponent/>:<View></View>}
+                <View style={generalStyle.contentImgLogo}>
+                    <Image 
+                        style={generalStyle.imgLogo}
+                        source={require('../../assets/ubademyLogo.png')} />    
                 </View>
-                <View style={[(login.password.isFocus&&login.password.isValid)?generalStyle.inputFocus:
-                        ((login.password.isFocus&&!login.password.isValid)
-                        ||(login.password.hasFocus&&!login.password.isValid))
-                        ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
-                    <TextInput
-                        style={generalStyle.inputText}
-                        placeholder='Password'
-                        placeholderTextColor = "white"
-                        textContentType='password'
-                        secureTextEntry ={login.password.show?false:true}
-                        onChangeText={(text)=>{
-                            changeValue('password',text)
-                        }}
-                        onFocus={()=>{
-                            changeFocus('password',true)
-                        }}
-                        onBlur={()=>{
-                            changeFocus('password',false)
-                        }}
-                    /> 
-                    <Ionicons name={login.password.show?"eye":"eye-off"} style={generalStyle.contentIcon} size={20} 
-                        onPress={()=>showPassword()}/> 
-                </View>    
-            </View>
-            
-            <View style={generalStyle.contentBottomLogin}>
-                <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{submitForm()}}>
-                    <Text style={generalStyle.textBottomColor}>INICIAR SESIÓN</Text>
-                </TouchableOpacity>    
-            </View>
-            <Text>Recuperar cantraseña</Text>
+                <View style={generalStyle.contentInputs}>
+                    <View style={[(login.email.isFocus&&login.email.isValid)?generalStyle.inputFocus:
+                            ((login.email.isFocus&&!login.email.isValid)
+                            ||(login.email.hasFocus&&!login.email.isValid))
+                            ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
+                        <TextInput
+                            style={generalStyle.inputText}
+                            placeholder='User'
+                            placeholderTextColor = "white"
+                            onChangeText={(text)=>{
+                                changeValue('email',text)
+                            }}
+                            onFocus={()=>{
+                                changeFocus('email',true)
+                            }}
+                            onBlur={()=>{
+                                changeFocus('email',false)
+                            }}
+                        />
+                        <Ionicons style={generalStyle.contentIcon} name="person-circle" size={20} />    
+                    </View>
+                    <View style={[(login.password.isFocus&&login.password.isValid)?generalStyle.inputFocus:
+                            ((login.password.isFocus&&!login.password.isValid)
+                            ||(login.password.hasFocus&&!login.password.isValid))
+                            ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
+                        <TextInput
+                            style={generalStyle.inputText}
+                            placeholder='Password'
+                            placeholderTextColor = "white"
+                            textContentType='password'
+                            secureTextEntry ={login.password.show?false:true}
+                            onChangeText={(text)=>{
+                                changeValue('password',text)
+                            }}
+                            onFocus={()=>{
+                                changeFocus('password',true)
+                            }}
+                            onBlur={()=>{
+                                changeFocus('password',false)
+                            }}
+                        /> 
+                        <Ionicons name={login.password.show?"eye":"eye-off"} style={generalStyle.contentIcon} size={20} 
+                            onPress={()=>showPassword()}/> 
+                    </View>    
+                </View>
+                
+                <View style={generalStyle.contentBottomLogin}>
+                    <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{submitForm()}}>
+                        <Text style={generalStyle.textBottomColor}>INICIAR SESIÓN</Text>
+                    </TouchableOpacity>    
+                </View>
+                <Text>Recuperar cantraseña</Text>
 
-            <View style={generalStyle.contentBottomLogin} >
-                <TouchableOpacity onPress={()=>onPressWithGoogle_()} style={[generalStyle.bottomLogin,registroStyle.google]}>
-                    <Text style={generalStyle.textBottomColor}>INGRESAR CON GOOGLE</Text>
-                </TouchableOpacity>    
-            </View>
-        </View>
+                <View style={generalStyle.contentBottomLogin} >
+                    <TouchableOpacity onPress={()=>onPressWithGoogle_()} style={[generalStyle.bottomLogin,registroStyle.google]}>
+                        <Text style={generalStyle.textBottomColor}>INGRESAR CON GOOGLE</Text>
+                    </TouchableOpacity>    
+                </View>
+            </View>    
+        </ScrollView>
+        
     )
 }

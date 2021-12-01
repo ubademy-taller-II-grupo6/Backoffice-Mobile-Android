@@ -4,16 +4,16 @@ import { createUserWithEmailAndPassword_, signInWithEmailAndPassword_ } from '..
 export const loginApi = () => {
 
   let registerWithEmailFirebase = async(email:string,password:string) => {
-    console.log("registerWithEmailFirebase")
+    // console.log("registerWithEmailFirebase")
     let user = await createUserWithEmailAndPassword_(email,password)
-    console.log(user)
+    // console.log(user)
     return user
   }
 
   let loginWithEmailFirebase = async(email:string,password:string) => {
-    console.log("loginWithEmailFirebase")
+    // console.log("loginWithEmailFirebase")
     let user = await signInWithEmailAndPassword_(email,password)
-    console.log(user)
+    // console.log(user)
     return user
   }
 
