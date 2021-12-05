@@ -59,7 +59,7 @@ export const PermissionsProvider = ({children}:any) => {
       }, []);*/
     
     return (
-        <PermissionsContext.Provider value = {{permission,askLocationPermission,checkLocationPermission,listenerPermissionLocations}}>
+        <PermissionsContext.Provider value = {{permission,askLocationPermission,checkLocationPermission,listenerPermissionLocations,setPermissionObject}}>
             {children}
         </PermissionsContext.Provider>
     )

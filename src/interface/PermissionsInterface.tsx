@@ -18,7 +18,8 @@ export interface PermissionContextProps {
     permission:PermissionsState,
     askLocationPermission:() => void,
     checkLocationPermission:() => void,
-    listenerPermissionLocations:()=>void
+    listenerPermissionLocations:()=>void,
+    setPermissionObject:(status:any)=>void
 }
 
 // export const PermissionContextProps{}

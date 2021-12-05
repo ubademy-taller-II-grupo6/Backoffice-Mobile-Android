@@ -12,19 +12,26 @@ export const Permissions = () => {
     const [errorMsg, setErrorMsg] = useState(null);*/
     const permissionContext = useContext(PermissionsContext)
 
-    /*useEffect(() => {
+   /*useEffect(() => {
         (async () => {
-          let { status } = await Location.requestForegroundPermissionsAsync();
-          if (context.permission.locationStatus !== 'granted') {
-            let message:any='Permission to access location was denied'
+          let { status } = await Location.getForegroundPermissionsAsync();
+          console.log("status")
+          console.log(status)
+          if (permissionContext.permission.locationStatus !== 'granted') {
+            permissionContext.setPermissionObject({...permissionContext.permission,locationStatus:status})
             return;
           }
-    
           let location:any = await Location.getCurrentPositionAsync({});
         })();
-      }, []);*/
+      }, []); */
+      useEffect(() => {
+        permissionContext.askLocationPermission()
+        console.log("status")
+        // Actualiza el título del documento usando la API del navegador
+        //document.title = `You clicked ${count} times`;
+      });
 
-      // useState(async()=>{
+      // useState(async()=s>{
       //   console.log("aca")
       //   await permissionContext.listenerPermissionLocations()
       // })

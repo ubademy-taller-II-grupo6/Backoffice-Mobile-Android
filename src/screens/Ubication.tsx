@@ -51,7 +51,7 @@ export const Ubication = ({ navigation }: Props) => {
       </MapView><TouchableOpacity onPress={() => { onPressButton() }}>
       <View style={generalStyle.buttonSiguiente}>
         
-          <Text onPress={()=>navigation.navigate('TypeUser')} style={generalStyle.textButtonSiguiente}>SIGUIENTE</Text>
+          {/* <Text onPress={()=>navigation.navigate('TypeUser')} style={generalStyle.textButtonSiguiente}>SIGUIENTE</Text> */}
         
       </View>
       </TouchableOpacity>  
