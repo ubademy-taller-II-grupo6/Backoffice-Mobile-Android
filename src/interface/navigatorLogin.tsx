@@ -5,5 +5,6 @@ export type RooteStackParams = {
     Home:undefined,
     Ubication:undefined,
     Permissions:undefined,
-    TypeUser:undefined
+    TypeUser:undefined,
+    Tabs:undefined
 }

@@ -5,6 +5,7 @@ import { AuthProvider } from './src/context/AuthContext';
 import { LoderProvider } from './src/context/LoderContext';
 import { PermissionsProvider } from './src/context/PermissionsContext';
 import { InicioNavigator } from './src/navigators/InicioNavigator';
+import { Tabs } from './src/navigators/TabsNavigator';
 export default function App() {
 
   return (
@@ -13,7 +14,9 @@ export default function App() {
           <AppState>
             <StatusBar backgroundColor="rgba(28, 166, 206, 1)"></StatusBar>
             <InicioNavigator/>  
+            
           </AppState>
+           {/* <Tabs></Tabs> */}
         </NavigationContainer>
       
   );
