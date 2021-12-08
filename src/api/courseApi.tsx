@@ -40,4 +40,42 @@ export const courseApi = {
           let json = await response.json();
           return json;
     },
+
+    setFavorite: async (idStudent: number, idCourse: number) : Promise<void> => {
+        let body = {
+            "idcourse": idCourse,
+            "idstudent": idStudent
+        };
+
+        let response = await  fetch(`https://ubademy-course.herokuapp.com/courses/favorites`, {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+        let json = await response.json();
+        return json;
+    },
+
+    deleteFavorite: async (idStudent: number, idCourse: number) : Promise<void> => {
+        let body = {
+            "idcourse": idCourse,
+            "idstudent": idStudent
+        };
+
+        let response = await  fetch(`https://ubademy-course.herokuapp.com/courses/favorites`, {
+          method: 'DELETE',
+          body: JSON.stringify(body),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+        let json = await response.json();
+        return json;
+    }
 }

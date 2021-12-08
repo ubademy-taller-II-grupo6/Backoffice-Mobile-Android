@@ -102,6 +102,11 @@ export const CourseComponent = (props: CourseComponentProps) => {
     const [finalFavorite, setFavorite] = useState<boolean>();
 
     const changeFavorite = () => {
+        if (finalFavorite)
+            courseApi.deleteFavorite(1, props.course.id);
+        else
+            courseApi.setFavorite(1, props.course.id);
+            
         setFavorite(!finalFavorite);
     }
 
