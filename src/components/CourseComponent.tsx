@@ -94,7 +94,8 @@ const misCursosStyle = StyleSheet.create({
 
 interface CourseComponentProps {
     course: Course,
-    isFavorite: boolean
+    isFavorite: boolean,
+    onClick: () => void
 }
 
 export const CourseComponent = (props: CourseComponentProps) => {
@@ -108,7 +109,7 @@ export const CourseComponent = (props: CourseComponentProps) => {
 
     return (
         <View style={courseComponentStyle.container}>
-            <TouchableOpacity style={{flex: 1, flexDirection: 'row'}}>
+            <TouchableOpacity style={{flex: 1, flexDirection: 'row'}} onPress={() => props.onClick()}>
                 <View>
                     <Text style={courseComponentStyle.titleCourse}>
                         {props.course.title}

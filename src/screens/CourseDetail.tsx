@@ -1,0 +1,56 @@
+import { useLinkProps, useRoute } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useContext } from 'react'
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { View, SafeAreaView, Text } from 'react-native'
+import { courseApi } from '../api/courseApi';
+import { CourseComponent } from '../components/CourseComponent';
+import { LoaderComponent } from '../components/LoaderComponent';
+import { LoderContext } from '../context/LoderContext';
+import { Course, CourseByUser } from '../interface/CoursesInterface';
+import { RooteStackParams } from '../interface/navigatorLogin';
+import courseComponentStyle from '../styles/courseComponentStyle';
+import listCoursesStyle from '../styles/listCoursesStyle';
+
+interface Props extends NativeStackScreenProps<RooteStackParams,'CourseDetail'>{
+    idCourse: number
+};
+
+export const CourseDetail = () => {
+    const route = useRoute();
+    const props = route.params as Props;
+    
+  
+    const loderContext = useContext(LoderContext)
+    const [course, setCourse] = useState<Course>();
+    
+    useEffect(() => {
+        loderContext.changeStateLoder(true);
+
+        courseApi.getCourseById(props.idCourse)
+        .then((values) => {
+            setCourse(values);
+            loderContext.changeStateLoder(false);
+        });
+    }, []);
+
+    return (
+        <SafeAreaView>
+            {
+                course &&
+                    <View style={{paddingLeft: 20, paddingTop: 20}}>
+                        <Text style={courseComponentStyle.titleCourse}>
+                            {course?.title}
+                        </Text>
+                        <Text style={courseComponentStyle.colorDescription}>
+                            {course?.description}
+                        </Text>
+                        <Text style={courseComponentStyle.colorDescription}>
+                            {`$ ${course?.price}`}
+                        </Text>
+                    </View>
+            }
+        </SafeAreaView>
+    )
+}

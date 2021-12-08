@@ -39,7 +39,8 @@ export const ListCourse = ({navigation}:Props) => {
                 <FlatList
                     data={lstCourses}
                     renderItem={(item) => <CourseComponent course={item.item} 
-                                                           isFavorite={lstCoursesUser?.some((x => x.idcourse === item.item.id)) || false} />}
+                                                           isFavorite={lstCoursesUser?.some((x => x.idcourse === item.item.id)) || false}
+                                                           onClick={() => navigation.navigate('CourseDetail', {idCourse: item.item.id})}/>}
                     keyExtractor={(item) => item.title}
                 />
             </View>
