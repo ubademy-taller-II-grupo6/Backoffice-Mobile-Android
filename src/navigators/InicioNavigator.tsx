@@ -10,7 +10,7 @@ import { Ubication } from '../screens/Ubication';
 import { Permissions } from '../screens/Permissions';
 import { PermissionsContext } from '../context/PermissionsContext';
 import { TypeUser } from '../screens/TypeUser';
-import { MisCursos } from '../screens/MisCursos';
+import { ListCourse } from '../screens/ListCourse';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
@@ -62,7 +62,7 @@ export const InicioNavigator = () => {
                         {(permissionContext.permission.locationStatus!='granted')&&(<Stack.Screen name="Permissions" component={Permissions} />)}
                         <Stack.Screen name="Ubication"  component={Ubication} />
                         <Stack.Screen name="TypeUser"  component={TypeUser} />
-                        <Stack.Screen name="MisCursos"  component={MisCursos} />
+                        <Stack.Screen name="ListCourse"  component={ListCourse} />
                         <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
                     </>
                 )

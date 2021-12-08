@@ -7,32 +7,32 @@ import { courseApi } from '../api/courseApi';
 import { CourseComponent } from '../components/CourseComponent';
 import { Course, CourseByUser } from '../interface/CoursesInterface';
 import { RooteStackParams } from '../interface/navigatorLogin';
-import misCursosStyle from '../styles/misCursosStyle';
+import listCoursesStyle from '../styles/listCoursesStyle';
 
-interface Props extends NativeStackScreenProps<RooteStackParams,'MisCursos'>{};
+interface Props extends NativeStackScreenProps<RooteStackParams,'ListCourse'>{};
 
-export const MisCursos = ({navigation}:Props) => {
+export const ListCourse = ({navigation}:Props) => {
     const [lstCourses, setLstCourses] = useState<Course[]>();
+    const [lstCoursesUser, setLstCoursesUser] = useState<CourseByUser[]>();
 
     useEffect(() => {
         Promise.all([
             courseApi.getListCourses(),
-            courseApi.getListCoursesByUser(1)            
-        ]).then((values) => {
-            let lstAuxCourse : Course[] = [];
-            values[1].forEach((x: CourseByUser) => {
-                lstAuxCourse.push(values[0].filter(y => y.id === x.idcourse)[0]);
-            });
-            setLstCourses(lstAuxCourse);
+            courseApi.getListCoursesByUser(1)
+        ])
+        .then((values) => {
+            setLstCourses(values[0]);
+            setLstCoursesUser(values[1]);
         });
     }, []);
 
     return (
         <SafeAreaView>
-            <View style={misCursosStyle.contentCards}>
+            <View style={listCoursesStyle.contentCards}>
                 <FlatList
                     data={lstCourses}
-                    renderItem={(item) => <CourseComponent course={item.item} />}
+                    renderItem={(item) => <CourseComponent course={item.item} 
+                                                           isFavorite={lstCoursesUser?.some((x => x.idcourse === item.item.id)) || false} />}
                     keyExtractor={(item) => item.title}
                 />
             </View>
