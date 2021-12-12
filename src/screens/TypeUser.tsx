@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { AuthContext } from '../context/AuthContext'
 import generalStyle from '../styles/generalStyle'
 import typeUserStyle from '../styles/typeUserStyle'
@@ -10,7 +10,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 interface Props extends NativeStackScreenProps<RooteStackParams, "Ubication"> { };
 export const TypeUser = ({ navigation }: Props) => {
-    const context = useContext(AuthContext)
+    const authContext = useContext(AuthContext)
     let initialState = {
         id: 'null'
     }
@@ -18,7 +18,12 @@ export const TypeUser = ({ navigation }: Props) => {
     let onPressButton = (typeUser: string) => {
         setTypeUser({ ...initialState, id: typeUser })
     }
+    let irHome = () => {
+        authContext.changeAuthState(typeUser.id)
+        // navigation.navigate('Tabs')
+    }
     return (
+        <ScrollView>
         <View style={typeUserStyle.contentCards}>
             <TouchableOpacity onPress={() => { onPressButton('estudiante') }}>
                 <View style={typeUserStyle.cardOption}>
@@ -66,12 +71,13 @@ export const TypeUser = ({ navigation }: Props) => {
                 typeUser.id!='null'
                 &&
                 <View style={generalStyle.contentBottomLogin} >
-                    <TouchableOpacity onPress={()=>navigation.navigate('Home')} style={[generalStyle.bottomLogin, typeUserStyle.submitButton]}>
+                    <TouchableOpacity onPress={()=>irHome()} style={[generalStyle.bottomLogin, typeUserStyle.submitButton]}>
                         <Text style={generalStyle.textBottomColor}>INGRESAR A LA HOME</Text>
                     </TouchableOpacity>
                 </View>    
             }
             
         </View>
+        </ScrollView>
     )
 }

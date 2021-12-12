@@ -5,13 +5,15 @@ export interface AuthState{
     username?:string;
     email:string;
     potho:string;
-    stsTokenManager:StsTokenManager
+    stsTokenManager:StsTokenManager,
+    typeUser:string
 }
 
 export interface AuthContextProps{
     authState: AuthState;
     signIn: (payload: AuthState)=>void;
     lognOut:()=>void;
+    changeAuthState:(payload:any)=>void;
 }
 export interface StsTokenManager{
     accessToken:string,

@@ -17,7 +17,8 @@ export const authInitialState:AuthState={
         expirationTime:0,
         refreshToken:"",
         uid:""
-    }
+    },
+    typeUser:"none"
 }
 
 
@@ -33,11 +34,15 @@ export const AuthProvider = ({children}:any)=>{
     const lognOut = ()=>{
         dispatch({type:'lognOut'})
     }
+    const changeAuthState = (payload:AuthState) => {
+        dispatch({type:'setUser',payload})
+    }
     return (
         <AuthContext.Provider value={{
             authState,
             signIn,
-            lognOut
+            lognOut,
+            changeAuthState
         }}>
             {children}
         </AuthContext.Provider>

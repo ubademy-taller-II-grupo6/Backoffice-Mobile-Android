@@ -8,6 +8,11 @@ const typeUserStyle = StyleSheet.create({
         flexDirection:'column',
         justifyContent:'center'
     },
+    menuIcon:{
+        color:'#363636',
+        marginRight:15,
+        fontSize:25
+    },  
     cardOption:{
         height:200,
         width:300,
