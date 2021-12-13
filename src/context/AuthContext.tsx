@@ -18,7 +18,14 @@ export const authInitialState:AuthState={
         refreshToken:"",
         uid:""
     },
-    typeUser:"none"
+    typeUser:"none",
+    userProfile:{
+        blocked: false,
+        email: "",
+        id: "",
+        lastname: "",
+        name: "",
+    }
 }
 
 

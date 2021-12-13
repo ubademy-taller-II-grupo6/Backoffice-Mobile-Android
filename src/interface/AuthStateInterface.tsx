@@ -1,3 +1,5 @@
+import { userProfileInterface } from "./userInterface";
+
 export interface AuthState{
     isLoggedIn:boolean;
     provider:string;
@@ -6,7 +8,8 @@ export interface AuthState{
     email:string;
     potho:string;
     stsTokenManager:StsTokenManager,
-    typeUser:string
+    typeUser:string,
+    userProfile:userProfileInterface
 }
 
 export interface AuthContextProps{

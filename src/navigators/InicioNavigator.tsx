@@ -48,7 +48,7 @@ export const InicioNavigator = () => {
             }}
         >
             {
-                userContext.authState.isLoggedIn&&(
+                !userContext.authState.isLoggedIn&&(
                     <>
                         <Stack.Screen name="Inicio"component={Inicio} options={{ headerShown: false }} />
                         <Stack.Screen name="Login"  component={Login} options={{title:"Login"}}/>
@@ -57,7 +57,7 @@ export const InicioNavigator = () => {
                 )
             }
             {
-                !userContext.authState.isLoggedIn&&(//cambiar !
+                userContext.authState.isLoggedIn&&(//cambiar !
                     <>
                         {(permissionContext.permission.locationStatus!='granted')&&(<Stack.Screen name="Permissions" component={Permissions} />)}
                         {(userContext.authState.typeUser=='none')&&(<Stack.Screen name="Ubication"  component={Ubication} />)}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { createUserWithEmailAndPassword_, signInWithEmailAndPassword_ } from '../../firebase';
+import { userProfileInterface } from '../interface/userInterface';
 
 export const loginApi = () => {
 
@@ -12,9 +13,18 @@ export const loginApi = () => {
 
   let loginWithEmailFirebase = async(email:string,password:string) => {
     // console.log("loginWithEmailFirebase")
-    let user = await signInWithEmailAndPassword_(email,password)
+    let user_ = await signInWithEmailAndPassword_(email,password)
     // console.log(user)
-    return user
+    let user = await  fetch('https://obscure-wildwood-00771.herokuapp.com/users?user_id=50', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+    let json:[userProfileInterface] = await user.json();
+    return {user_,profile:json[0]}
   }
 
   return { 

@@ -28,26 +28,29 @@ export const Login = ({navigation}:Props) => {
             loderContext.changeStateLoder(false)
             return ;
         }*/
-        let data = await loginApi().loginWithEmailFirebase(login.email.value,login.password.value)
-        if(data.isError){
+        let {user_,profile} = await loginApi().loginWithEmailFirebase(login.email.value,login.password.value)
+        console.log(profile)
+        if(user_.isError){
             loderContext.changeStateLoder(false)
-            uiService().alertaInformativa("",data.message)
+            uiService().alertaInformativa("",user_.message)
             return
         }
         authContext.signIn({
             isLoggedIn:true,
             provider:"EMAIL",
-            emailVerified:data.user.emailVerified,
+            emailVerified:user_.user.emailVerified,
             username:"",
-            email:data.user.email,
+            email:user_.user.email,
             potho:"",
             stsTokenManager:{
                 accessToken:"",
                 apiKey:"",
                 expirationTime:0,
-                refreshToken:data.user.refreshToken,
-                uid:data.user.uid
-            }
+                refreshToken:user_.user.refreshToken,
+                uid:user_.user.uid
+            },
+            typeUser:"",
+            userProfile:profile
         })
         loderContext.changeStateLoder(false)
     }
@@ -68,6 +71,14 @@ export const Login = ({navigation}:Props) => {
                 expirationTime:0,
                 refreshToken:response.user.stsTokenManager.refreshToken,
                 uid:response.user.uid
+            },
+            typeUser:"",
+            userProfile:{
+                blocked: false,
+                email: "",
+                id: "",
+                lastname: "",
+                name: "",
             }
         })
     }
