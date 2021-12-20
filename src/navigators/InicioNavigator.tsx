@@ -12,6 +12,7 @@ import { PermissionsContext } from '../context/PermissionsContext';
 import { TypeUser } from '../screens/TypeUser';
 import { Tabs } from './TabsNavigator';
 import { Ionicons } from '@expo/vector-icons';
+import { CourseDetail } from '../screens/CourseDetail';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
@@ -63,6 +64,7 @@ export const InicioNavigator = () => {
                         {(userContext.authState.typeUser=='none')&&(<Stack.Screen name="Ubication"  component={Ubication} />)}
                         {(userContext.authState.typeUser=='none')&&(<Stack.Screen name="TypeUser"  component={TypeUser} />)}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="Tabs" options={{ headerShown: false }} component={Tabs} />}
+                        {(userContext.authState.typeUser!='none')&&<Stack.Screen name="CourseDetail" options={{ headerShown: false }} component={CourseDetail} />}
                         {/* <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} /> */}
                     </>
                 )

@@ -8,9 +8,12 @@ import { CourseComponent } from '../../components/CourseComponent';
 import { LoaderComponent } from '../../components/LoaderComponent';
 import { LoderContext } from '../../context/LoderContext';
 import { Course, CourseByUser } from '../../interface/CourseInterface';
+import { RooteStackParams } from '../../interface/navigatorLogin';
 import courseStyle from '../../styles/courseStyle';
 
-export const Cursos = () => {
+interface Props extends NativeStackScreenProps<RooteStackParams,'Courses'>{};
+
+export const Cursos = ({navigation} : Props) => {
     const loderContext = useContext(LoderContext)
     const [lstCourses, setLstCourses] = useState<Course[]>();
     const [lstCoursesUser, setLstCoursesUser] = useState<Course[]>();
@@ -54,7 +57,7 @@ export const Cursos = () => {
                     data={lstCourses}
                     renderItem={(item) => <CourseComponent course={item.item} 
                                                            isFavorite={lstCoursesUser?.some((x => x.id === item.item.id)) || false}
-                                                           onClick={() => {console.log("Detalle")}}
+                                                           onClick={() => navigation.navigate('CourseDetail', {idCourse: item.item.id})}
                                                            onReload={getCourses}/>}
                     keyExtractor={(item) => `${item.title}-${item.id}`}
                 />

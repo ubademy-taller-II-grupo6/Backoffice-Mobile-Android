@@ -6,5 +6,7 @@ export type RooteStackParams = {
     Ubication:undefined,
     Permissions:undefined,
     TypeUser:undefined,
-    Tabs:undefined
+    Tabs:undefined,
+    CourseDetail:any,
+    Courses: any
 }
