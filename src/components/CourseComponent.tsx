@@ -95,7 +95,8 @@ const misCursosStyle = StyleSheet.create({
 interface CourseComponentProps {
     course: Course,
     isFavorite: boolean,
-    onClick: () => void
+    onClick: () => void,
+    onReload?: () => void
 }
 
 export const CourseComponent = (props: CourseComponentProps) => {
@@ -103,11 +104,10 @@ export const CourseComponent = (props: CourseComponentProps) => {
 
     const changeFavorite = () => {
         if (finalFavorite)
-            courseApi.deleteFavorite(1, props.course.id);
+            courseApi.deleteFavorite(3, props.course.id).then(() => {if (props.onReload) props.onReload()});
         else
-            courseApi.setFavorite(1, props.course.id);
+            courseApi.setFavorite(3, props.course.id).then(() => {if (props.onReload) props.onReload()});
             
-        setFavorite(!finalFavorite);
     }
 
     useEffect(() => setFavorite(props.isFavorite));
@@ -123,7 +123,10 @@ export const CourseComponent = (props: CourseComponentProps) => {
                         {props.course.description}
                     </Text>
                     <Text style={courseComponentStyle.colorDescription}>
-                        {`$ ${props.course.price}`}
+                        {`${props.course.subscription}`}
+                    </Text>
+                    <Text style={courseComponentStyle.colorDescription}>
+                        {`${props.course.hashtags}`}
                     </Text>
                 </View>
             </TouchableOpacity>

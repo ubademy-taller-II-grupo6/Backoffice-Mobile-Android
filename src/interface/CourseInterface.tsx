@@ -2,11 +2,15 @@ export interface Course {
     id: number,
     title: string,
     description: string,
-    idtype:	string,
+    hashtags: string,
+    category: string,
+    subscription: string,
+    creator: number,
+    unenrollment_conditions: string,
+    type: string,
+    exams: number,
     location: string,
-    price:	number,
-    link: string,
-    idcreator: number
+    enrollment_conditions: string
 }
 
 export interface CourseByUser {
