@@ -50,6 +50,15 @@ export const CourseDetail = () => {
                         <Text style={courseComponentStyle.colorDescription}>
                             {`${course?.subscription}`}
                         </Text>
+                        <Text style={courseComponentStyle.colorDescription}>
+                            {`${course?.category}`}
+                        </Text>
+                        <Text style={courseComponentStyle.colorDescription}>
+                            {`${course?.hashtags}`}
+                        </Text>
+                        <Text style={courseComponentStyle.colorDescription}>
+                            {`Ubicación: ${course?.location}`}
+                        </Text>
                     </View>
             }
         </SafeAreaView>

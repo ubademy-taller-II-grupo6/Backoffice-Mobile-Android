@@ -8,13 +8,14 @@ import { Favoritos } from '../screens/SreensTabsNavigator/Favoritos';
 import { Perfil } from '../screens/SreensTabsNavigator/Perfil';
 import { Ionicons } from '@expo/vector-icons';
 import typeUserStyle from '../styles/typeUserStyle';
+import { CourseDetail } from '../screens/CourseDetail';
 
 const Tab = createBottomTabNavigator();
 
 export const Tabs = () => {
   return (
     <Tab.Navigator>
-      
+
       <Tab.Screen name="Home" component={Home} options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (

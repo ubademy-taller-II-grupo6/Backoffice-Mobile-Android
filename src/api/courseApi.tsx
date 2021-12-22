@@ -3,7 +3,7 @@ import { Response } from "../interface/ResponseInterface";
 
 export const courseApi = {
     getCourseById: async (idCourse: number) : Promise<Response<Course>> => {
-          let response = await  fetch('http://secret-ocean-67843.herokuapp.com/courses/' + idCourse, {
+          let response = await  fetch('http://secret-ocean-67843.herokuapp.com/courses?id=' + idCourse, {
             method: 'GET',
             headers: {
               'Accept': 'application/json',
@@ -12,7 +12,14 @@ export const courseApi = {
             }
           });
           let json = await response.json();
-          return json;
+          let responseFinal : Response<Course> = {} as Response<Course>;
+  
+          if (json.message != null)
+              responseFinal.message = json;
+          else
+              responseFinal.data = json[0];
+  
+          return responseFinal;
     },
 
     getListCourses: async () : Promise<Response<Course[]>> => {

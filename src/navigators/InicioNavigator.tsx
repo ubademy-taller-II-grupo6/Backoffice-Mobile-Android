@@ -21,33 +21,8 @@ export const InicioNavigator = () => {
     const userContext = useContext(AuthContext)
     const permissionContext = useContext(PermissionsContext)
     
-    /*if(!userContext.authState.isLoggedIn){
-        return (
-            <Stack.Navigator>
-                <Stack.Screen name="Inicio" options={{ headerShown: false }} component={Inicio} />
-                <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-                <Stack.Screen name="Registro" options={{ headerShown: false }} component={Registro} />
-            </Stack.Navigator>
-        )    
-    }else{
-        return (
-            <Stack.Navigator>
-                <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
-            </Stack.Navigator>
-        )
-    }*/
     return (
-        <Stack.Navigator 
-            screenOptions={{
-                headerStyle: {
-                    backgroundColor: 'rgba(28, 166, 206, 1)',
-                  },
-                  headerTintColor: '#fff',
-                  headerTitleStyle: {
-                    fontWeight: 'bold',
-                  },
-            }}
-        >
+        <Stack.Navigator>
             {
                 !userContext.authState.isLoggedIn&&(
                     <>
@@ -64,7 +39,7 @@ export const InicioNavigator = () => {
                         {(userContext.authState.typeUser=='none')&&(<Stack.Screen name="Ubication"  component={Ubication} />)}
                         {(userContext.authState.typeUser=='none')&&(<Stack.Screen name="TypeUser"  component={TypeUser} />)}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="Tabs" options={{ headerShown: false }} component={Tabs} />}
-                        {(userContext.authState.typeUser!='none')&&<Stack.Screen name="CourseDetail" options={{ headerShown: false }} component={CourseDetail} />}
+                        {(userContext.authState.typeUser!='none')&&<Stack.Screen name="CourseDetail" component={CourseDetail} />}
                         {/* <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} /> */}
                     </>
                 )
