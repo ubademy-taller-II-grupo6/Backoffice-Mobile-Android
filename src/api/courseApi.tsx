@@ -99,5 +99,25 @@ export const courseApi = {
         });
         let json = await response.json();
         return json;
-    }
+    },
+
+    getInscriptionsByStudent: async (idStudent: number) : Promise<Response<number[]>> => {
+        let response = await  fetch('https://morning-atoll-94461.herokuapp.com/inscriptions/student/' + idStudent, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+        let json = await response.json();
+        let responseFinal : Response<number[]> = {} as Response<number[]>;
+
+        if (json.message != null)
+            responseFinal.message = json;
+        else
+            responseFinal.data = Object.keys(json).map(x => parseInt(x));
+
+        return responseFinal;
+  },
 }
