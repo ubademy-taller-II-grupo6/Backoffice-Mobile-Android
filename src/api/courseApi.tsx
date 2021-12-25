@@ -1,4 +1,4 @@
-import { Course, CourseByUser } from "../interface/CourseInterface";
+import { Course, CourseByUser, CourseConditions } from "../interface/CourseInterface";
 import { Response } from "../interface/ResponseInterface";
 
 export const courseApi = {
@@ -131,4 +131,94 @@ export const courseApi = {
 
         return responseFinal;
   },
+
+    enrollStudent: async (idStudent: number, idCourse: number) : Promise<Response<void>> => {
+        let body = {
+            "idcourse": idCourse,
+            "idstudent": idStudent
+        };
+
+        let response = await  fetch('https://morning-atoll-94461.herokuapp.com/inscriptions', {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        let responseFinal : Response<void> = {} as Response<void>;
+
+        if (json.message != null)
+            responseFinal.message = json;
+
+        return responseFinal;
+    },
+
+    unenrollStudent: async (idStudent: number, idCourse: number) : Promise<Response<void>> => {
+        let body = {
+            "idcourse": idCourse,
+            "idstudent": idStudent
+        };
+
+        let response = await  fetch(`https://morning-atoll-94461.herokuapp.com/inscriptions`, {
+          method: 'DELETE',
+          body: JSON.stringify(body),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+        let json = await response.json();
+        let responseFinal : Response<void> = {} as Response<void>;
+
+        if (json.message != null)
+            responseFinal.message = json;
+
+        return responseFinal;
+    },
+
+    getEnrollConditionsByCourse: async (idCourse: number) : Promise<Response<CourseConditions>> => {
+        
+        let response = await  fetch(`https://morning-atoll-94461.herokuapp.com/inscriptions/conditions/enrollment/${idCourse}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        let responseFinal : Response<CourseConditions> = {} as Response<CourseConditions>;
+
+        if (json.message != null)
+            responseFinal.message = json;
+        else
+            responseFinal.data = json;
+
+        return responseFinal;
+    },
+
+    getUnenrollConditionsByCourse: async (idCourse: number) : Promise<Response<CourseConditions>> => {
+        
+        let response = await  fetch(`https://morning-atoll-94461.herokuapp.com/inscriptions/conditions/unenrollment/${idCourse}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        let responseFinal : Response<CourseConditions> = {} as Response<CourseConditions>;
+
+        if (json.message != null)
+            responseFinal.message = json;
+        else
+            responseFinal.data = json;
+
+        return responseFinal;
+    },
 }

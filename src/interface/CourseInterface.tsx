@@ -17,3 +17,7 @@ export interface CourseByUser {
     idstudent: number,
     idcourse: number
 }
+
+export interface CourseConditions {
+    Condiciones: string
+}
