@@ -22,8 +22,19 @@ export const courseApi = {
           return responseFinal;
     },
 
-    getListCourses: async () : Promise<Response<Course[]>> => {
-        let response = await  fetch('http://secret-ocean-67843.herokuapp.com/courses/', {
+    getListCourses: async (idCategory: string | undefined = undefined, idSubscription: string | undefined = undefined) : Promise<Response<Course[]>> => {
+        
+        let urlString : string = 'http://secret-ocean-67843.herokuapp.com/courses';
+
+        if (idCategory && idSubscription) {
+            urlString = `${urlString}?category=${idCategory}&subscription=${idSubscription}`;
+        } else if (idCategory && !idSubscription) {
+            urlString = `${urlString}?category=${idCategory}`;
+        } else if (!idCategory && idSubscription) {
+            urlString = `${urlString}?subscription=${idSubscription}`;
+        }
+        
+        let response = await  fetch(urlString, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

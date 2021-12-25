@@ -123,7 +123,7 @@ export const CourseComponent = (props: CourseComponentProps) => {
                         {props.course.description}
                     </Text>
                     <Text style={courseComponentStyle.colorDescription}>
-                        {`${props.course.subscription}`}
+                        {`${props.course.category} - ${props.course.subscription}`}
                     </Text>
                     <Text style={courseComponentStyle.colorDescription}>
                         {`${props.course.hashtags}`}
