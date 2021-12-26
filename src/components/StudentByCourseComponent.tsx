@@ -50,11 +50,16 @@ export const StudentByCourseComponent = (props: StudentByCourseComponentProps) =
                 {
                     !isLoading && show &&
                         <View style={{paddingLeft: 10, paddingTop: 10}}>
-                            <FlatList
-                                data={lstStudents}
-                                renderItem={(item) => <Text>{item.item.name}</Text>}
-                                keyExtractor={(item) => `${item.id}`}
-                            />
+                        {
+                            lstStudents.length === 0 ?
+                                <Text>No se encontraron estudiantes inscriptos en el curso.</Text>
+                            :
+                                <FlatList
+                                    data={lstStudents}
+                                    renderItem={(item) => <Text>{item.item.name}</Text>}
+                                    keyExtractor={(item) => `${item.id}`}
+                                />
+                        }
                         </View>
                 }
             </View>

@@ -64,11 +64,16 @@ export const CollaboratorByCourseComponent = (props: CollaboratorByCourseCompone
                 {
                     !isLoading && show &&
                         <View style={{paddingLeft: 10, paddingTop: 10}}>
-                            <FlatList
-                                data={lstCollaborators}
-                                renderItem={(item) => <Text>{item.item.name}</Text>}
-                                keyExtractor={(item) => `${item.id}`}
-                            />
+                            {
+                                lstCollaborators.length === 0 ?
+                                    <Text>No se encontraron colaboradores del curso.</Text>
+                                :
+                                    <FlatList
+                                        data={lstCollaborators}
+                                        renderItem={(item) => <Text>{item.item.name}</Text>}
+                                        keyExtractor={(item) => `${item.id}`}
+                                    />
+                            }
                         </View>
                 }
 
