@@ -93,6 +93,11 @@ export const CourseDetail = () => {
             ]
           );
     }
+
+    const onUpdateCourse = () => {
+        props.navigation.pop();
+        loadCourse();
+    };
     
     useEffect(() => {
         loadCourse();
@@ -116,6 +121,9 @@ export const CourseDetail = () => {
                         </Text>
                         <Text style={courseComponentStyle.colorDescription}>
                             {`${course?.category}`}
+                        </Text>
+                        <Text style={courseComponentStyle.colorDescription}>
+                            {`${course?.type}`}
                         </Text>
                         <Text style={courseComponentStyle.colorDescription}>
                             {`${course?.hashtags}`}
@@ -142,6 +150,15 @@ export const CourseDetail = () => {
                     </View>
                 : 
                     null
+            }
+
+            {
+                isTeacher &&         
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={() => props.navigation.navigate('CourseUpdate', {course: course, onSubmit: onUpdateCourse})}>
+                            <Text style={generalStyle.textBottomColor}>Editar curso</Text>
+                        </TouchableOpacity>
+                    </View>
             }
 
             {

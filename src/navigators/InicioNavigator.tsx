@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { CourseDetail } from '../screens/CourseDetail';
 import { TypesUser } from '../interface/userInterface';
 import { CourseNew } from '../screens/CourseNew';
+import { CourseUpdate } from '../screens/CourseUpdate';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
@@ -43,6 +44,7 @@ export const InicioNavigator = () => {
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="Tabs" options={{ headerShown: false }} component={Tabs} />}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="CourseDetail" component={CourseDetail} />}
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="CourseNew" component={CourseNew} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="CourseUpdate" component={CourseUpdate} />}
                         {/* <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} /> */}
                     </>
                 )

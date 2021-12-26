@@ -22,17 +22,18 @@ import courseComponentStyle from '../styles/courseComponentStyle';
 import courseFilterStyle from '../styles/courseFilterStyle';
 import generalStyle from '../styles/generalStyle';
 
-interface CourseNewProps extends NativeStackScreenProps<RooteStackParams,'CourseNew'>{
+interface CourseUpdateProps extends NativeStackScreenProps<RooteStackParams,'CourseUpdate'>{
+    course: Course,
     onSubmit: () => void
 };
 
-export const CourseNew = () => {
+export const CourseUpdate = () => {
     const route = useRoute();
-    const props = route.params as CourseNewProps;
+    const props = route.params as CourseUpdateProps;
 
     const loaderContext = useContext(LoderContext);
     const [error, setError] = useState<string>();
-    const { courseForm, changeValue, changeFocus, errorSubmit } = courseFormService();  
+    const { courseForm, changeValue, changeFocus, errorSubmit } = courseFormService(props.course);  
     const [lstCategories, setLstCategories] = useState<string[]>();
     const [lstSubscriptions, setLstSubscriptions] = useState<Subscription[]>();
 
@@ -42,22 +43,21 @@ export const CourseNew = () => {
         loaderContext.changeStateLoder(true);
 
         let newCourse : Course = {
+            id: props.course.id,
             title: courseForm.title.value,
             description: courseForm.description.value,
             hashtags: courseForm.hashtags.value,
             type: courseForm.type.value,
-            category: courseForm.category.value,
             exams: 0,
             subscription: courseForm.subscription.value,
             location: courseForm.location.value,
-            creator: 3,
             enrollment_conditions: courseForm.enrollment_conditions.value,
             unenrollment_conditions: courseForm.unenrollment_conditions.value
         } as Course;
 
-        courseApi.createCourse(newCourse)
+        courseApi.updateCourse(newCourse)
         .then((value) => {
-            if (value.message === "El curso se creó correctamente")
+            if (value.message === "Los datos del curso se actualizaron correctamente")
                 props.onSubmit()
             else {
                 errorSubmit();
@@ -92,6 +92,7 @@ export const CourseNew = () => {
                             ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
                         <TextInput
                             style={generalStyle.inputText}
+                            defaultValue={courseForm.title.value}
                             placeholder='Título'
                             placeholderTextColor = "white"
                             onChangeText={(text)=>{
@@ -112,6 +113,7 @@ export const CourseNew = () => {
                             ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
                         <TextInput
                             style={generalStyle.inputText}
+                            defaultValue={courseForm.description.value}
                             placeholder='Descripción'
                             placeholderTextColor = "white"
                             onChangeText={(text)=>{
@@ -132,6 +134,7 @@ export const CourseNew = () => {
                             ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
                         <TextInput
                             style={generalStyle.inputText}
+                            defaultValue={courseForm.hashtags.value}
                             placeholder='Hashtags'
                             placeholderTextColor = "white"
                             onChangeText={(text)=>{
@@ -152,6 +155,7 @@ export const CourseNew = () => {
                             ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
                         <TextInput
                             style={generalStyle.inputText}
+                            defaultValue={courseForm.location.value}
                             placeholder='Ubicación'
                             placeholderTextColor = "white"
                             onChangeText={(text)=>{
@@ -172,6 +176,7 @@ export const CourseNew = () => {
                             ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
                         <TextInput
                             style={generalStyle.inputText}
+                            defaultValue={courseForm.enrollment_conditions.value}
                             placeholder='Condiciones de Inscripción'
                             placeholderTextColor = "white"
                             multiline
@@ -194,6 +199,7 @@ export const CourseNew = () => {
                             ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
                         <TextInput
                             style={generalStyle.inputText}
+                            defaultValue={courseForm.unenrollment_conditions.value}
                             placeholder='Condiciones de Desinscripción'
                             placeholderTextColor = "white"
                             multiline
@@ -210,22 +216,6 @@ export const CourseNew = () => {
                             }}
                         /> 
                     </View>
-                </View>
-                <View style={courseFilterStyle.marginPickers}> 
-                    <Text style={courseFilterStyle.titlePickers}>Categoría</Text>
-                    <Picker
-                        selectedValue={courseForm.category.value}
-                        onValueChange={(itemValue, itemIndex) => changeValue('category', itemValue)
-                        }>
-                        <Picker.Item label="-" value="" />
-                        {
-                            lstCategories?.map((cat: string, idx: number) => 
-                                <Picker.Item key={`${cat}_${idx}`} 
-                                            label={cat} 
-                                            value={cat} />
-                            )
-                        }
-                    </Picker>
                 </View>
                 <View style={courseFilterStyle.marginPickers}>
                     <Text style={courseFilterStyle.titlePickers}>Subscripción</Text>

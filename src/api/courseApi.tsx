@@ -21,6 +21,24 @@ export const courseApi = {
         return responseFinal;
     },
 
+    updateCourse: async (course: Course) : Promise<Response<string>> => {        
+        let response = await  fetch(`http://secret-ocean-67843.herokuapp.com/courses/${course.id}`, {
+          method: 'PUT',
+          body: JSON.stringify(course),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+        let json = await response.json();
+        let responseFinal : Response<string> = {} as Response<string>;
+
+        responseFinal.message = json.message;
+        
+        return responseFinal;
+    },
+
     getCourseById: async (idCourse: number) : Promise<Response<Course>> => {
           let response = await  fetch('http://secret-ocean-67843.herokuapp.com/courses?id=' + idCourse, {
             method: 'GET',

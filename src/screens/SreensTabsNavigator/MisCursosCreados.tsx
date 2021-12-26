@@ -67,7 +67,7 @@ export const MisCursosCreados = ({navigation} : Props) => {
                     data={lstCourses}
                     renderItem={(item) => <CourseComponent course={item.item}
                                                            isFavorite={false}
-                                                           onClick={() => navigation.navigate('CourseDetail', {idCourse: item.item.id})}
+                                                           onClick={() => navigation.navigate('CourseDetail', {navigation: navigation, idCourse: item.item.id})}
                                                            onReload={getCourses}/>}
                     keyExtractor={(item) => `${item.title}-${item.id}`}
                 />

@@ -59,58 +59,59 @@ export interface courseFormInterface {
 }
 
 export const courseFormService = (initialValue?: Course) => {
+
     let initialState:courseFormInterface = {
         title:{
             value: initialValue?.title || "",
-            isValid:false,
+            isValid: !!initialValue?.title,
             hasFocus:false,
             isFocus:false,
         },
         description:{
             value: initialValue?.description || "",
-            isValid:false,
+            isValid: !!initialValue?.description,
             hasFocus:false,
             isFocus:false,
         },
         hashtags:{
             value: initialValue?.hashtags || "",
-            isValid:false,
+            isValid: !!initialValue?.hashtags,
             hasFocus:false,
             isFocus:false,
         },
         unenrollment_conditions:{
             value: initialValue?.unenrollment_conditions || "",
-            isValid:false,
+            isValid: !!initialValue?.unenrollment_conditions,
             hasFocus:false,
             isFocus:false,
         },
         enrollment_conditions:{
             value: initialValue?.enrollment_conditions || "",
-            isValid:false,
+            isValid: !!initialValue?.enrollment_conditions,
             hasFocus:false,
             isFocus:false,
         },
         location:{
             value: initialValue?.location || "",
-            isValid:false,
+            isValid: !!initialValue?.location,
             hasFocus:false,
             isFocus:false,
         },
         category:{
             value: initialValue?.category || "",
-            isValid:false,
+            isValid: !!initialValue?.category,
             hasFocus:false,
             isFocus:false,
         },
         subscription:{
             value: initialValue?.subscription || "",
-            isValid:false,
+            isValid: !!initialValue?.subscription,
             hasFocus:false,
             isFocus:false,
         },
         type:{
             value: initialValue?.type || "",
-            isValid:false,
+            isValid: !!initialValue?.type,
             hasFocus:false,
             isFocus:false,
         },
