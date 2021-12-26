@@ -221,4 +221,27 @@ export const courseApi = {
 
         return responseFinal;
     },
+
+    getCacheCategories: async () : Promise<Response<string[]>> => {
+        
+        let response = await  fetch('http://secret-ocean-67843.herokuapp.comcourses/categories', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        console.log(response);
+        console.log(json);
+        let responseFinal : Response<string[]> = {} as Response<string[]>;
+
+        if (json.message != null)
+            responseFinal.message = json;
+        else
+            responseFinal.data = json;
+
+        return responseFinal;
+    },
 }

@@ -6,15 +6,19 @@ import { FlatList, RefreshControl, SafeAreaView, ScrollView, Text, View } from '
 import { courseApi } from '../../api/courseApi';
 import { CourseComponent } from '../../components/CourseComponent';
 import { LoaderComponent } from '../../components/LoaderComponent';
+import { AuthContext } from '../../context/AuthContext';
 import { LoderContext } from '../../context/LoderContext';
 import { Course } from '../../interface/CourseInterface';
 import { RooteStackParams } from '../../interface/navigatorLogin';
+import { TypesUser } from '../../interface/userInterface';
 import courseStyle from '../../styles/courseStyle';
 
 interface Props extends NativeStackScreenProps<RooteStackParams,'MyCourses'>{};
 
 export const MisCursos = ({navigation} : Props) => {
-    const loderContext = useContext(LoderContext)
+    const loderContext = useContext(LoderContext);
+    const authContext = useContext(AuthContext);
+    const allowFavorite : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
     const [lstCourses, setLstCourses] = useState<Course[]>();
     const [lstCoursesUser, setLstCoursesUser] = useState<Course[]>();
 
@@ -58,6 +62,7 @@ export const MisCursos = ({navigation} : Props) => {
                 <FlatList
                     data={lstCourses}
                     renderItem={(item) => <CourseComponent course={item.item}
+                                                           allowFavorite={allowFavorite}
                                                            isFavorite={lstCoursesUser?.some((x => x.id === item.item.id)) || false}
                                                            onClick={() => navigation.navigate('CourseDetail', {idCourse: item.item.id})}
                                                            onReload={getCourses}/>}

@@ -13,13 +13,17 @@ import courseStyle from '../../styles/courseStyle';
 import {Picker} from '@react-native-picker/picker';
 import generalStyle from '../../styles/generalStyle';
 import courseFilterStyle from '../../styles/courseFilterStyle';
+import { AuthContext } from '../../context/AuthContext';
+import { TypesUser } from '../../interface/userInterface';
 
 interface Props extends NativeStackScreenProps<RooteStackParams,'Courses'>{};
 
 const allSelect : string = "all";
 
 export const Cursos = ({navigation} : Props) => {
-    const loderContext = useContext(LoderContext)
+    const loderContext = useContext(LoderContext);
+    const authContext = useContext(AuthContext);
+    const allowFavorite : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
     const [lstCourses, setLstCourses] = useState<Course[]>();
     const [lstCoursesUser, setLstCoursesUser] = useState<Course[]>();
 
@@ -100,6 +104,7 @@ export const Cursos = ({navigation} : Props) => {
                 <FlatList
                     data={lstCourses}
                     renderItem={(item) => <CourseComponent course={item.item} 
+                                                           allowFavorite={allowFavorite}
                                                            isFavorite={lstCoursesUser?.some((x => x.id === item.item.id)) || false}
                                                            onClick={() => navigation.navigate('CourseDetail', {idCourse: item.item.id})}
                                                            onReload={getCourses}/>}
