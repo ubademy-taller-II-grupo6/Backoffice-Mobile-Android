@@ -2,6 +2,25 @@ import { Course, CourseByUser, CourseCollaboratorResume, CourseConditions, Cours
 import { Response } from "../interface/ResponseInterface";
 
 export const courseApi = {
+
+    createCourse: async (course: Course) : Promise<Response<string>> => {        
+        let response = await  fetch(`http://secret-ocean-67843.herokuapp.com/courses`, {
+          method: 'POST',
+          body: JSON.stringify(course),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+        let json = await response.json();
+        let responseFinal : Response<string> = {} as Response<string>;
+
+        responseFinal.message = json.message;
+        
+        return responseFinal;
+    },
+
     getCourseById: async (idCourse: number) : Promise<Response<Course>> => {
           let response = await  fetch('http://secret-ocean-67843.herokuapp.com/courses?id=' + idCourse, {
             method: 'GET',

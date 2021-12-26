@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { FlatList, RefreshControl, SafeAreaView, ScrollView, Text, View } from 'react-native'
+import { FlatList, RefreshControl, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { courseApi } from '../../api/courseApi';
 import { CourseComponent } from '../../components/CourseComponent';
 import { LoaderComponent } from '../../components/LoaderComponent';
@@ -12,6 +12,7 @@ import { Course } from '../../interface/CourseInterface';
 import { RooteStackParams } from '../../interface/navigatorLogin';
 import { TypesUser } from '../../interface/userInterface';
 import courseStyle from '../../styles/courseStyle';
+import generalStyle from '../../styles/generalStyle';
 
 interface Props extends NativeStackScreenProps<RooteStackParams,'MyCourses'>{};
 
@@ -27,6 +28,11 @@ export const MisCursosCreados = ({navigation} : Props) => {
             setLstCourses(values.data ?? []);
             loderContext.changeStateLoder(false);
         });
+    };
+
+    const newCourse = () => {
+        navigation.pop();
+        getCourses();
     };
 
     useEffect(() => {
@@ -46,6 +52,12 @@ export const MisCursosCreados = ({navigation} : Props) => {
             
             {loderContext.loderState.isLoder && <LoaderComponent/>}
              
+            <View style={[generalStyle.contentBottomLogin, {marginTop: 10}]}>
+                <TouchableOpacity style={generalStyle.bottomLogin} onPress={() => navigation.navigate('CourseNew', {onSubmit: newCourse})}>
+                    <Text style={generalStyle.textBottomColor}>Nuevo Curso</Text>
+                </TouchableOpacity>    
+            </View>
+
             {
                 lstCourses?.length == 0 && <Text>No se encontraron cursos con los parámetros solicitados</Text>
             }

@@ -9,5 +9,6 @@ export type RooteStackParams = {
     Tabs:undefined,
     CourseDetail:any,
     Courses: any,
-    MyCourses: any
+    MyCourses: any,
+    CourseNew: any
 }
