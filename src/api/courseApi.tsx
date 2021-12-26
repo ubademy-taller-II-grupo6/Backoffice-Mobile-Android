@@ -53,6 +53,26 @@ export const courseApi = {
         return responseFinal;
     },
 
+    getListCoursesByCreator: async (idUser: number) : Promise<Response<Course[]>> => {
+        let response = await  fetch(`http://secret-ocean-67843.herokuapp.com/courses?creator=${idUser}`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+        let json = await response.json();
+        let responseFinal : Response<Course[]> = {} as Response<Course[]>;
+
+        if (json.message != null)
+            responseFinal.message = json;
+        else
+            responseFinal.data = json;
+
+        return responseFinal;
+    },
+
     getListCoursesByUser: async (idUser: number) : Promise<Response<Course[]>> => {
           let response = await  fetch(`http://secret-ocean-67843.herokuapp.com/courses/favorites/${idUser}`, {
             method: 'GET',
