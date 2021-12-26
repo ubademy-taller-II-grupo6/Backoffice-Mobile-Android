@@ -15,6 +15,8 @@ import generalStyle from '../../styles/generalStyle';
 import courseFilterStyle from '../../styles/courseFilterStyle';
 import { AuthContext } from '../../context/AuthContext';
 import { TypesUser } from '../../interface/userInterface';
+import { userApi } from '../../api/userApi';
+import { Subscription } from '../../interface/SubscriptionInterface';
 
 interface Props extends NativeStackScreenProps<RooteStackParams,'Courses'>{};
 
@@ -30,7 +32,7 @@ export const Cursos = ({navigation} : Props) => {
     const [lstCategories, setLstCategories] = useState<Course[]>();
     const [selectCategory, setSelectCategory] = useState<string>(allSelect);
 
-    const [lstSubscriptions, setLstSubscriptions] = useState<Course[]>();
+    const [lstSubscriptions, setLstSubscriptions] = useState<Subscription[]>();
     const [selectSubscription, setSelectSubscription] = useState<string>(allSelect);
 
     const getCourses = () => {
@@ -40,11 +42,13 @@ export const Cursos = ({navigation} : Props) => {
 
         Promise.all([
             courseApi.getListCourses(category, subscription),
-            courseApi.getListCoursesByUser(3)
+            courseApi.getListCoursesByUser(3),
+            userApi.getCacheSubscriptions()
         ])
         .then((values) => {
             setLstCoursesUser(values[1].data ?? []);
             setLstCourses(values[0].data ?? []);
+            setLstSubscriptions(values[2].data ?? []);
             loderContext.changeStateLoder(false);
         });
     };
@@ -83,8 +87,13 @@ export const Cursos = ({navigation} : Props) => {
                     onValueChange={(itemValue, itemIndex) => setSelectSubscription(itemValue)
                     }>
                     <Picker.Item label="Todas" value={allSelect} />
-                    <Picker.Item label="GOLD" value='GOLD' />
-                    <Picker.Item label="BRONZE" value='BRONZE' />
+                    {
+                        lstSubscriptions?.map((subs: Subscription, idx: number) => 
+                            <Picker.Item key={subs.subscription_id} 
+                                         label={subs.subscription_id} 
+                                         value={subs.subscription_id} />
+                        )
+                    }
                 </Picker>
             </View>
             
