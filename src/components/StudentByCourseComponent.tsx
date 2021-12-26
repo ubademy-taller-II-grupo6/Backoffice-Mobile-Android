@@ -1,6 +1,6 @@
 import React from "react";
 import { Ionicons } from '@expo/vector-icons';
-import { Text, TouchableOpacity, View, Image, FlatList, SafeAreaView } from "react-native";
+import { Text, TouchableOpacity, View, Image, FlatList, SafeAreaView, ActivityIndicator } from "react-native";
 import { Course, CourseStudentResume } from "../interface/CourseInterface";
 
 import { StyleSheet } from "react-native";
@@ -42,7 +42,13 @@ export const StudentByCourseComponent = (props: StudentByCourseComponentProps) =
                     </TouchableOpacity>
                 </View>
                 {
-                    show &&
+                    isLoading && show && 
+                    <View style={{flex: 1, paddingTop: 15, justifyContent: 'center',}}>
+                        <ActivityIndicator size="small" color="#0000ff"/>
+                    </View>
+                }
+                {
+                    !isLoading && show &&
                         <View style={{paddingLeft: 10, paddingTop: 10}}>
                             <FlatList
                                 data={lstStudents}

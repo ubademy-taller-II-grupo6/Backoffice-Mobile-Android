@@ -1,6 +1,6 @@
 import React from "react";
 import { Ionicons } from '@expo/vector-icons';
-import { Text, TouchableOpacity, View, Image, FlatList, SafeAreaView } from "react-native";
+import { Text, TouchableOpacity, View, Image, FlatList, SafeAreaView, ActivityIndicator } from "react-native";
 import { Course, CourseCollaboratorResume } from "../interface/CourseInterface";
 
 import { StyleSheet } from "react-native";
@@ -9,6 +9,7 @@ import {Dimensions} from 'react-native';
 import { useEffect } from "react";
 import { courseApi } from "../api/courseApi";
 import courseDetailStyle from "../styles/courseDetailStyle";
+import generalStyle from "../styles/generalStyle";
 
 interface CollaboratorByCourseComponentProps {
     idCourse: number
@@ -42,7 +43,13 @@ export const CollaboratorByCourseComponent = (props: CollaboratorByCourseCompone
                     </TouchableOpacity>
                 </View>
                 {
-                    show &&
+                    isLoading && show && 
+                    <View style={{flex: 1, paddingTop: 15, justifyContent: 'center',}}>
+                        <ActivityIndicator size="small" color="#0000ff"/>
+                    </View>
+                }
+                {
+                    !isLoading && show &&
                         <View style={{paddingLeft: 10, paddingTop: 10}}>
                             <FlatList
                                 data={lstCollaborators}
