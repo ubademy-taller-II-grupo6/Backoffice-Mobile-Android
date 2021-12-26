@@ -6,10 +6,26 @@ import { AuthReducer } from '../reducers/authReducer';
 
 export const authInitialState:AuthState={
     isLoggedIn:false,
-    username:"", 
+    emailVerified:false,
+    provider:"",
+    username:"",
     email:"",
     potho:"",
-    token:""
+    stsTokenManager:{
+        accessToken:"",
+        apiKey:"",
+        expirationTime:0,
+        refreshToken:"",
+        uid:""
+    },
+    typeUser:"none",
+    userProfile:{
+        blocked: false,
+        email: "",
+        id: "",
+        lastname: "",
+        name: "",
+    }
 }
 
 
@@ -19,17 +35,21 @@ export const AuthProvider = ({children}:any)=>{
 
     const [authState, dispatch] = useReducer(AuthReducer, authInitialState)
     const signIn = (payload:AuthState) => {
-        console.log(payload)
+        //console.log(payload)
         dispatch({type:'signIn',payload})
     }
     const lognOut = ()=>{
         dispatch({type:'lognOut'})
     }
+    const changeAuthState = (payload:AuthState) => {
+        dispatch({type:'setUser',payload})
+    }
     return (
         <AuthContext.Provider value={{
             authState,
             signIn,
-            lognOut
+            lognOut,
+            changeAuthState
         }}>
             {children}
         </AuthContext.Provider>

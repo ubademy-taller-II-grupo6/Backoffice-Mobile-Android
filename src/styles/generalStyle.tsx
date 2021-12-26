@@ -7,10 +7,10 @@ const generalStyle = StyleSheet.create({
         alignItems:"center"
     },
     loader:{
-        position:'absolute',
-        top:'50%',
-        fontSize:100,
-        left:'50%'
+        //position:'absolute',
+        //top:'0%',
+        //fontSize:100,
+        //left:'0%'
     },
     buttomReturn:{
         marginTop:80,
@@ -103,6 +103,19 @@ const generalStyle = StyleSheet.create({
         fontWeight:'600',
         color:'white',
     },
+    buttonSiguiente:{
+        backgroundColor:"rgba(28, 166, 206, 1)",
+        padding:10,
+        borderRadius:20,
+        margin:10,
+        width:300,
+    },
+    textButtonSiguiente:{
+        color:'white',
+        width:'100%',
+        textAlign:'center',
+        fontWeight:'700'
+    }
 })
 
 export default generalStyle;

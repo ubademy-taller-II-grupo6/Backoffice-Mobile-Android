@@ -35,18 +35,20 @@ export const loginService = () => {
 
     let changeValue = (campo:string,value:string) =>{
         if(campo=='email'){
+            const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             let newCampo = {
                 value:value,
-                isValid:(value!="")?true:false,
+                isValid:(re.test(value))?true:false,
                 hasFocus:login.email.hasFocus,
                 isFocus:login.email.isFocus,
             }    
             setLogin({...login,email:newCampo})
         }
         if(campo=='password'){
+            const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
             let newPassword={...login.password}
             newPassword.value=value
-            newPassword.isValid=(value!="")?true:false
+            newPassword.isValid=(re.test(value)&&(value==login.password.value))?true:false
             setLogin({...login,password:newPassword})
         }
     }

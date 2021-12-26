@@ -8,7 +8,7 @@ export const LoaderComponent = () => {
             animationType="slide"
             transparent={true}
             visible={true}>   
-            <View style={{flex: 1, alignItems: 'center', 
+            <View style={{flex: 1, 
             justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)'}}>
                 <ActivityIndicator style={generalStyle.loader} size="large" 
                 color="rgba(255, 255, 255, 0.7)" />

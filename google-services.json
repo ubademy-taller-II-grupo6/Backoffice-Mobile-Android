@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "934202487625",
+    "project_id": "ubademy-apigateway",
+    "storage_bucket": "ubademy-apigateway.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934202487625:android:80acdcfd6c6cbfcb20e098",
+        "android_client_info": {
+          "package_name": "com.ubademy.group6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934202487625-8j7nhfa7a7ti6n6v5akg0m7b39kg7ork.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ubademy.group6",
+            "certificate_hash": "c0076488a028d9fdb7d3dd0d6cf5184c1d1bffbe"
+          }
+        },
+        {
+          "client_id": "934202487625-po2clep673irictg43m4259hceb7035n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHpWdXhV9uKx1AdpRa7FOK9qo4gnsss6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934202487625-po2clep673irictg43m4259hceb7035n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,9 @@
-export interface userProfile {
-    user_name: string;
-    user_lastname: string;
-    user_email: string;
-    user_profile: string;
+export interface userProfileInterface {
+    blocked: boolean;
+    email: string;
+    id: string;
+    lastname: string;
+    name: string;
 }
  
 export interface profileUsers {

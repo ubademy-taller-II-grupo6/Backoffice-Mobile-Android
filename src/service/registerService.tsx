@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { opcionValidation, registerInterface, validationInterface } from '../interface/registroInterface'
+import * as GoogleSignIn from 'expo-google-sign-in';
+import { registerWithGoogle, registerWithGoogleWeb } from '../../firebase';
 
 export const registerService = () => {
+    let state = { user: null };
+    const [userGoogle, setUserGoogle] = useState({})
     let initialState:opcionValidation={
         name:{
             value:"",
@@ -164,6 +168,76 @@ export const registerService = () => {
         newRegister.rePassword.hasFocus=true
         setRegister(newRegister)
     }
+    /*let componentDidMount=() =>{
+        initAsync();
+      }
+    
+    let initAsync = async () => {
+        await GoogleSignIn.initAsync({
+        });
+        _syncUserWithStateAsync();
+      };*/
+    
+      let _syncUserWithStateAsync = async (user:any) => {
+        //const user:any = await GoogleSignIn.signInSilentlyAsync();
+       
+        // await alert('await GoogleSignIn.signInSilentlyAsync();:' );
+        // await alert(user);
+        /*await alert('login:' + JSON.stringify(user, null, 2));
+        await alert(user.auth.idToken)
+        await alert(user.auth.accessToken)*/
+        let userProfile = await registerWithGoogle(user.auth.idToken,user.auth.accessToken)
+         setUserGoogle({ userProfile });
+        return userProfile
+      };
+    
+      let signOutAsync = async () => {
+        await GoogleSignIn.signOutAsync();
+        setUserGoogle({ user: null });
+      };
+    
+      let signOutAsync2 = async () => {
+        await GoogleSignIn.disconnectAsync()
+        setUserGoogle({ user: null });
+      };
+    
+      let  signInAsync = async () => {
+        try {
+            const data = await GoogleSignIn.signInAsync();
+            // await alert('data:' + JSON.stringify(data, null, 2));
+          if (data.type === 'success') {
+            /*let idToken='1111'
+            let accessToken='1111'
+              await alert('login:' + JSON.stringify(user, null, 2));
+              await alert('_syncUserWithStateAsync:' );*/
+            //   await alert('signInAsync Login:' + JSON.stringify(data.user, null, 2));
+            let userProfile:any =await _syncUserWithStateAsync(data.user);
+            return userProfile
+          }
+        } catch ({ message }) {
+          alert('login: Error:' + message);
+          return null
+        }
+      };
+    
+      let   onPressWithGoogle =async () => {
+        let response:any = null
+        if (!state.user) {
+        //   signOutAsync();
+        // } else {
+          response= await signInAsync();
+        }
+        return response
+      };
+      let onPress2 = async () => {
+          console.log("onPress2")
+        //registerWithGoogle("1111111111","11111111111111")
+        let cre= await registerWithGoogleWeb()
+        console.log("cre")
+        return cre
+        setUserGoogle({ cre });
+        // await alert('login:' + JSON.stringify(cre, null, 2));
+      }
     return {
         register,
         changeValue,
@@ -171,6 +245,12 @@ export const registerService = () => {
         loader,
         setloader,
         showPassword,
-        errorSubmit
+        errorSubmit,
+        onPressWithGoogle,
+        state,
+        userGoogle,
+        signOutAsync,
+        signOutAsync2,
+        onPress2
     }
 }
