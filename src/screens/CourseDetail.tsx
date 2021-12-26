@@ -8,6 +8,7 @@ import { courseApi } from '../api/courseApi';
 import { CollaboratorByCourseComponent } from '../components/CollaboratorByCourseComponent';
 import { CourseComponent } from '../components/CourseComponent';
 import { LoaderComponent } from '../components/LoaderComponent';
+import { StudentByCourseComponent } from '../components/StudentByCourseComponent';
 import { AuthContext } from '../context/AuthContext';
 import { LoderContext } from '../context/LoderContext';
 import { Course } from '../interface/CourseInterface';
@@ -144,7 +145,15 @@ export const CourseDetail = () => {
             }
 
             {
-                isTeacher && <CollaboratorByCourseComponent idCourse={props.idCourse}/>
+                isTeacher && <>
+                    <View>
+                        <CollaboratorByCourseComponent idCourse={props.idCourse}/>
+                    </View>
+                    <View style={{marginTop: 15}}>
+                        <StudentByCourseComponent idCourse={props.idCourse}/>
+                    </View>
+
+                </>
             }
         </SafeAreaView>
     )

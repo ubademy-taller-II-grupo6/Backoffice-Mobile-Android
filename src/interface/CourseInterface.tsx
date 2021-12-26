@@ -26,3 +26,8 @@ export interface CourseCollaboratorResume {
     id: number,
     name: string
 }
+
+export interface CourseStudentResume {
+    id: number,
+    name: string
+}

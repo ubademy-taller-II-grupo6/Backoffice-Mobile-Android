@@ -1,4 +1,4 @@
-import { Course, CourseByUser, CourseCollaboratorResume, CourseConditions } from "../interface/CourseInterface";
+import { Course, CourseByUser, CourseCollaboratorResume, CourseConditions, CourseStudentResume } from "../interface/CourseInterface";
 import { Response } from "../interface/ResponseInterface";
 
 export const courseApi = {
@@ -274,6 +274,34 @@ export const courseApi = {
         });
         let json = await response.json();
         let responseFinal : Response<CourseCollaboratorResume[]> = {} as Response<CourseCollaboratorResume[]>;
+
+        if (json.message != null)
+            responseFinal.message = json;
+        else {
+            responseFinal.data = [];
+            for (let x in json) {
+                responseFinal.data.push({
+                    id: parseInt(x),
+                    name: json[x]
+                });
+            }
+        }
+
+        return responseFinal;
+    },
+
+    getStudentsByCourse: async (idCourse: number) : Promise<Response<CourseStudentResume[]>> => {
+        
+        let response = await  fetch(`https://morning-atoll-94461.herokuapp.com/inscriptions/course/${idCourse}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        let responseFinal : Response<CourseStudentResume[]> = {} as Response<CourseStudentResume[]>;
 
         if (json.message != null)
             responseFinal.message = json;
