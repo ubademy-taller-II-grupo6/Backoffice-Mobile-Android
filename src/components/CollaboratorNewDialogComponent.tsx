@@ -76,15 +76,18 @@ export const CollaboratorNewDialogComponent = (props: CollaboratorNewDialogCompo
                         />
                         <Ionicons style={generalStyle.contentIcon} name="person-circle" size={20} />    
                     </View>
-                    <View>
-                        <Text>{error}</Text>
-                    </View>
-                    <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={props.onCancelDialog}>
-                            <Text>Cancelar</Text>
+                    {
+                        error &&
+                            <View style={{marginBottom: 10}}>
+                                <Text style={{color: 'red'}}>{error}</Text>
+                            </View>
+                    }
+                    <View style={{flexDirection: 'row', alignSelf: 'flex-end' }}>
+                        <TouchableOpacity style={{marginRight: 10}} onPress={props.onCancelDialog}>
+                            <Text>CANCELAR</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={addNewCollaborator}>
-                            <Text>Aceptar</Text>
+                            <Text>ACEPTAR</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
