@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { courseApi } from "../api/courseApi";
 import courseDetailStyle from "../styles/courseDetailStyle";
 import generalStyle from "../styles/generalStyle";
+import { CollaboratorNewDialogComponent } from "./CollaboratorNewDialogComponent";
 
 interface CollaboratorByCourseComponentProps {
     idCourse: number
@@ -18,11 +19,19 @@ interface CollaboratorByCourseComponentProps {
 export const CollaboratorByCourseComponent = (props: CollaboratorByCourseComponentProps) => {
     const [show, setShow] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(true);
+    const [isNewCollaborator, setNewCollaborator] = useState<boolean>(false);
     const [lstCollaborators, setLstCollaborators] = useState<CourseCollaboratorResume[]>([]);
+
+    const addNewCollaborator = () => setNewCollaborator(true);
+
+    const onNewCollaborator = () => {
+        setNewCollaborator(false);
+        getCollaborators();
+    };
 
     const changeVisualization = () => setShow(!show);
 
-    useEffect(() => {
+    const getCollaborators = () => {
         setLoading(true);
 
         courseApi.getCollaboratorsByCourse(props.idCourse)
@@ -30,6 +39,10 @@ export const CollaboratorByCourseComponent = (props: CollaboratorByCourseCompone
             setLstCollaborators(values.data ?? []);
             setLoading(false);
         });
+    };
+
+    useEffect(() => {
+        getCollaborators();
     }, []);
 
     return (
@@ -38,6 +51,9 @@ export const CollaboratorByCourseComponent = (props: CollaboratorByCourseCompone
                 
                 <View style={courseDetailStyle.titleCourse} >
                     <Text style={courseDetailStyle.titleTextCourse}>Colaboradores</Text>
+                    <TouchableOpacity style={{position: 'absolute', right: 65}} onPress={addNewCollaborator}>
+                        <Ionicons name="add" size={20} color="black" />
+                    </TouchableOpacity>
                     <TouchableOpacity style={{position: 'absolute', right: 15}} onPress={changeVisualization}>
                         <Ionicons name={show ? "eye-off" : "eye"} size={20} color="black" />
                     </TouchableOpacity>
@@ -57,6 +73,13 @@ export const CollaboratorByCourseComponent = (props: CollaboratorByCourseCompone
                                 keyExtractor={(item) => `${item.id}`}
                             />
                         </View>
+                }
+
+                {
+                    isNewCollaborator && 
+                        <CollaboratorNewDialogComponent idCourse={props.idCourse}
+                                                        onCancelDialog={() => setNewCollaborator(false)} 
+                                                        onConfirmDialog={onNewCollaborator} />
                 }
             </View>
         </SafeAreaView>
