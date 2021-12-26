@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { Alert, View, SafeAreaView, Text, TouchableOpacity } from 'react-native'
 import { courseApi } from '../api/courseApi';
+import { CollaboratorByCourseComponent } from '../components/CollaboratorByCourseComponent';
 import { CourseComponent } from '../components/CourseComponent';
 import { LoaderComponent } from '../components/LoaderComponent';
 import { AuthContext } from '../context/AuthContext';
@@ -28,6 +29,7 @@ export const CourseDetail = () => {
     const loderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext);
     const isStudent : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
+    const isTeacher : boolean = authContext.authState.typeUser === TypesUser.Profesor;
     const [course, setCourse] = useState<Course>();
     const [isInscription, setIsInscription] = useState<boolean>(false);
     const [enrollText, setEnrollText] = useState<string>();
@@ -139,6 +141,10 @@ export const CourseDetail = () => {
                     </View>
                 : 
                     null
+            }
+
+            {
+                isTeacher && <CollaboratorByCourseComponent idCourse={props.idCourse}/>
             }
         </SafeAreaView>
     )

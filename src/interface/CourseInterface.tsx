@@ -21,3 +21,8 @@ export interface CourseByUser {
 export interface CourseConditions {
     Condiciones: string
 }
+
+export interface CourseCollaboratorResume {
+    id: number,
+    name: string
+}
