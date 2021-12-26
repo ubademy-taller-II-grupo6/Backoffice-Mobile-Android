@@ -224,7 +224,7 @@ export const courseApi = {
 
     getCacheCategories: async () : Promise<Response<string[]>> => {
         
-        let response = await  fetch('http://secret-ocean-67843.herokuapp.comcourses/categories', {
+        let response = await  fetch('http://secret-ocean-67843.herokuapp.com/courses/categories', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -233,8 +233,6 @@ export const courseApi = {
             }
         });
         let json = await response.json();
-        console.log(response);
-        console.log(json);
         let responseFinal : Response<string[]> = {} as Response<string[]>;
 
         if (json.message != null)

@@ -29,7 +29,7 @@ export const Cursos = ({navigation} : Props) => {
     const [lstCourses, setLstCourses] = useState<Course[]>();
     const [lstCoursesUser, setLstCoursesUser] = useState<Course[]>();
 
-    const [lstCategories, setLstCategories] = useState<Course[]>();
+    const [lstCategories, setLstCategories] = useState<string[]>();
     const [selectCategory, setSelectCategory] = useState<string>(allSelect);
 
     const [lstSubscriptions, setLstSubscriptions] = useState<Subscription[]>();
@@ -43,12 +43,14 @@ export const Cursos = ({navigation} : Props) => {
         Promise.all([
             courseApi.getListCourses(category, subscription),
             courseApi.getListCoursesByUser(3),
-            userApi.getCacheSubscriptions()
+            userApi.getCacheSubscriptions(),
+            courseApi.getCacheCategories()
         ])
         .then((values) => {
             setLstCoursesUser(values[1].data ?? []);
             setLstCourses(values[0].data ?? []);
             setLstSubscriptions(values[2].data ?? []);
+            setLstCategories(values[3].data ?? []);
             loderContext.changeStateLoder(false);
         });
     };
@@ -75,8 +77,13 @@ export const Cursos = ({navigation} : Props) => {
                     onValueChange={(itemValue, itemIndex) => setSelectCategory(itemValue)
                     }>
                     <Picker.Item label="Todas" value={allSelect} />
-                    <Picker.Item label="MATHEMATICS" value='MATHEMATICS' />
-                    <Picker.Item label="PHYSICAL" value='PHYSICAL' />
+                    {
+                        lstCategories?.map((cat: string, idx: number) => 
+                            <Picker.Item key={`${cat}_${idx}`} 
+                                         label={cat} 
+                                         value={cat} />
+                        )
+                    }
                 </Picker>
             </View>
             
