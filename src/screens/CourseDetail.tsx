@@ -7,9 +7,11 @@ import { Alert, View, SafeAreaView, Text, TouchableOpacity } from 'react-native'
 import { courseApi } from '../api/courseApi';
 import { CourseComponent } from '../components/CourseComponent';
 import { LoaderComponent } from '../components/LoaderComponent';
+import { AuthContext } from '../context/AuthContext';
 import { LoderContext } from '../context/LoderContext';
 import { Course } from '../interface/CourseInterface';
 import { RooteStackParams } from '../interface/navigatorLogin';
+import { TypesUser } from '../interface/userInterface';
 import courseComponentStyle from '../styles/courseComponentStyle';
 import generalStyle from '../styles/generalStyle';
 
@@ -23,7 +25,9 @@ export const CourseDetail = () => {
     const route = useRoute();
     const props = route.params as PropsCourseDetail;
   
-    const loderContext = useContext(LoderContext)
+    const loderContext = useContext(LoderContext);
+    const authContext = useContext(AuthContext);
+    const isStudent : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
     const [course, setCourse] = useState<Course>();
     const [isInscription, setIsInscription] = useState<boolean>(false);
     const [enrollText, setEnrollText] = useState<string>();
@@ -120,18 +124,21 @@ export const CourseDetail = () => {
             }
 
             {
-                isInscription ? 
-                <View style={generalStyle.contentBottomLogin}>
-                    <TouchableOpacity style={[generalStyle.bottomLogin, {backgroundColor:'rgb(218,76,53)'}]} onPress={unenrollStudent}>
-                        <Text style={generalStyle.textBottomColor}>Desinscribirse</Text>
-                    </TouchableOpacity>    
-                </View>
-                :                
-                <View style={generalStyle.contentBottomLogin}>
-                    <TouchableOpacity style={generalStyle.bottomLogin} onPress={enrollStudent}>
-                        <Text style={generalStyle.textBottomColor}>Inscribirse</Text>
-                    </TouchableOpacity>    
-                </View>
+                isStudent ?
+                    isInscription ? 
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={[generalStyle.bottomLogin, {backgroundColor:'rgb(218,76,53)'}]} onPress={unenrollStudent}>
+                            <Text style={generalStyle.textBottomColor}>Desinscribirse</Text>
+                        </TouchableOpacity>
+                    </View>
+                    :                
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={enrollStudent}>
+                            <Text style={generalStyle.textBottomColor}>Inscribirse</Text>
+                        </TouchableOpacity>
+                    </View>
+                : 
+                    null
             }
         </SafeAreaView>
     )

@@ -93,6 +93,26 @@ export const courseApi = {
           return responseFinal;
     },
 
+    getListIdCoursesByMailCollaborate: async (mail: string) : Promise<Response<number[]>> => {
+          let response = await  fetch(`http://secret-ocean-67843.herokuapp.com/courses/collaborators?collaborator_email=${mail}`, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+          });
+          let json = await response.json();
+          let responseFinal : Response<number[]> = {} as Response<number[]>;
+  
+          if (json.message != null)
+              responseFinal.message = json;
+          else
+              responseFinal.data = Object.keys(json).map(x => parseInt(x));;
+              
+          return responseFinal;
+    },
+
     setFavorite: async (idStudent: number, idCourse: number) : Promise<void> => {
         let body = {
             "course_id": idCourse,
