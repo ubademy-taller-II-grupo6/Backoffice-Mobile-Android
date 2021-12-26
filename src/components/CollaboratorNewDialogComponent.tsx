@@ -1,14 +1,9 @@
 import React, { useContext } from "react";
 import { Ionicons } from '@expo/vector-icons';
-import { Text, TouchableOpacity, View, Image, FlatList, SafeAreaView, ActivityIndicator, Modal, TextInput } from "react-native";
-import { Course, CourseCollaboratorResume } from "../interface/CourseInterface";
+import { Text, TouchableOpacity, View, Modal, TextInput } from "react-native";
 
-import { StyleSheet } from "react-native";
 import { useState } from "react";
-import {Dimensions} from 'react-native';
-import { useEffect } from "react";
 import { courseApi } from "../api/courseApi";
-import courseDetailStyle from "../styles/courseDetailStyle";
 import generalStyle from "../styles/generalStyle";
 import dialogComponentStyle from "../styles/dialogComponentStyle";
 import { collaboratorNewDialogService } from "../service/collaboratorNewDialogService";
@@ -27,8 +22,21 @@ export const CollaboratorNewDialogComponent = (props: CollaboratorNewDialogCompo
     const { collaborator, changeValue, changeFocus, errorSubmit} = collaboratorNewDialogService()
 
     const addNewCollaborator = () => {
-        loderContext.changeStateLoder(true);
         setError(undefined);
+
+        if (!collaborator.email.isValid) {
+            errorSubmit();
+            setError('Operación Inválida: El mail no es válido');
+            return;
+        }
+
+        if ((collaborator.email.value === null) || (collaborator.email.value === '')) {
+            errorSubmit();
+            setError('Operación Inválida: El mail es obligatorio');
+            return;
+        }
+
+        loderContext.changeStateLoder(true);
 
         courseApi.addCollaborator(props.idCourse, collaborator.email.value)
         .then((value) => {
@@ -84,10 +92,10 @@ export const CollaboratorNewDialogComponent = (props: CollaboratorNewDialogCompo
                     }
                     <View style={{flexDirection: 'row', alignSelf: 'flex-end' }}>
                         <TouchableOpacity style={{marginRight: 10}} onPress={props.onCancelDialog}>
-                            <Text>CANCELAR</Text>
+                            <Text style={dialogComponentStyle.textButtonStyle}>CANCELAR</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={addNewCollaborator}>
-                            <Text>ACEPTAR</Text>
+                            <Text style={dialogComponentStyle.textButtonStyle}>ACEPTAR</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

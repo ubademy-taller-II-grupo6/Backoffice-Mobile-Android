@@ -5,12 +5,12 @@ const dialogComponentStyle = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
+        backgroundColor: 'rgba(0,0,0,0.5)'
       },
       modalView: {
-        margin: 20,
+        margin: 2,
         backgroundColor: "white",
-        borderRadius: 20,
+        borderRadius: 2,
         padding: 35,
         alignItems: "center",
         shadowColor: "#000",
@@ -27,16 +27,9 @@ const dialogComponentStyle = StyleSheet.create({
         padding: 10,
         elevation: 2
       },
-      buttonOpen: {
-        backgroundColor: "#F194FF",
-      },
-      buttonClose: {
-        backgroundColor: "#2196F3",
-      },
-      textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
+      textButtonStyle: {
+        letterSpacing: 1,
+        color: '#007AFF'
       },
       modalText: {
         marginBottom: 15,

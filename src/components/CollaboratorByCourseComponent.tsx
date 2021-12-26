@@ -1,15 +1,12 @@
 import React from "react";
 import { Ionicons } from '@expo/vector-icons';
-import { Text, TouchableOpacity, View, Image, FlatList, SafeAreaView, ActivityIndicator } from "react-native";
+import { Text, TouchableOpacity, View, FlatList, SafeAreaView, ActivityIndicator } from "react-native";
 import { Course, CourseCollaboratorResume } from "../interface/CourseInterface";
 
-import { StyleSheet } from "react-native";
 import { useState } from "react";
-import {Dimensions} from 'react-native';
 import { useEffect } from "react";
 import { courseApi } from "../api/courseApi";
 import courseDetailStyle from "../styles/courseDetailStyle";
-import generalStyle from "../styles/generalStyle";
 import { CollaboratorNewDialogComponent } from "./CollaboratorNewDialogComponent";
 
 interface CollaboratorByCourseComponentProps {
