@@ -251,6 +251,7 @@ export const CourseNew = () => {
                         }>
                         <Picker.Item label="-" value="" />
                         <Picker.Item label="PRESENTIAL" value="PRESENTIAL" />
+                        <Picker.Item label="SEMI PRESENTIAL" value="SEMI PRESENTIAL" />
                         <Picker.Item label="VIRTUAL" value="VIRTUAL" />
                     </Picker>
                 </View>
