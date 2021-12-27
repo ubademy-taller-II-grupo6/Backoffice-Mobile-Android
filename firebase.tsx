@@ -1,3 +1,4 @@
+//import firebase from 'firebase';
 import firebase from 'firebase';
 import { FirebaseResponseCode, ResponseDiccionary, ResponseRegisterEmailFirebase, UserFirebase } from './src/interface/AuthStateInterface';
 import { uiService }  from './src/service/uiService';

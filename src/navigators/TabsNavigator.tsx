@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home } from '../screens/SreensTabsNavigator/Home';
 import { MisCursos } from '../screens/SreensTabsNavigator/MisCursos';
 import { Cursos } from '../screens/SreensTabsNavigator/Cursos';
@@ -9,6 +8,8 @@ import { Perfil } from '../screens/SreensTabsNavigator/Perfil';
 import { Ionicons } from '@expo/vector-icons';
 import typeUserStyle from '../styles/typeUserStyle';
 import { CourseDetail } from '../screens/CourseDetail';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Chat } from '../screens/SreensTabsNavigator/Chat';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,6 +51,12 @@ export const Tabs = () => {
             <Ionicons  name="person-circle" size={20} />   
           ),
         }}/>
+      <Tab.Screen name="Chat" component={Chat}  options={{
+          tabBarLabel: 'Chat',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons  name="chatbubble-ellipses" size={20} />   
+          ),
+        }}/>  
     </Tab.Navigator>
   );
 }
