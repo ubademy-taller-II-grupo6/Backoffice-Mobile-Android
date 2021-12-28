@@ -95,6 +95,7 @@ const misCursosStyle = StyleSheet.create({
 interface CourseComponentProps {
     course: Course,
     isFavorite: boolean,
+    allowFavorite?: boolean,
     onClick: () => void,
     onReload?: () => void
 }
@@ -123,23 +124,26 @@ export const CourseComponent = (props: CourseComponentProps) => {
                         {props.course.description}
                     </Text>
                     <Text style={courseComponentStyle.colorDescription}>
-                        {`${props.course.subscription}`}
+                        {`${props.course.category} - ${props.course.subscription}`}
                     </Text>
                     <Text style={courseComponentStyle.colorDescription}>
                         {`${props.course.hashtags}`}
                     </Text>
                 </View>
             </TouchableOpacity>
-          <TouchableOpacity
-            style={{position: 'absolute', top: 5, right: 15}}
-            onPress={changeFavorite}>
             {
-                finalFavorite ?
-                    <Ionicons name="heart" size={20} color="red" /> 
-                :
-                    <Ionicons name="heart-outline" size={20} color="red" /> 
+                props.allowFavorite &&
+                    <TouchableOpacity
+                        style={{position: 'absolute', top: 5, right: 15}}
+                        onPress={changeFavorite}>
+                        {
+                            finalFavorite ?
+                                <Ionicons name="heart" size={20} color="red" /> 
+                            :
+                                <Ionicons name="heart-outline" size={20} color="red" /> 
+                        }
+                    </TouchableOpacity>
             }
-          </TouchableOpacity>
         </View>
     );
 }

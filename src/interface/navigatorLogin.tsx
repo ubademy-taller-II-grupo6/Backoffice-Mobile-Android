@@ -8,5 +8,8 @@ export type RooteStackParams = {
     TypeUser:undefined,
     Tabs:undefined,
     CourseDetail:any,
-    Courses: any
+    Courses: any,
+    MyCourses: any,
+    CourseNew: any,
+    CourseUpdate: any
 }

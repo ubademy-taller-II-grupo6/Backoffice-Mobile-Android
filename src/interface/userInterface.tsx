@@ -18,3 +18,9 @@ interface profileUser {
 export interface responseError {
   message: string;
 }
+
+export enum TypesUser {
+    Estudiante = 'estudiante',
+    Colaborador = 'colaborador',
+    Profesor = 'profesor'
+}

@@ -15,23 +15,18 @@ import courseStyle from '../../styles/courseStyle';
 
 interface Props extends NativeStackScreenProps<RooteStackParams,'MyCourses'>{};
 
-export const MisCursos = ({navigation} : Props) => {
+export const MisCursosColaboraciones = ({navigation} : Props) => {
     const loderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext);
-    const allowFavorite : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
     const [lstCourses, setLstCourses] = useState<Course[]>();
-    const [lstCoursesUser, setLstCoursesUser] = useState<Course[]>();
 
     const getCourses = () => {
         loderContext.changeStateLoder(true);
-
         Promise.all([
             courseApi.getListCourses(),
-            courseApi.getInscriptionsByStudent(3),
-            courseApi.getListCoursesByUser(3)
+            courseApi.getListIdCoursesByMailCollaborate('dmarkao@gmail.com')
         ])
         .then((values) => {
-            setLstCoursesUser(values[2].data ?? []);
             setLstCourses(values[0].data?.filter(x => values[1].data?.includes(x.id)) ?? []);
             loderContext.changeStateLoder(false);
         });
@@ -62,8 +57,7 @@ export const MisCursos = ({navigation} : Props) => {
                 <FlatList
                     data={lstCourses}
                     renderItem={(item) => <CourseComponent course={item.item}
-                                                           allowFavorite={allowFavorite}
-                                                           isFavorite={lstCoursesUser?.some((x => x.id === item.item.id)) || false}
+                                                           isFavorite={false}
                                                            onClick={() => navigation.navigate('CourseDetail', {idCourse: item.item.id})}
                                                            onReload={getCourses}/>}
                     keyExtractor={(item) => `${item.title}-${item.id}`}

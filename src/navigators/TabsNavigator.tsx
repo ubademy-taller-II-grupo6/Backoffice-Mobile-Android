@@ -9,10 +9,19 @@ import { Perfil } from '../screens/SreensTabsNavigator/Perfil';
 import { Ionicons } from '@expo/vector-icons';
 import typeUserStyle from '../styles/typeUserStyle';
 import { CourseDetail } from '../screens/CourseDetail';
+import { AuthContext } from '../context/AuthContext';
+import { TypesUser } from '../interface/userInterface';
+import { MisCursosCreados } from '../screens/SreensTabsNavigator/MisCursosCreados';
+import { MisCursosColaboraciones } from '../screens/SreensTabsNavigator/MisCursosColaboraciones';
 
 const Tab = createBottomTabNavigator();
 
 export const Tabs = () => {
+    const authContext = useContext(AuthContext);
+    const isStudent : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
+    const isColaborator : boolean = authContext.authState.typeUser === TypesUser.Colaborador;
+    const isTeacher : boolean = authContext.authState.typeUser === TypesUser.Profesor;
+    
   return (
     <Tab.Navigator>
 
@@ -23,27 +32,52 @@ export const Tabs = () => {
           ),headerRight: () => (
             <Ionicons style={typeUserStyle.menuIcon} onPress={() => alert('This is a button!')} name="menu" size={20} /> )
         }}/>
-      <Tab.Screen name="MisCursos" component={MisCursos} options={{
-          tabBarLabel: 'Mis Cursos',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons  name="clipboard" size={20} />   
-          ),headerRight: () => (
-            <Ionicons style={typeUserStyle.menuIcon} onPress={() => alert('This is a button!')} name="menu" size={20} /> )
-        }}/>
-      <Tab.Screen name="Cursos" component={Cursos} options={{
-          tabBarLabel: 'Cursos',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons  name="bookmarks" size={20} />   
-          ),headerRight: () => (
-            <Ionicons style={typeUserStyle.menuIcon} onPress={() => alert('This is a button!')} name="menu" size={20} /> )
-        }}/>
-      <Tab.Screen name="Favoritos" component={Favoritos} options={{
-          tabBarLabel: 'Favoritos',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons  name="star-half" size={20} />   
-          ),headerRight: () => (
-            <Ionicons style={typeUserStyle.menuIcon} onPress={() => alert('This is a button!')} name="menu" size={20} /> )
-        }}/>
+        {
+            isColaborator && 
+                <Tab.Screen name="Cursos - Colaboraciones" component={MisCursosColaboraciones} options={{
+                    tabBarLabel: 'Colaboraciones',
+                    tabBarIcon: ({ color, size }) => (
+                    <Ionicons  name="clipboard" size={20} />   
+                    ),headerRight: () => (
+                    <Ionicons style={typeUserStyle.menuIcon} onPress={() => alert('This is a button!')} name="menu" size={20} /> )
+                }}/>
+        }
+        {
+            isTeacher &&
+                <Tab.Screen name="MisCursos" component={MisCursosCreados} options={{
+                    tabBarLabel: 'Mis Cursos',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons  name="clipboard" size={20} />   
+                    ),headerRight: () => (
+                        <Ionicons style={typeUserStyle.menuIcon} onPress={() => alert('This is a button!')} name="menu" size={20} /> )
+                    }}/>
+        }
+        { 
+            isStudent && <>
+                <Tab.Screen name="MisCursos" component={MisCursos} options={{
+                    tabBarLabel: 'Mis Cursos',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons  name="clipboard" size={20} />   
+                    ),headerRight: () => (
+                        <Ionicons style={typeUserStyle.menuIcon} onPress={() => alert('This is a button!')} name="menu" size={20} /> )
+                    }}/>
+                <Tab.Screen name="Cursos" component={Cursos} options={{
+                    tabBarLabel: 'Cursos',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons  name="bookmarks" size={20} />   
+                    ),headerRight: () => (
+                        <Ionicons style={typeUserStyle.menuIcon} onPress={() => alert('This is a button!')} name="menu" size={20} /> )
+                    }}/>
+                <Tab.Screen name="Favoritos" component={Favoritos} options={{
+                    tabBarLabel: 'Favoritos',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons  name="star-half" size={20} />   
+                    ),headerRight: () => (
+                        <Ionicons style={typeUserStyle.menuIcon} onPress={() => alert('This is a button!')} name="menu" size={20} /> )
+                    }}/>
+            </>
+        }
+        
       <Tab.Screen name="MiPerfil" component={Perfil}  options={{
           tabBarLabel: 'Mi Perfil',
           tabBarIcon: ({ color, size }) => (
