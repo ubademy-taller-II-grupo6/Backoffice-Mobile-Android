@@ -133,9 +133,9 @@ export const CourseDetail = () => {
                         </Text>
                     </View>
             }
-
+            
             {
-                isStudent ?
+                (isStudent && course) ?
                     isInscription ? 
                     <View style={generalStyle.contentBottomLogin}>
                         <TouchableOpacity style={[generalStyle.bottomLogin, {backgroundColor:'rgb(218,76,53)'}]} onPress={unenrollStudent}>
