@@ -41,7 +41,7 @@ export const CourseDetail = () => {
 
         Promise.all([
             courseApi.getCourseById(props.idCourse),
-            courseApi.getInscriptionsByStudent(15),
+            courseApi.getInscriptionsByStudent(authContext.authState.userProfile.id),
             courseApi.getEnrollConditionsByCourse(props.idCourse),
             courseApi.getUnenrollConditionsByCourse(props.idCourse)
         ])
@@ -68,7 +68,7 @@ export const CourseDetail = () => {
               },
               { text: "Aceptar", onPress: () => {
                   loderContext.changeStateLoder(true); 
-                  courseApi.enrollStudent(15, props.idCourse).then((values) => { 
+                  courseApi.enrollStudent(authContext.authState.userProfile.id, props.idCourse).then((values) => { 
                     if ((values.message !== null) && (values.message !== "La inscripción se realizó con éxito"))
                         showError(values.message);
                     loadCourse();
@@ -90,7 +90,7 @@ export const CourseDetail = () => {
               },
               { text: "Aceptar", onPress: () => {
                   loderContext.changeStateLoder(true); 
-                  courseApi.unenrollStudent(15, props.idCourse).then((values) => {
+                  courseApi.unenrollStudent(authContext.authState.userProfile.id, props.idCourse).then((values) => {
                       loadCourse(); 
                   });
                 } 

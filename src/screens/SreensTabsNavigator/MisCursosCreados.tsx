@@ -18,12 +18,13 @@ interface Props extends NativeStackScreenProps<RooteStackParams,'MyCourses'>{};
 
 export const MisCursosCreados = ({navigation} : Props) => {
     const loderContext = useContext(LoderContext);
+    const authContext = useContext(AuthContext);
     const [lstCourses, setLstCourses] = useState<Course[]>();
 
     const getCourses = () => {
         loderContext.changeStateLoder(true);
 
-        courseApi.getListCoursesByCreator(3)
+        courseApi.getListCoursesByCreator(authContext.authState.userProfile.id)
         .then((values) => {
             setLstCourses(values.data ?? []);
             loderContext.changeStateLoder(false);

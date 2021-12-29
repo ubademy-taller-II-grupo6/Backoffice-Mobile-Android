@@ -1,7 +1,7 @@
 export interface userProfileInterface {
+    id: number;
     blocked: boolean;
     email: string;
-    id: string;
     lastname: string;
     name: string;
 }
