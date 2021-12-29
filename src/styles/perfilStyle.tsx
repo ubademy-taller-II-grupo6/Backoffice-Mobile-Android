@@ -27,7 +27,7 @@ const pefilStyle = StyleSheet.create({
     },
     textPerfil:{
         fontSize:20,
-        width:'30%',
+        width:'35%',
         paddingLeft:20,
         color:'#363636'
     },

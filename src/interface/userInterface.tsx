@@ -4,6 +4,7 @@ export interface userProfileInterface {
     email: string;
     lastname: string;
     name: string;
+    subscription: string;
 }
  
 export interface profileUsers {

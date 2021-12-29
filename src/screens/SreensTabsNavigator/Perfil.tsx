@@ -60,10 +60,17 @@ export const Perfil = () => {
                 />
             </View>    
             <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>email: </Text>
+                <Text style={pefilStyle.textPerfil}>Email: </Text>
                 <TextInput   style={pefilStyle.textInputPerfil}
                     value={perfil.email}
                     editable={edit}
+                />
+            </View>  
+            <View style={pefilStyle.contentText}>
+                <Text style={pefilStyle.textPerfil}>Subscripción: </Text>
+                <TextInput style={pefilStyle.textInputPerfil}
+                    value={perfil.subscription}
+                    editable={false}
                 />
             </View> 
             {edit&&<View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
