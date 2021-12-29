@@ -13,7 +13,7 @@ import { localStorage } from '../../localStorage/localStorage';
 
 export const Perfil = () => {
     
-    const loderContext = useContext(LoderContext);
+    const loaderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext)
     const [edit, setedit] = useState(false)
     const [perfil, setPerfil] = useState<userProfileInterface>()
@@ -24,7 +24,15 @@ export const Perfil = () => {
         localStorage.remove().then(() => authContext.lognOut());        
     }
     let guardarCambios = () => {
-        
+
+        if (perfil) {
+            loaderContext.changeStateLoder(true);
+            userApi.updateUser(perfil)
+                .then(() => {
+                    setedit(false);
+                    loaderContext.changeStateLoder(false);
+                });
+        }
     }
     let editInputs = ( ) =>{
         let currentEdit = edit
@@ -32,57 +40,71 @@ export const Perfil = () => {
         console.log(edit)
     }
     useEffect(() => {
+        loaderContext.changeStateLoder(true);
         userApi.getUserById(authContext.authState.userProfile.id)
             .then((user) => {
                 if (user) setPerfil(user);
+                loaderContext.changeStateLoder(false);
             })
     }, [])
     return (
         <View style={pefilStyle.contentPrincipal}>
-        {loderContext.loderState.isLoder && <LoaderComponent/>}
+        {loaderContext.loderState.isLoder && <LoaderComponent/>}
             {
                 perfil && <>
-            {!edit&&<Ionicons onPress={()=>{editInputs()}} name="create"style={pefilStyle.edit}></Ionicons>}
-            {edit&&<Ionicons onPress={()=>{editInputs()}} name="close-circle"style={pefilStyle.edit}></Ionicons>}
-            <View style={pefilStyle.photoUser}><Text style={pefilStyle.textCharacter}>{getFirstCharacter()}</Text></View>
-            <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Nombre:</Text>
-                <TextInput  style={pefilStyle.textInputPerfil}
-                    value={perfil.name}
-                    editable={edit}
-                />
-            </View>
-            <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Apellido: </Text>
-                <TextInput   style={pefilStyle.textInputPerfil}
-                    value={perfil.lastname}
-                    editable={edit}
-                />
-            </View>    
-            <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Email: </Text>
-                <TextInput   style={pefilStyle.textInputPerfil}
-                    value={perfil.email}
-                    editable={edit}
-                />
-            </View>  
-            <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Subscripción: </Text>
-                <TextInput style={pefilStyle.textInputPerfil}
-                    value={perfil.subscription}
-                    editable={false}
-                />
-            </View> 
-            {edit&&<View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
-                    <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{guardarCambios()}}>
-                        <Text style={generalStyle.textBottomColor}>Guardar Cambios</Text>
-                    </TouchableOpacity>    
-            </View>}
-            <View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
-                    <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{logOut()}}>
-                        <Text style={generalStyle.textBottomColor}>CERRAR SESIÓN</Text>
-                    </TouchableOpacity>    
-            </View>
+                    {!edit&&<Ionicons onPress={()=>{editInputs()}} name="create"style={pefilStyle.edit}></Ionicons>}
+                    {edit&&<Ionicons onPress={()=>{editInputs()}} name="close-circle"style={pefilStyle.edit}></Ionicons>}
+                    <View style={pefilStyle.photoUser}><Text style={pefilStyle.textCharacter}>{getFirstCharacter()}</Text></View>
+                    <View style={pefilStyle.contentText}>
+                        <Text style={pefilStyle.textPerfil}>Nombre:</Text>
+                        <TextInput  style={pefilStyle.textInputPerfil}
+                            value={perfil.name}
+                            editable={edit}
+                            onChangeText={(text)=>{
+                                setPerfil({
+                                    ...perfil,
+                                    name: text
+                                })
+                            }}
+                        />
+                    </View>
+                    <View style={pefilStyle.contentText}>
+                        <Text style={pefilStyle.textPerfil}>Apellido: </Text>
+                        <TextInput   style={pefilStyle.textInputPerfil}
+                            value={perfil.lastname}
+                            editable={edit}
+                            onChangeText={(text)=>{
+                                setPerfil({
+                                    ...perfil,
+                                    lastname: text
+                                })
+                            }}
+                        />
+                    </View>    
+                    <View style={pefilStyle.contentText}>
+                        <Text style={pefilStyle.textPerfil}>Email: </Text>
+                        <TextInput   style={pefilStyle.textInputPerfil}
+                            value={perfil.email}
+                            editable={false}
+                        />
+                    </View>  
+                    <View style={pefilStyle.contentText}>
+                        <Text style={pefilStyle.textPerfil}>Subscripción: </Text>
+                        <TextInput style={pefilStyle.textInputPerfil}
+                            value={perfil.subscription}
+                            editable={false}
+                        />
+                    </View> 
+                    {edit&&<View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
+                            <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{guardarCambios()}}>
+                                <Text style={generalStyle.textBottomColor}>Guardar Cambios</Text>
+                            </TouchableOpacity>    
+                    </View>}
+                    <View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
+                            <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{logOut()}}>
+                                <Text style={generalStyle.textBottomColor}>CERRAR SESIÓN</Text>
+                            </TouchableOpacity>    
+                    </View>
                 </>
             }
 

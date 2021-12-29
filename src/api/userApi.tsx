@@ -65,4 +65,26 @@ export const userApi = {
 
         return (responseFinal.data !== null) ? responseFinal.data : {} as userProfileInterface;
     },
+
+    updateUser: async (user: userProfileInterface) : Promise<Response<void>> => {
+        
+        let response = await  fetch(`https://obscure-wildwood-00771.herokuapp.com/users/${user.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(user),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        let responseFinal : Response<void> = {} as Response<void>;
+        
+        if (json.message != null)
+            responseFinal.message = json;
+        else
+            responseFinal.data = json[0];
+
+        return responseFinal;
+    },
 }
