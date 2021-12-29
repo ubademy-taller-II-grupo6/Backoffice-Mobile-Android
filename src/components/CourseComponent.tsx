@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Ionicons } from '@expo/vector-icons';
 import { Text, TouchableOpacity, View, Image } from "react-native";
 import { Course } from "../interface/CourseInterface";
@@ -9,6 +9,7 @@ import {Dimensions} from 'react-native';
 import courseComponentStyle from "../styles/courseComponentStyle";
 import { useEffect } from "react";
 import { courseApi } from "../api/courseApi";
+import { AuthContext } from "../context/AuthContext";
 
 const {height, width} = Dimensions.get('window');
 
@@ -102,12 +103,13 @@ interface CourseComponentProps {
 
 export const CourseComponent = (props: CourseComponentProps) => {
     const [finalFavorite, setFavorite] = useState<boolean>();
+    const authContext = useContext(AuthContext);
 
     const changeFavorite = () => {
         if (finalFavorite)
-            courseApi.deleteFavorite(3, props.course.id).then(() => {if (props.onReload) props.onReload()});
+            courseApi.deleteFavorite(authContext.authState.userProfile.id, props.course.id).then(() => {if (props.onReload) props.onReload()});
         else
-            courseApi.setFavorite(3, props.course.id).then(() => {if (props.onReload) props.onReload()});
+            courseApi.setFavorite(authContext.authState.userProfile.id, props.course.id).then(() => {if (props.onReload) props.onReload()});
             
     }
 

@@ -42,7 +42,7 @@ export const Cursos = ({navigation} : Props) => {
 
         Promise.all([
             courseApi.getListCourses(category, subscription),
-            courseApi.getListCoursesByUser(3),
+            courseApi.getListCoursesByUser(authContext.authState.userProfile.id),
             userApi.getCacheSubscriptions(),
             courseApi.getCacheCategories()
         ])
