@@ -27,8 +27,8 @@ export const MisCursos = ({navigation} : Props) => {
 
         Promise.all([
             courseApi.getListCourses(),
-            courseApi.getInscriptionsByStudent(3),
-            courseApi.getListCoursesByUser(3)
+            courseApi.getInscriptionsByStudent(15),
+            courseApi.getListCoursesByUser(15)
         ])
         .then((values) => {
             setLstCoursesUser(values[2].data ?? []);

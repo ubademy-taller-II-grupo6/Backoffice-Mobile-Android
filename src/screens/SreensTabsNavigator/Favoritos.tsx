@@ -17,7 +17,7 @@ export const Favoritos = () => {
         loderContext.changeStateLoder(true);
 
         Promise.all([
-            courseApi.getListCoursesByUser(3)
+            courseApi.getListCoursesByUser(15)
         ])
         .then((values) => {
             setLstFavorites(values[0].data ?? []);
