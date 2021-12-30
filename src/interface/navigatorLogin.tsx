@@ -10,5 +10,9 @@ export type RooteStackParams = {
     CourseDetail:any,
     Courses: any,
     RoomChat:any,
+    MyCourses: any,
+    CourseNew: any,
+    CourseUpdate: any,
+    SubscriptionAdd: any,
+    Perfil: any
 }
-

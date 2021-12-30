@@ -1,9 +1,10 @@
 export interface userProfileInterface {
+    id: number;
     blocked: boolean;
     email: string;
-    id: string;
     lastname: string;
     name: string;
+    subscription: string;
 }
  
 export interface profileUsers {
@@ -17,4 +18,10 @@ interface profileUser {
 
 export interface responseError {
   message: string;
+}
+
+export enum TypesUser {
+    Estudiante = 'estudiante',
+    Colaborador = 'colaborador',
+    Profesor = 'profesor'
 }

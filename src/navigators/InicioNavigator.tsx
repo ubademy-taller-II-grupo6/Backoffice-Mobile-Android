@@ -14,6 +14,10 @@ import { Tabs } from './TabsNavigator';
 import { Ionicons } from '@expo/vector-icons';
 import { CourseDetail } from '../screens/CourseDetail';
 import { RoomChat } from '../screens/RoomChat';
+//import { TypesUser } from '../interface/userInterface';
+import { CourseNew } from '../screens/CourseNew';
+import { CourseUpdate } from '../screens/CourseUpdate';
+import { SubscriptionAdd } from '../screens/SubscriptionAdd';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
@@ -42,6 +46,9 @@ export const InicioNavigator = () => {
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="Tabs" options={{ headerShown: false }} component={Tabs} />}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="CourseDetail" component={CourseDetail} />}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="RoomChat" component={RoomChat} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="CourseNew" component={CourseNew} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="CourseUpdate" component={CourseUpdate} />}
+                        {(userContext.authState.typeUser==TypesUser.Estudiante)&&<Stack.Screen name="SubscriptionAdd" component={SubscriptionAdd} />}
                         {/* <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} /> */}
                     </>
                 )

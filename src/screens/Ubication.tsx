@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { RooteStackParams } from '../interface/navigatorLogin';
@@ -7,9 +7,11 @@ import ubicationStyle from '../styles/ubication';
 import * as Location from 'expo-location';
 import { LocationInterface } from '../interface/PermissionsInterface';
 import generalStyle from '../styles/generalStyle';
+import { AuthContext } from '../context/AuthContext';
 
 interface Props extends NativeStackScreenProps<RooteStackParams, "Ubication"> { };
 export const Ubication = ({ navigation }: Props) => {
+    const authContext = useContext(AuthContext);
 
   let initialState: LocationInterface = {
     latitude: 0,
@@ -17,7 +19,7 @@ export const Ubication = ({ navigation }: Props) => {
   }
 
   const [location, setLocation] = useState(initialState);
-  const [errorMsg, setErrorMsg] = useState(initialState);
+  
   useEffect(() => {
     (async () => {
       let location: Location.LocationObject = await Location.getCurrentPositionAsync({});
@@ -51,7 +53,7 @@ export const Ubication = ({ navigation }: Props) => {
       </MapView><TouchableOpacity onPress={() => { onPressButton() }}>
       <View style={generalStyle.buttonSiguiente}>
         
-          <Text onPress={()=>navigation.navigate('TypeUser')} style={generalStyle.textButtonSiguiente}>SIGUIENTE</Text> 
+          <Text onPress={()=>authContext.changeAuthState('estudiante')} style={generalStyle.textButtonSiguiente}>SIGUIENTE</Text> 
         
       </View>
       </TouchableOpacity>  

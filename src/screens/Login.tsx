@@ -12,6 +12,10 @@ import { LoaderComponent } from '../components/LoaderComponent';
 import { AuthContext } from '../context/AuthContext';
 import { registerService } from '../service/registerService';
 import { LoderContext } from '../context/LoderContext';
+import { useEffect } from 'react';
+import { localStorage } from '../localStorage/localStorage';
+import { userProfileInterface } from '../interface/userInterface';
+import { userApi } from '../api/userApi';
 interface Props extends NativeStackScreenProps<RooteStackParams,'Login'>{};
 
 let letra = ""
@@ -35,24 +39,32 @@ export const Login = ({navigation}:Props) => {
             uiService().alertaInformativa("",user_.message)
             return
         }
-        authContext.signIn({
-            isLoggedIn:true,
-            provider:"EMAIL",
-            emailVerified:user_.user.emailVerified,
-            username:"",
-            email:user_.user.email,
-            potho:"",
-            stsTokenManager:{
-                accessToken:"",
-                apiKey:"",
-                expirationTime:0,
-                refreshToken:user_.user.refreshToken,
-                uid:user_.user.uid
-            },
-            typeUser:"",
-            userProfile:profile
-        })
-        loderContext.changeStateLoder(false)
+
+        userApi.getUserByMail(user_.user.email)
+            .then((value) => {
+                localStorage.save(value.id, value.name, value.lastname, value.email, value.blocked, value.subscription)
+                .then(() => {
+                    authContext.signIn({
+                        isLoggedIn:true,
+                        provider:"EMAIL",
+                        emailVerified:user_.user.emailVerified,
+                        username:"",
+                        email:user_.user.email,
+                        potho:"",
+                        stsTokenManager:{
+                            accessToken:"",
+                            apiKey:"",
+                            expirationTime:0,
+                            refreshToken:user_.user.refreshToken,
+                            uid:user_.user.uid
+                        },
+                        typeUser:"",
+                        userProfile:value
+                    });
+                    loderContext.changeStateLoder(false)
+                }); 
+            })
+               
     }
     let onPressWithGoogle_ = async() => {
         loderContext.changeStateLoder(true)
@@ -76,12 +88,49 @@ export const Login = ({navigation}:Props) => {
             userProfile:{
                 blocked: false,
                 email: "",
-                id: "",
+                id: 0,
                 lastname: "",
                 name: "",
+                subscription: ""
             }
         })
     }
+
+    useEffect(() => {
+        loderContext.changeStateLoder(true);
+
+        localStorage.isLoged()
+            .then((value) => {
+                if (value) {
+                    localStorage.get()
+                    .then((userLoged ) => {
+                        if (userLoged)
+                            authContext.signIn({
+                                isLoggedIn:true,
+                                provider:"EMAIL",
+                                emailVerified:true,
+                                username:"",
+                                email:userLoged.email,
+                                potho:"",
+                                stsTokenManager:{
+                                    accessToken:"",
+                                    apiKey:"",
+                                    expirationTime:0,
+                                    refreshToken:"",
+                                    uid:""
+                                },
+                                typeUser:"",
+                                userProfile: userLoged
+                            });
+
+                        loderContext.changeStateLoder(false);                    
+                    })
+                } else {
+                    loderContext.changeStateLoder(false);
+                }
+            });
+    }, []);
+
     return (
         <ScrollView>
             <View style={generalStyle.content}>
