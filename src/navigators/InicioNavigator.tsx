@@ -13,6 +13,7 @@ import { TypeUser } from '../screens/TypeUser';
 import { Tabs } from './TabsNavigator';
 import { Ionicons } from '@expo/vector-icons';
 import { CourseDetail } from '../screens/CourseDetail';
+import { RoomChat } from '../screens/RoomChat';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
@@ -40,6 +41,7 @@ export const InicioNavigator = () => {
                         {(userContext.authState.typeUser=='none')&&(<Stack.Screen name="TypeUser"  component={TypeUser} />)}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="Tabs" options={{ headerShown: false }} component={Tabs} />}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="CourseDetail" component={CourseDetail} />}
+                        {(userContext.authState.typeUser!='none')&&<Stack.Screen name="RoomChat" component={RoomChat} />}
                         {/* <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} /> */}
                     </>
                 )

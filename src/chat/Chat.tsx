@@ -1,12 +1,13 @@
 // @refresh reset
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { StyleSheet, TextInput, View, YellowBox, Button, LogBox } from 'react-native'
 //import * as firebase from 'firebase'
 import 'firebase/firestore'
 import { GiftedChat } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import firebase from 'firebase';
+import { AuthContext } from '../context/AuthContext';
 
 //LogBox.ignoreWarnings(['Setting a timer for a long period of time'])
 LogBox.ignoreLogs(["Setting a timer for a long period of time"])
@@ -18,6 +19,7 @@ export default function App() {             ///ACA NO DEBERIA SER DESDE LA APP
     const [user, setUser] = useState(null)
     const [name, setName] = useState('')
     const [messages, setMessages] = useState([])
+    const userContext = useContext(AuthContext)
 
     useEffect(() => {
         readUser()

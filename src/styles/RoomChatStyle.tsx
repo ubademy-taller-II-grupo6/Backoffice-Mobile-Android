@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-
-const chatStyle = StyleSheet.create({
+const roomChatStyle = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
@@ -16,19 +15,6 @@ const chatStyle = StyleSheet.create({
         marginBottom: 20,
         borderColor: 'gray',
     },
-    contentAvatar:{
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'flex-start',
-        marginVertical:10,
-        marginLeft:10,
-        alignContent:'center',
-        alignItems:'center'
-    },
-    textAvatar:{
-        color:'#363636',
-        fontSize:20
-    }
 })
 
-export default chatStyle;
+export default roomChatStyle;
