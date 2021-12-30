@@ -7,20 +7,28 @@ import * as firebase from 'firebase'
 import 'firebase/firestore'
 import { RooteStackParams } from '../interface/navigatorLogin'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useRoute } from '@react-navigation/native'
+import { userProfileInterface } from '../interface/userInterface'
 
 LogBox.ignoreLogs(['Setting a timer for a long period of time'])
-interface Props extends NativeStackScreenProps<RooteStackParams,"Tabs">{};
+interface Props extends NativeStackScreenProps<RooteStackParams,"RoomChat">{
+    user: userProfileInterface
+};
 
 const db = firebase.default.firestore()
 const chatsRef = db.collection('chats')
 export const RoomChat = ({navigation}:Props) => {
+    const route = useRoute();
+    const props = route.params as Props;
+
     let initialUserState:any = null
-    const [user, setUser] = useState(initialUserState)
+    const [user, setUser] = useState(props.user)
     const [name, setName] = useState('')
     const [messages, setMessages] = useState([])
 
     useEffect(() => {
-        readUser()
+        //readUser()
+        console.log(user);
         const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
             const messagesFirestore = querySnapshot
                 .docChanges()
