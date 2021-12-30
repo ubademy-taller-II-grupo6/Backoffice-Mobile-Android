@@ -14,7 +14,7 @@ import { Tabs } from './TabsNavigator';
 import { Ionicons } from '@expo/vector-icons';
 import { CourseDetail } from '../screens/CourseDetail';
 import { RoomChat } from '../screens/RoomChat';
-//import { TypesUser } from '../interface/userInterface';
+import { TypesUser } from '../interface/userInterface';
 import { CourseNew } from '../screens/CourseNew';
 import { CourseUpdate } from '../screens/CourseUpdate';
 import { SubscriptionAdd } from '../screens/SubscriptionAdd';
