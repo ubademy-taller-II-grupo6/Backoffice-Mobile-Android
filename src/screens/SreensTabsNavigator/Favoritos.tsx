@@ -5,19 +5,21 @@ import { FlatList,  RefreshControl, SafeAreaView, ScrollView, Text, View } from 
 import { courseApi } from '../../api/courseApi';
 import { CourseComponent } from '../../components/CourseComponent';
 import { LoaderComponent } from '../../components/LoaderComponent';
+import { AuthContext } from '../../context/AuthContext';
 import { LoderContext } from '../../context/LoderContext';
 import { Course } from '../../interface/CourseInterface';
 import courseStyle from '../../styles/courseStyle';
 
 export const Favoritos = () => {
-    const loderContext = useContext(LoderContext)
+    const loderContext = useContext(LoderContext);
+    const authContext = useContext(AuthContext);
     const [lstFavorites, setLstFavorites] = useState<Course[]>();
 
     const getCourses = () => {
         loderContext.changeStateLoder(true);
 
         Promise.all([
-            courseApi.getListCoursesByUser(3)
+            courseApi.getListCoursesByUser(authContext.authState.userProfile.id)
         ])
         .then((values) => {
             setLstFavorites(values[0].data ?? []);

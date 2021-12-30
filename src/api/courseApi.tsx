@@ -251,7 +251,7 @@ export const courseApi = {
         let responseFinal : Response<void> = {} as Response<void>;
 
         if (json.message != null)
-            responseFinal.message = json;
+            responseFinal.message = json.message;
 
         return responseFinal;
     },

@@ -1,9 +1,10 @@
 export interface userProfileInterface {
+    id: number;
     blocked: boolean;
     email: string;
-    id: string;
     lastname: string;
     name: string;
+    subscription: string;
 }
  
 export interface profileUsers {

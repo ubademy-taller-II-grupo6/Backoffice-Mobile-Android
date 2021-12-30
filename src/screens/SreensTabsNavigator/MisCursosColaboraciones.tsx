@@ -24,7 +24,7 @@ export const MisCursosColaboraciones = ({navigation} : Props) => {
         loderContext.changeStateLoder(true);
         Promise.all([
             courseApi.getListCourses(),
-            courseApi.getListIdCoursesByMailCollaborate('dmarkao@gmail.com')
+            courseApi.getListIdCoursesByMailCollaborate(authContext.authState.userProfile.email)
         ])
         .then((values) => {
             setLstCourses(values[0].data?.filter(x => values[1].data?.includes(x.id)) ?? []);

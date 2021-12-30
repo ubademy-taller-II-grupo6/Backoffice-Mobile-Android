@@ -31,6 +31,7 @@ export const CourseNew = () => {
     const props = route.params as CourseNewProps;
 
     const loaderContext = useContext(LoderContext);
+    const authContext = useContext(AuthContext);
     const [error, setError] = useState<string>();
     const { courseForm, changeValue, changeFocus, errorSubmit } = courseFormService();  
     const [lstCategories, setLstCategories] = useState<string[]>();
@@ -50,7 +51,7 @@ export const CourseNew = () => {
             exams: 0,
             subscription: courseForm.subscription.value,
             location: courseForm.location.value,
-            creator: 3,
+            creator: authContext.authState.userProfile.id,
             enrollment_conditions: courseForm.enrollment_conditions.value,
             unenrollment_conditions: courseForm.unenrollment_conditions.value
         } as Course;

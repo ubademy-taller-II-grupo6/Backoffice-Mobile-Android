@@ -5,26 +5,35 @@ import { AuthState } from '../../interface/AuthStateInterface'
 import generalStyle from '../../styles/generalStyle'
 import pefilStyle from '../../styles/perfilStyle'
 import { Ionicons } from '@expo/vector-icons';
+import { userProfileInterface } from '../../interface/userInterface'
+import { userApi } from '../../api/userApi'
+import { LoderContext } from '../../context/LoderContext'
+import { LoaderComponent } from '../../components/LoaderComponent'
+import { localStorage } from '../../localStorage/localStorage';
 
 export const Perfil = () => {
-    //let edit = false
-    let initialState:any = {
-        name:"",
-        lastname:"",
-        typeUser:"",
-        userProfile:""
-    }
+    
+    const loaderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext)
     const [edit, setedit] = useState(false)
-    const [perfil, setstate] = useState(initialState)
+    const [perfil, setPerfil] = useState<userProfileInterface>()
     let getFirstCharacter = () => {
-        return "E"//authContext.authState.userProfile.name.charAt(0).toUpperCase()
+        return authContext.authState.userProfile.name.charAt(0).toUpperCase() ?? "-";
     }
     let logOut= () => {
-        authContext.lognOut()
+        localStorage.remove().then(() => authContext.lognOut());        
     }
     let guardarCambios = () => {
-        
+
+        if (perfil) {
+            loaderContext.changeStateLoder(true);
+            userApi.updateUser(perfil)
+                .then((value) => {
+                    if (value.message != null) alert(value.message);
+                    setedit(false);
+                    loaderContext.changeStateLoder(false);
+                });
+        }
     }
     let editInputs = ( ) =>{
         let currentEdit = edit
@@ -32,61 +41,74 @@ export const Perfil = () => {
         console.log(edit)
     }
     useEffect(() => {
-        let newData:any = {
-            name:"Jorge",
-            lastname:"Esteves",
-            email:"jesteves@gmail.com",
-        }
-        setstate(newData)
+        loaderContext.changeStateLoder(true);
+        userApi.getUserById(authContext.authState.userProfile.id)
+            .then((user) => {
+                if (user) setPerfil(user);
+                loaderContext.changeStateLoder(false);
+            })
     }, [])
     return (
         <View style={pefilStyle.contentPrincipal}>
-            {!edit&&<Ionicons onPress={()=>{editInputs()}} name="create"style={pefilStyle.edit}></Ionicons>}
-            {edit&&<Ionicons onPress={()=>{editInputs()}} name="close-circle"style={pefilStyle.edit}></Ionicons>}
-            <View style={pefilStyle.photoUser}><Text style={pefilStyle.textCharacter}>{getFirstCharacter()}</Text></View>
-            {/* <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Nombre: {authContext.authState.userProfile.name}</Text>
-            </View> */}
-            <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Nombre:</Text>
-                <TextInput  style={pefilStyle.textInputPerfil}
-                    value={perfil.name}
-                    editable={edit}
-                />
-            </View>
-            {/* <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Apellido: {authContext.authState.userProfile.lastname}</Text>
-            </View> */}
-            <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Apellido: </Text>
-                <TextInput   style={pefilStyle.textInputPerfil}
-                    value={perfil.lastname}
-                    editable={edit}
-                />
-            </View>    
-            {/* <View  style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Email: {authContext.authState.userProfile.email}</Text>
-            </View> */}
-            <View style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>email: </Text>
-                <TextInput   style={pefilStyle.textInputPerfil}
-                    value={perfil.email}
-                    editable={edit}
-                />
-            </View> 
-            {/* <View  style={pefilStyle.contentText}>
-                <Text style={pefilStyle.textPerfil}>Tipo de Usuario elegido: {authContext.authState.typeUser}</Text>
-            </View> */}
-            {edit&&<View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
-                    <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{guardarCambios()}}>
-                        <Text style={generalStyle.textBottomColor}>Guardar Cambios</Text>
-                    </TouchableOpacity>    
-            </View>}
-            <View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
-                    <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{logOut()}}>
-                        <Text style={generalStyle.textBottomColor}>CERRAR SESIÓN</Text>
-                    </TouchableOpacity>    
-            </View>
+        {loaderContext.loderState.isLoder && <LoaderComponent/>}
+            {
+                perfil && <>
+                    {!edit&&<Ionicons onPress={()=>{editInputs()}} name="create"style={pefilStyle.edit}></Ionicons>}
+                    {edit&&<Ionicons onPress={()=>{editInputs()}} name="close-circle"style={pefilStyle.edit}></Ionicons>}
+                    <View style={pefilStyle.photoUser}><Text style={pefilStyle.textCharacter}>{getFirstCharacter()}</Text></View>
+                    <View style={pefilStyle.contentText}>
+                        <Text style={pefilStyle.textPerfil}>Nombre:</Text>
+                        <TextInput  style={pefilStyle.textInputPerfil}
+                            value={perfil.name}
+                            editable={edit}
+                            onChangeText={(text)=>{
+                                setPerfil({
+                                    ...perfil,
+                                    name: text
+                                })
+                            }}
+                        />
+                    </View>
+                    <View style={pefilStyle.contentText}>
+                        <Text style={pefilStyle.textPerfil}>Apellido: </Text>
+                        <TextInput   style={pefilStyle.textInputPerfil}
+                            value={perfil.lastname}
+                            editable={edit}
+                            onChangeText={(text)=>{
+                                setPerfil({
+                                    ...perfil,
+                                    lastname: text
+                                })
+                            }}
+                        />
+                    </View>    
+                    <View style={pefilStyle.contentText}>
+                        <Text style={pefilStyle.textPerfil}>Email: </Text>
+                        <TextInput   style={pefilStyle.textInputPerfil}
+                            value={perfil.email}
+                            editable={false}
+                        />
+                    </View>  
+                    <View style={pefilStyle.contentText}>
+                        <Text style={pefilStyle.textPerfil}>Subscripción: </Text>
+                        <TextInput style={pefilStyle.textInputPerfil}
+                            value={perfil.subscription}
+                            editable={false}
+                        />
+                    </View> 
+                    {edit&&<View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
+                            <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{guardarCambios()}}>
+                                <Text style={generalStyle.textBottomColor}>Guardar Cambios</Text>
+                            </TouchableOpacity>    
+                    </View>}
+                    <View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
+                            <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{logOut()}}>
+                                <Text style={generalStyle.textBottomColor}>CERRAR SESIÓN</Text>
+                            </TouchableOpacity>    
+                    </View>
+                </>
+            }
+
         </View>
     )
 }
