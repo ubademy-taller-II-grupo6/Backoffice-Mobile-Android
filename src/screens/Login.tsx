@@ -42,7 +42,7 @@ export const Login = ({navigation}:Props) => {
 
         userApi.getUserByMail(user_.user.email)
             .then((value) => {
-                localStorage.save(value.id, value.name, value.lastname, value.email, value.blocked)
+                localStorage.save(value.id, value.name, value.lastname, value.email, value.blocked, value.subscription)
                 .then(() => {
                     authContext.signIn({
                         isLoggedIn:true,
@@ -91,6 +91,7 @@ export const Login = ({navigation}:Props) => {
                 id: 0,
                 lastname: "",
                 name: "",
+                subscription: ""
             }
         })
     }
