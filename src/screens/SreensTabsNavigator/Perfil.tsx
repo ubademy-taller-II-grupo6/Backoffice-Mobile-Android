@@ -28,7 +28,8 @@ export const Perfil = () => {
         if (perfil) {
             loaderContext.changeStateLoder(true);
             userApi.updateUser(perfil)
-                .then(() => {
+                .then((value) => {
+                    if (value.message != null) alert(value.message);
                     setedit(false);
                     loaderContext.changeStateLoder(false);
                 });

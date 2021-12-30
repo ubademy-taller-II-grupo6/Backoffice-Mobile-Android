@@ -80,8 +80,8 @@ export const userApi = {
         let json = await response.json();
         let responseFinal : Response<void> = {} as Response<void>;
         
-        if (json.message != null)
-            responseFinal.message = json;
+        if ((json.message != null) && (json.message != "El usuario fue actualizado con éxito"))
+            responseFinal.message = json.message;
         else
             responseFinal.data = json[0];
 
