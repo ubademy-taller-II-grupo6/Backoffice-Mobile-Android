@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 //import AsyncStorage from '@react-native-community/async-storage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -9,6 +9,7 @@ import { RooteStackParams } from '../interface/navigatorLogin'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useRoute } from '@react-navigation/native'
 import { userProfileInterface } from '../interface/userInterface'
+import { AuthContext } from '../context/AuthContext'
 
 LogBox.ignoreLogs(['Setting a timer for a long period of time'])
 interface Props extends NativeStackScreenProps<RooteStackParams,"RoomChat">{
@@ -20,15 +21,15 @@ const chatsRef = db.collection('chats')
 export const RoomChat = ({navigation}:Props) => {
     const route = useRoute();
     const props = route.params as Props;
+    const authContext = useContext(AuthContext);
 
     let initialUserState:any = null
-    const [user, setUser] = useState(props.user)
+    const [user, setUser] = useState(authContext.authState.userProfile)
     const [name, setName] = useState('')
     const [messages, setMessages] = useState([])
 
     useEffect(() => {
         //readUser()
-        console.log(user);
         const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
             const messagesFirestore = querySnapshot
                 .docChanges()
@@ -47,7 +48,8 @@ export const RoomChat = ({navigation}:Props) => {
 
     const appendMessages = useCallback(
         (messages) => {
-            setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+            let messagesFilter = messages.filter((x: any) => (x?.user?.name === props.user.name) || ((x?.user?.name === authContext.authState.userProfile.name)));
+            setMessages((previousMessages) => GiftedChat.append(previousMessages, messagesFilter))
         },
         [messages]
     )
