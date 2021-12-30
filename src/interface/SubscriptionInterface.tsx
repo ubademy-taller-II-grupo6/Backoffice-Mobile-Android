@@ -1,4 +1,5 @@
 export interface Subscription {
     subscription_id: string,
-    conditions: string
+    conditions: string,
+    price: string
 }

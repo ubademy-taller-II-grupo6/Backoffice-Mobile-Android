@@ -10,8 +10,12 @@ import { userApi } from '../../api/userApi'
 import { LoderContext } from '../../context/LoderContext'
 import { LoaderComponent } from '../../components/LoaderComponent'
 import { localStorage } from '../../localStorage/localStorage';
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RooteStackParams } from '../../interface/navigatorLogin'
 
-export const Perfil = () => {
+interface Props extends NativeStackScreenProps<RooteStackParams,'Perfil'>{};
+
+export const Perfil = ({navigation} : Props) => {
     
     const loaderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext)
@@ -35,18 +39,33 @@ export const Perfil = () => {
                 });
         }
     }
+
+    let changeSubscription = () => {
+        navigation.navigate('SubscriptionAdd', { onSubmit: onReload });
+    }
+
+    let onReload = () => {
+        navigation.pop();
+        getUserInfo();
+    }
+
     let editInputs = ( ) =>{
         let currentEdit = edit
         setedit(!currentEdit)
         console.log(edit)
     }
-    useEffect(() => {
+
+    let getUserInfo = ( ) =>{
         loaderContext.changeStateLoder(true);
         userApi.getUserById(authContext.authState.userProfile.id)
             .then((user) => {
                 if (user) setPerfil(user);
                 loaderContext.changeStateLoder(false);
             })
+    }
+
+    useEffect(() => {
+        getUserInfo();
     }, [])
     return (
         <View style={pefilStyle.contentPrincipal}>
@@ -101,11 +120,23 @@ export const Perfil = () => {
                                 <Text style={generalStyle.textBottomColor}>Guardar Cambios</Text>
                             </TouchableOpacity>    
                     </View>}
-                    <View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
-                            <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{logOut()}}>
-                                <Text style={generalStyle.textBottomColor}>CERRAR SESIÓN</Text>
-                            </TouchableOpacity>    
-                    </View>
+                    {
+                        !edit &&
+                            <View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
+                                    <TouchableOpacity style={generalStyle.bottomLogin} onPress={changeSubscription}>
+                                        <Text style={generalStyle.textBottomColor}>CAMBIAR SUBSCRIPCION</Text>
+                                    </TouchableOpacity>    
+                            </View>
+                    }
+
+                    {
+                        !edit &&
+                            <View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
+                                    <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{logOut()}}>
+                                        <Text style={generalStyle.textBottomColor}>CERRAR SESIÓN</Text>
+                                    </TouchableOpacity>    
+                            </View>
+                    }
                 </>
             }
 

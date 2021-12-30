@@ -4,17 +4,20 @@ import { userProfileInterface } from '../interface/userInterface';
 class LocalStorage {
     keyStorage = "userMobileUbademyStorage";
 
-    save = async (id: number, name: string, lastname: string, email: string, blocked: boolean) => {
+    save = async (id: number, name: string, lastname: string, email: string, blocked: boolean, subscription: string) => {
         let user : userProfileInterface = {
             email: email,
             id: id,
             lastname: lastname,
             name: name,
-            blocked: blocked
+            blocked: blocked,
+            subscription: subscription
         }
         const jsonValue = JSON.stringify(user)
 
         try {
+            let value = await AsyncStorage.getItem(this.keyStorage);
+            if (value != null) await this.remove();            
             await  AsyncStorage.setItem(this.keyStorage, jsonValue);
         } catch (e) {
             alert("Ha ocurrido un error inesperado")
