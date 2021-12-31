@@ -64,7 +64,7 @@ export const MisCursos = ({navigation} : Props) => {
                     renderItem={(item) => <CourseComponent course={item.item}
                                                            allowFavorite={allowFavorite}
                                                            isFavorite={lstCoursesUser?.some((x => x.id === item.item.id)) || false}
-                                                           onClick={() => navigation.navigate('CourseDetail', {idCourse: item.item.id})}
+                                                           onClick={() => navigation.navigate('CourseDetail', {navigation: navigation, idCourse: item.item.id})}
                                                            onReload={getCourses}/>}
                     keyExtractor={(item) => `${item.title}-${item.id}`}
                 />
