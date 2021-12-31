@@ -56,6 +56,11 @@ export const ExamList = () => {
         else if (isTeacher) getExamTeacher();
     }
 
+    const onSubmitNewExam = () => {
+        props.navigation.pop();
+        getExams();
+    }
+
     useEffect(() => {
         getExams();
     }, []);
@@ -76,7 +81,8 @@ export const ExamList = () => {
                 {
                     isTeacher && 
                     <View style={[generalStyle.contentBottomLogin, {marginTop: 10}]}>
-                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={() => props.navigation.navigate('ExamNew', { navigation: props.navigation, idCourse: props.idCourse })}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} 
+                                onPress={() => props.navigation.navigate('ExamNew', { navigation: props.navigation, idCourse: props.idCourse, onSubmit: onSubmitNewExam })}>
                             <Text style={generalStyle.textBottomColor}>Nuevo Examen</Text>
                         </TouchableOpacity>    
                     </View>

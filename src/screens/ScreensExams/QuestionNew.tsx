@@ -18,13 +18,14 @@ import { questionFormService } from '../../service/questionFormService';
 import courseFilterStyle from '../../styles/courseFilterStyle';
 import generalStyle from '../../styles/generalStyle';
 
-interface QuestionNewProps extends NativeStackScreenProps<RooteStackParams,'QuestionNew'>{
-    idExam: number
+interface QuestionNewProps /* extends NativeStackScreenProps<RooteStackParams,'QuestionNew'> */{
+    onSubmit: (lstQuestions : Question[]) => void,
+    onCancel: () => void
 };
 
-export const QuestionNew = () => {
-    const route = useRoute();
-    const props = route.params as QuestionNewProps;
+export const QuestionNew = (props: QuestionNewProps) => {
+/*     const route = useRoute();
+    const props = route.params as QuestionNewProps; */
 
     const loaderContext = useContext(LoderContext);
     const [error, setError] = useState<string>();
@@ -48,7 +49,7 @@ export const QuestionNew = () => {
             num_question: lstQuestion.length + 1,
             description: questionForm.description.value,
             answer: (questionForm.answer.value == "true") ? true : false,
-            idexam: props.idExam
+            idexam: 0
         } as Question;
 
         let newList : Question[] = [...lstQuestion, newQuestion];
@@ -76,12 +77,14 @@ export const QuestionNew = () => {
             num_question: lstQuestion.length + 1,
             description: questionForm.description.value,
             answer: (questionForm.answer.value == "true") ? true : false,
-            idexam: 2
+            idexam: 0
         } as Question;
 
         let newList : Question[] = [...lstQuestion, newQuestion];
         
         loaderContext.changeStateLoder(false);
+
+        props.onSubmit(newList);
     };
 
     const onCancel = () => {
@@ -96,7 +99,7 @@ export const QuestionNew = () => {
               },
               {
                 text: "Aceptar",
-                onPress: () => { props.navigation.pop(); } 
+                onPress: () => { props.onCancel(); } 
               }
             ]
           );        
@@ -104,7 +107,7 @@ export const QuestionNew = () => {
 
     return (
         <SafeAreaView>
-            <View style={{marginTop: 15, width: '100%', height: '100%',}}>
+            <View style={{width: '100%', height: '100%',}}>
                 {loaderContext.loderState.isLoder && <LoaderComponent/> }
 
                 <View style={generalStyle.contentInputs}>

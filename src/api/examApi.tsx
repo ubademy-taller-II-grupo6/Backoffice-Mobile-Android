@@ -1,4 +1,4 @@
-import { Exam } from "../interface/ExamInterface";
+import { Exam, Question } from "../interface/ExamInterface";
 import { Response } from "../interface/ResponseInterface";
 import { Subscription } from "../interface/SubscriptionInterface";
 import { userProfileInterface } from "../interface/userInterface";
@@ -40,10 +40,47 @@ export const examApi = {
         return responseFinal;
     },
 
-    createExam: async (exam: Exam) : Promise<Response<number>> => {        
-        let response = await  fetch(`https://ubademy-exams.herokuapp.com/exams`, {
+    createExam: async (exam: Exam) : Promise<Response<number>> => {    
+        
+        var body = {
+            "idcreator": exam.idcreator,
+            "idcourse": exam.idcourse,
+            "title": exam.title,
+            "description": exam.description
+        };
+        
+        let response = await  fetch(`https://ubademy-exams.herokuapp.com/exams/`, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        
+        let json = await response.json();
+        let responseFinal : Response<number> = {} as Response<number>;
+        
+        if (json.idexam != null)
+            responseFinal.data = json.idexam;
+        else
+            responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
+        
+        return responseFinal;
+    },
+
+    createQuestion: async (question: Question, idExam: number) : Promise<Response<number>> => {       
+        var body = {
+            "idexam": idExam,
+            "num_question": question.num_question,
+            "description": question.description,
+            "answer": question.answer
+        };
+
+        let response = await  fetch(`https://ubademy-exams.herokuapp.com/exams/questions/`, {
           method: 'POST',
-          body: JSON.stringify(exam),
+          body: JSON.stringify(body),
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -53,8 +90,8 @@ export const examApi = {
         let json = await response.json();
         let responseFinal : Response<number> = {} as Response<number>;
 
-        if (json.detail == null)
-            responseFinal.data = json.idexam;
+        if (json.idquestion != null)
+            responseFinal.data = json.idquestion;
         else
             responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
         
