@@ -29,6 +29,19 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/ubademyLogo.png",
+          "color": "#FFFFFF",
+          "sounds": [
+            "./assets/notification-sound.wav",
+            "./assets/notification-sound-other.wav"
+          ]
+        }
+      ]
+    ]
   }
 }
