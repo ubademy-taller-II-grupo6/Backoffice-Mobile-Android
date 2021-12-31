@@ -20,6 +20,7 @@ import { CourseUpdate } from '../screens/CourseUpdate';
 import { SubscriptionAdd } from '../screens/SubscriptionAdd';
 import { ExamNew } from '../screens/ScreensExams/ExamNew';
 import { ExamList } from '../screens/ScreensExams/ExamList';
+import { QuestionNew } from '../screens/ScreensExams/QuestionNew';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
@@ -53,6 +54,7 @@ export const InicioNavigator = () => {
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="CourseNew" component={CourseNew} />}
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="CourseUpdate" component={CourseUpdate} />}
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="ExamNew" component={ExamNew} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="QuestionNew" component={QuestionNew} />}
                         
                         {(userContext.authState.typeUser==TypesUser.Estudiante)&&<Stack.Screen name="SubscriptionAdd" component={SubscriptionAdd} />}
                         {/* <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} /> */}

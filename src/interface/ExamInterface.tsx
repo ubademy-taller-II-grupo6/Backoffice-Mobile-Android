@@ -6,3 +6,10 @@ export interface Exam {
     idcourse: number;
     ispublished: boolean;
 }
+
+export interface Question {
+    num_question: number;
+    description: string;
+    answer: boolean;
+    idexam: number;
+}

@@ -16,5 +16,6 @@ export type RooteStackParams = {
     SubscriptionAdd: any,
     Perfil: any,
     ExamNew: any,
-    ExamList: any
+    ExamList: any,
+    QuestionNew: any
 }

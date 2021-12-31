@@ -1,12 +1,20 @@
-import { Picker } from '@react-native-picker/picker';
-import { useLinkProps, useRoute } from '@react-navigation/native';
+import React, { useContext, useEffect,useState } from 'react'
+import { useRoute } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext } from 'react'
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { Alert, View, SafeAreaView, Text, TouchableOpacity, TextInput } from 'react-native'
+
+
+import { examApi } from '../../api/examApi';
+import { AuthContext } from '../../context/AuthContext';
 import { LoderContext } from '../../context/LoderContext';
+import { examFormService } from '../../service/examFormService';
+
+import { LoaderComponent } from '../../components/LoaderComponent';
+
+import { Exam } from '../../interface/ExamInterface';
 import { RooteStackParams } from '../../interface/navigatorLogin';
+
+import generalStyle from '../../styles/generalStyle';
 
 interface ExamNewProps extends NativeStackScreenProps<RooteStackParams,'ExamNew'>{
     idCourse: number
@@ -17,15 +25,113 @@ export const ExamNew = () => {
     const props = route.params as ExamNewProps;
 
     const loaderContext = useContext(LoderContext);
+    const authContext = useContext(AuthContext);
+    const [error, setError] = useState<string>();
+    const { examForm, changeValue, changeFocus, errorSubmit } = examFormService();
 
-    useEffect(() => {
-        // Lo que queres que se haga apenas muestra la pantalla
-    }, []);
+    const createExam = () => {
+        setError(undefined);
+
+        loaderContext.changeStateLoder(true);
+
+        if (!examForm.title.isValid || !examForm.description.isValid) {
+            errorSubmit();
+            setError("Operación inválida: se encontraron campos faltantes");
+            loaderContext.changeStateLoder(false);
+        }
+
+        let newExam : Exam = {
+            title: examForm.title.value,
+            description: examForm.description.value,
+            creator: authContext.authState.userProfile.id,
+            idexam: 0,
+            idcourse: props.idCourse,
+            ispublished: false
+        } as unknown as Exam;
+        
+        loaderContext.changeStateLoder(false);
+
+        props.navigation.navigate('QuestionNew', {
+            idExam: 2,
+            navigation: props.navigation
+        });
+/*         examApi.createExam(newExam)
+        .then((value) => {
+            if (value.message === "El curso se creó correctamente")
+                console.log("SUMBIT");
+            else {
+                errorSubmit();
+                setError(value.message || "Ha ocurrido un error");
+            }
+            loaderContext.changeStateLoder(false);
+        }); */
+    };
 
     return (
         <SafeAreaView>
             <View style={{marginTop: 15, width: '100%', height: '100%',}}>
-                <Text>Creacion de examen</Text>
+                {loaderContext.loderState.isLoder && <LoaderComponent/> }
+
+                <View style={generalStyle.contentInputs}>
+                    <View style={[(examForm.title.isFocus&&examForm.title.isValid)?generalStyle.inputFocus:
+                            ((examForm.title.isFocus&&!examForm.title.isValid)
+                            ||(examForm.title.hasFocus&&!examForm.title.isValid))
+                            ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
+                        <TextInput
+                            style={generalStyle.inputText}
+                            placeholder='Título'
+                            placeholderTextColor = "white"
+                            onChangeText={(text)=>{
+                                setError(undefined);
+                                changeValue('title',text)
+                            }}
+                            onFocus={()=>{
+                                changeFocus('title',true)
+                            }}
+                            onBlur={()=>{
+                                changeFocus('title',false)
+                            }}
+                        />  
+                    </View>
+                    <View style={[(examForm.description.isFocus&&examForm.description.isValid)?generalStyle.inputFocus:
+                            ((examForm.description.isFocus&&!examForm.description.isValid)
+                            ||(examForm.description.hasFocus&&!examForm.description.isValid))
+                            ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
+                        <TextInput
+                            style={generalStyle.inputText}
+                            placeholder='Descripción'
+                            placeholderTextColor = "white"
+                            onChangeText={(text)=>{
+                                setError(undefined);
+                                changeValue('description',text)
+                            }}
+                            onFocus={()=>{
+                                changeFocus('description',true)
+                            }}
+                            onBlur={()=>{
+                                changeFocus('description',false)
+                            }}
+                        /> 
+                    </View>
+                    {
+                        error &&
+                            <View style={{marginBottom: 10}}>
+                                <Text style={{color: 'red'}}>{error}</Text>
+                            </View>
+                    }
+
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={createExam}>
+                            <Text style={generalStyle.textBottomColor}>Siguiente</Text>
+                        </TouchableOpacity>    
+                    </View>
+
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={[generalStyle.bottomLogin, {backgroundColor:'rgb(218,76,53)'}]} onPress={() => props.navigation.pop()}>
+                            <Text style={generalStyle.textBottomColor}>Cancelar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>    
             </View>    
         </SafeAreaView>
     )

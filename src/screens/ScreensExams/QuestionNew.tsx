@@ -1,0 +1,176 @@
+import React, { useContext, useState } from 'react'
+
+import { Picker } from '@react-native-picker/picker';
+import { useRoute } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Alert, View, SafeAreaView, Text, TouchableOpacity, TextInput } from 'react-native'
+
+import { examApi } from '../../api/examApi';
+import { AuthContext } from '../../context/AuthContext';
+import { LoderContext } from '../../context/LoderContext';
+
+import { LoaderComponent } from '../../components/LoaderComponent';
+
+import { Exam, Question } from '../../interface/ExamInterface';
+import { RooteStackParams } from '../../interface/navigatorLogin';
+import { questionFormService } from '../../service/questionFormService';
+
+import courseFilterStyle from '../../styles/courseFilterStyle';
+import generalStyle from '../../styles/generalStyle';
+
+interface QuestionNewProps extends NativeStackScreenProps<RooteStackParams,'QuestionNew'>{
+    idExam: number
+};
+
+export const QuestionNew = () => {
+    const route = useRoute();
+    const props = route.params as QuestionNewProps;
+
+    const loaderContext = useContext(LoderContext);
+    const [error, setError] = useState<string>();
+    const { questionForm, changeValue, changeFocus, errorSubmit, cleanForm } = questionFormService();  
+    const [lstQuestion, setLstQuestion] = useState<Question[]>([]);
+    const [textInputDescription, settextInputDescription] = useState<TextInput | null>();
+
+    const onNewQuestion = () => {
+        setError(undefined);
+
+        loaderContext.changeStateLoder(true);
+
+        if ((!questionForm.description.isValid) || (!questionForm.answer.isValid || questionForm.answer.value == "" )) {
+            errorSubmit();
+            setError("Operación inválida: se encontraron campos faltantes");
+            loaderContext.changeStateLoder(false);
+            return;
+        }
+
+        let newQuestion : Question = {
+            num_question: lstQuestion.length + 1,
+            description: questionForm.description.value,
+            answer: (questionForm.answer.value == "true") ? true : false,
+            idexam: props.idExam
+        } as Question;
+
+        let newList : Question[] = [...lstQuestion, newQuestion];
+        setLstQuestion(newList);
+
+        textInputDescription?.clear();
+        cleanForm();
+
+        loaderContext.changeStateLoder(false);
+    };
+    
+    const onConfirmQuestion = () => {
+        setError(undefined);
+
+        loaderContext.changeStateLoder(true);
+
+        if ((!questionForm.description.isValid) || (!questionForm.answer.isValid || questionForm.answer.value == "" )) {
+            errorSubmit();
+            setError("Operación inválida: se encontraron campos faltantes");
+            loaderContext.changeStateLoder(false);
+            return;
+        }
+
+        let newQuestion : Question = {
+            num_question: lstQuestion.length + 1,
+            description: questionForm.description.value,
+            answer: (questionForm.answer.value == "true") ? true : false,
+            idexam: 2
+        } as Question;
+
+        let newList : Question[] = [...lstQuestion, newQuestion];
+        
+        loaderContext.changeStateLoder(false);
+    };
+
+    const onCancel = () => {
+        Alert.alert(
+            `Atención!`,
+            `Desea cancelar la creación de las preguntas?`,
+            [
+              {
+                text: "Cancelar",
+                onPress: () => {},
+                style: "cancel"
+              },
+              {
+                text: "Aceptar",
+                onPress: () => { props.navigation.pop(); } 
+              }
+            ]
+          );        
+    }
+
+    return (
+        <SafeAreaView>
+            <View style={{marginTop: 15, width: '100%', height: '100%',}}>
+                {loaderContext.loderState.isLoder && <LoaderComponent/> }
+
+                <View style={generalStyle.contentInputs}>
+                    <View style={[(questionForm.description.isFocus&&questionForm.description.isValid)?generalStyle.inputFocus:
+                            ((questionForm.description.isFocus&&!questionForm.description.isValid)
+                            ||(questionForm.description.hasFocus&&!questionForm.description.isValid))
+                            ?generalStyle.inputFocusError:generalStyle.contentInput,generalStyle.contentInput]}>
+                        <TextInput
+                            style={generalStyle.inputText}
+                            ref={input => { settextInputDescription(input) }}
+                            placeholder='Descripción'
+                            placeholderTextColor = "white"
+                            onChangeText={(text)=>{
+                                setError(undefined);
+                                changeValue('description',text)
+                            }}
+                            onFocus={()=>{
+                                changeFocus('description',true)
+                            }}
+                            onBlur={()=>{
+                                changeFocus('description',false)
+                            }}
+                        /> 
+                    </View>
+                </View>    
+
+                <View style={[courseFilterStyle.marginPickers, {marginBottom: 20}]}>
+                    <Text style={courseFilterStyle.titlePickers}>Respuesta</Text>
+                    <Picker
+                        selectedValue={questionForm.answer.value}
+                        onValueChange={(itemValue, itemIndex) => changeValue('answer', itemValue)
+                        }>
+                        <Picker.Item label="-" value="" />
+                        <Picker.Item label="Verdadero" value="true" />
+                        <Picker.Item label="Falso" value="false" />
+                    </Picker>
+                </View>
+
+                    {
+                        error &&
+                            <View style={{marginBottom: 10}}>
+                                <Text style={{color: 'red'}}>{error}</Text>
+                            </View>
+                    }
+
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={onNewQuestion}>
+                            <Text style={generalStyle.textBottomColor}>Siguiente</Text>
+                        </TouchableOpacity>    
+                    </View>
+
+                    {
+                        lstQuestion.length > 0 &&
+                            <View style={generalStyle.contentBottomLogin}>
+                                <TouchableOpacity style={generalStyle.bottomLogin} onPress={onConfirmQuestion}>
+                                    <Text style={generalStyle.textBottomColor}>Confirmar</Text>
+                                </TouchableOpacity>    
+                            </View>
+                    }
+
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={[generalStyle.bottomLogin, {backgroundColor:'rgb(218,76,53)'}]} onPress={onCancel}>
+                            <Text style={generalStyle.textBottomColor}>Cancelar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>    
+        </SafeAreaView>
+    )
+}

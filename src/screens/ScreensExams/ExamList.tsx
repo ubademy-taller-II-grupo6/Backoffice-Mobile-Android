@@ -76,7 +76,7 @@ export const ExamList = () => {
                 {
                     isTeacher && 
                     <View style={[generalStyle.contentBottomLogin, {marginTop: 10}]}>
-                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={() => props.navigation.navigate('ExamNew', { idCourse: props.idCourse })}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={() => props.navigation.navigate('ExamNew', { navigation: props.navigation, idCourse: props.idCourse })}>
                             <Text style={generalStyle.textBottomColor}>Nuevo Examen</Text>
                         </TouchableOpacity>    
                     </View>

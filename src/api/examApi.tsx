@@ -40,7 +40,7 @@ export const examApi = {
         return responseFinal;
     },
 
-    createCourse: async (exam: Exam) : Promise<Response<string>> => {        
+    createExam: async (exam: Exam) : Promise<Response<number>> => {        
         let response = await  fetch(`https://ubademy-exams.herokuapp.com/exams`, {
           method: 'POST',
           body: JSON.stringify(exam),
@@ -51,10 +51,10 @@ export const examApi = {
           }
         });
         let json = await response.json();
-        let responseFinal : Response<string> = {} as Response<string>;
+        let responseFinal : Response<number> = {} as Response<number>;
 
         if (json.detail == null)
-            responseFinal.data = "Examen creado con éxito";
+            responseFinal.data = json.idexam;
         else
             responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
         
