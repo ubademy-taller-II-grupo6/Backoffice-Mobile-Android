@@ -26,3 +26,8 @@ export interface QuestionAnswerStudent {
     num_question: number,
     answer: boolean
 }
+
+export interface StatusExamStudentWithExam {
+    id_exam: number,
+    status: StatusExamStudent | undefined 
+}

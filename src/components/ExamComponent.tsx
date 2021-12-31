@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Ionicons } from '@expo/vector-icons';
 import { Text, TouchableOpacity, View } from "react-native";
-import { Exam } from "../interface/ExamInterface";
+import { Exam, StatusExamStudent } from "../interface/ExamInterface";
 
 import { StyleSheet } from "react-native";
 import { useState } from "react";
@@ -14,6 +14,7 @@ import { TypesUser } from "../interface/userInterface";
 
 interface ExamComponentProps {
     exam: Exam,
+    status?: StatusExamStudent,
     onClick: () => void,
     onReload?: () => void
 }
@@ -23,6 +24,8 @@ export const ExamComponent = (props: ExamComponentProps) => {
     const authContext = useContext(AuthContext);
     const isStudent : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
     const isTeacher : boolean = authContext.authState.typeUser === TypesUser.Profesor;
+    const qualified : boolean = (props.status?.status === "CALIFICADO");
+    const approved : boolean = qualified && (parseInt(props.status?.score ?? "0") >= 4);
 
     const changeFavorite = () => {
  
@@ -47,9 +50,15 @@ export const ExamComponent = (props: ExamComponentProps) => {
                             </Text>
                     }
                     {
-                        isStudent && 
+                        isStudent &&
                             <Text style={examComponentStyle.colorDescription}>
-                                RENDIDO?
+                                { props.status?.status ?? "Sin responder" }
+                            </Text>
+                    }
+                    {
+                        (isStudent && qualified) &&
+                            <Text style={examComponentStyle.colorDescription}>
+                                {`Nota: ${props.status?.score}`}
                             </Text>
                     }
                 </View>
@@ -65,6 +74,11 @@ export const ExamComponent = (props: ExamComponentProps) => {
                     null
             }
             
+            {
+                (isStudent && qualified) && 
+                    <Ionicons style={{position: 'absolute', top: 5, right: 15, fontSize:30, color:`${approved ? "green" : "red"}`}}
+                              name={`${approved ? "checkmark-sharp" : "close"}`} size={20} />
+            }
         </View>
     );
 }

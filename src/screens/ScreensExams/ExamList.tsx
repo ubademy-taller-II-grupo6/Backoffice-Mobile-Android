@@ -10,7 +10,7 @@ import { ExamComponent } from '../../components/ExamComponent';
 import { LoaderComponent } from '../../components/LoaderComponent';
 import { AuthContext } from '../../context/AuthContext';
 import { LoderContext } from '../../context/LoderContext';
-import { Exam } from '../../interface/ExamInterface';
+import { Exam, StatusExamStudent, StatusExamStudentWithExam } from '../../interface/ExamInterface';
 import { RooteStackParams } from '../../interface/navigatorLogin';
 import { TypesUser } from '../../interface/userInterface';
 import examStyle from '../../styles/examStyle';
@@ -24,6 +24,7 @@ export const ExamList = () => {
     const loaderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext);
     const [lstExams, setLstExams] = useState<Exam[]>();
+    const [lstStatus, setLstStatus] = useState<StatusExamStudentWithExam[]>([]);
     
     const route = useRoute();
     const props = route.params as ExamListProps;
@@ -35,8 +36,20 @@ export const ExamList = () => {
         loaderContext.changeStateLoder(true);
         
         examApi.getExamsPublishedByCourse(8/* props.idCourse */)
-        .then((values) => {
+        .then(async (values) => {
+            let auxStatus : StatusExamStudentWithExam[] = [];
+            if (values.data)
+            for(let i = 0; i < values.data.length; i++){
+                let statusExam : StatusExamStudent | null = (await examApi.getExamsScoreByStudent(values.data[i].id_exam, authContext.authState.userProfile.id)).data;
+                if (statusExam)
+                    auxStatus.push({
+                        id_exam: values.data[i].id_exam,
+                        status: statusExam ?? undefined 
+                    });                        
+            }            
+                    
             setLstExams(values.data ?? []);
+            setLstStatus(auxStatus);
             loaderContext.changeStateLoder(false);
         });    
     }
@@ -97,6 +110,7 @@ export const ExamList = () => {
                         data={lstExams}
                         renderItem={(item) => <ExamComponent 
                                                         exam={item.item} 
+                                                        status={lstStatus?.find((x => x.id_exam === item.item.id_exam))?.status || undefined}
                                                         onClick={() => console.log("EXAM")}
                                                         onReload={getExams}/>}
                         keyExtractor={(item) => `${item.title}-${item.id_exam}`}
