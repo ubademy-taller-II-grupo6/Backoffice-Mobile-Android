@@ -34,7 +34,7 @@ export const ExamList = () => {
     const getExamStudent = () => {
         loaderContext.changeStateLoder(true);
         
-        examApi.getExamsPublishedByCourse(props.idCourse)
+        examApi.getExamsPublishedByCourse(8/* props.idCourse */)
         .then((values) => {
             setLstExams(values.data ?? []);
             loaderContext.changeStateLoder(false);
@@ -99,7 +99,7 @@ export const ExamList = () => {
                                                         exam={item.item} 
                                                         onClick={() => console.log("EXAM")}
                                                         onReload={getExams}/>}
-                        keyExtractor={(item) => `${item.title}-${item.idexam}`}
+                        keyExtractor={(item) => `${item.title}-${item.id_exam}`}
                     />
                 </View>         
         </ScrollView>  

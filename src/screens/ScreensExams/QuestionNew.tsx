@@ -28,6 +28,7 @@ export const QuestionNew = (props: QuestionNewProps) => {
     const props = route.params as QuestionNewProps; */
 
     const loaderContext = useContext(LoderContext);
+    const authContext = useContext(AuthContext);
     const [error, setError] = useState<string>();
     const { questionForm, changeValue, changeFocus, errorSubmit, cleanForm } = questionFormService();  
     const [lstQuestion, setLstQuestion] = useState<Question[]>([]);
@@ -49,7 +50,8 @@ export const QuestionNew = (props: QuestionNewProps) => {
             num_question: lstQuestion.length + 1,
             description: questionForm.description.value,
             answer: (questionForm.answer.value == "true") ? true : false,
-            idexam: 0
+            id_exam: 0,
+            id_creator: authContext.authState.userProfile.id
         } as Question;
 
         let newList : Question[] = [...lstQuestion, newQuestion];
@@ -77,7 +79,8 @@ export const QuestionNew = (props: QuestionNewProps) => {
             num_question: lstQuestion.length + 1,
             description: questionForm.description.value,
             answer: (questionForm.answer.value == "true") ? true : false,
-            idexam: 0
+            id_exam: 0,
+            id_creator: authContext.authState.userProfile.id
         } as Question;
 
         let newList : Question[] = [...lstQuestion, newQuestion];

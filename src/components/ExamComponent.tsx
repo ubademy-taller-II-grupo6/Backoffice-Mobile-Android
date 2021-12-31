@@ -43,17 +43,27 @@ export const ExamComponent = (props: ExamComponentProps) => {
                     {
                         isTeacher && 
                             <Text style={examComponentStyle.colorDescription}>
-                                PUBLICADO
+                                {props.exam.published ? "PUBLICADO" : "SIN PUBLICAR"}
                             </Text>
                     }
                     {
                         isStudent && 
                             <Text style={examComponentStyle.colorDescription}>
-                                RENDIDO CAPO
+                                RENDIDO?
                             </Text>
                     }
                 </View>
             </TouchableOpacity>
+
+            {
+                isTeacher ?
+                    props.exam.published ?
+                        <Ionicons style={{position: 'absolute', top: 5, right: 15, fontSize:30, color:'rgba(45,171,255,1)'}} name="checkmark-sharp" size={20} />
+                    :
+                        <Ionicons style={{position: 'absolute', top: 5, right: 15, fontSize:30, color:'rgba(45,171,255,1)'}} name="eye-off" size={20} />
+                :
+                    null
+            }
             
         </View>
     );

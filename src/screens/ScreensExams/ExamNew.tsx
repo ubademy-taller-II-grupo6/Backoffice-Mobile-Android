@@ -46,11 +46,11 @@ export const ExamNew = () => {
         let newExam : Exam = {
             title: examForm.title.value,
             description: examForm.description.value,
-            idcreator: authContext.authState.userProfile.id,
-            idexam: 0,
-            idcourse: props.idCourse,
-            ispublished: false
-        } as unknown as Exam;
+            id_creator: authContext.authState.userProfile.id,
+            id_exam: 0,
+            id_course: props.idCourse,
+            published: false
+        } as Exam;
         
         setExam(newExam);
 

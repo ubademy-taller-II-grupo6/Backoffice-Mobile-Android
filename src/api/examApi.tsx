@@ -1,4 +1,4 @@
-import { Exam, Question } from "../interface/ExamInterface";
+import { Exam, Question, QuestionAnswerStudent, StatusExamStudent } from "../interface/ExamInterface";
 import { Response } from "../interface/ResponseInterface";
 import { Subscription } from "../interface/SubscriptionInterface";
 import { userProfileInterface } from "../interface/userInterface";
@@ -6,7 +6,7 @@ import { userProfileInterface } from "../interface/userInterface";
 export const examApi = {
     getExamsByCourse: async (idCourse: number) : Promise<Response<Exam[]>> => {
         
-        let response = await  fetch(`https://ubademy-exams.herokuapp.com/exams/courses/${idCourse}`, {
+        let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams?id_course=${idCourse}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -17,12 +17,12 @@ export const examApi = {
         let json = await response.json();
         let responseFinal : Response<Exam[]> = {} as Response<Exam[]>;
 
-        let stringCourseWithoutExam : string = `No existen examenes para el curso con id ${idCourse}`;
+        let stringCourseWithoutExam : string = "No se encontraron examenes";
 
-        if (json.detail == null)
+        if (json.message == null)
             responseFinal.data = json;
         else
-            if (json.detail.error == stringCourseWithoutExam)
+            if (json.message == stringCourseWithoutExam)
                 responseFinal.data = [];
             else
                 responseFinal.message = json.detail?.error ?? "Ha ocurrido un error inexperado";
@@ -35,7 +35,7 @@ export const examApi = {
         let responseFinal : Response<Exam[]> = await examApi.getExamsByCourse(idCourse);
 
         if ((responseFinal.data != null))
-            responseFinal.data = responseFinal.data.filter(x => x.ispublished);
+            responseFinal.data = responseFinal.data.filter(x => x.published);
 
         return responseFinal;
     },
@@ -43,13 +43,14 @@ export const examApi = {
     createExam: async (exam: Exam) : Promise<Response<number>> => {    
         
         var body = {
-            "idcreator": exam.idcreator,
-            "idcourse": exam.idcourse,
+            "id_creator": exam.id_creator,
+            "id_course": exam.id_course,
             "title": exam.title,
-            "description": exam.description
+            "description": exam.description,
+            "published": exam.published
         };
         
-        let response = await  fetch(`https://ubademy-exams.herokuapp.com/exams/`, {
+        let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
@@ -62,8 +63,8 @@ export const examApi = {
         let json = await response.json();
         let responseFinal : Response<number> = {} as Response<number>;
         
-        if (json.idexam != null)
-            responseFinal.data = json.idexam;
+        if (json.id_exam != null)
+            responseFinal.data = json.id_exam;
         else
             responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
         
@@ -97,4 +98,44 @@ export const examApi = {
         
         return responseFinal;
     },
+
+    getExamsScoreByStudent: async (idExam: number, idStudent: number) : Promise<Response<StatusExamStudent>> => {
+        
+        let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/${idExam}/${idStudent}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        let responseFinal : Response<StatusExamStudent> = {} as Response<StatusExamStudent>;
+
+        responseFinal.data = json;
+
+        return responseFinal;
+    },
+
+    sendAnswer: async (answerStudent: QuestionAnswerStudent) : Promise<Response<string>> => {
+
+        let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/questions/answers`, {
+          method: 'POST',
+          body: JSON.stringify(answerStudent),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+        let json = await response.json();
+        let responseFinal : Response<string> = {} as Response<string>;
+
+        if (json.detail != null)
+            responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
+        else
+            responseFinal.data = "Respuesta enviada exitosamente";
+        
+        return responseFinal;
+    }, 
 }
