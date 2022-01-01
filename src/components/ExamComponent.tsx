@@ -27,15 +27,15 @@ export const ExamComponent = (props: ExamComponentProps) => {
     const qualified : boolean = (props.status?.status === "CALIFICADO");
     const approved : boolean = qualified && (parseInt(props.status?.score ?? "0") >= 4);
 
-    const changeFavorite = () => {
- 
+    const onClick = () => {
+        if (!(isStudent && qualified)) props.onClick();
     }
 
 /*     useEffect(() => setFavorite(props.isFavorite)); */
 
     return (
         <View style={examComponentStyle.container}>
-            <TouchableOpacity style={{flex: 1, flexDirection: 'row'}} onPress={() => props.onClick()}>
+            <TouchableOpacity style={{flex: 1, flexDirection: 'row'}} onPress={onClick}>
                 <View>
                     <Text style={examComponentStyle.titleExam}>
                         {props.exam.title}
