@@ -117,6 +117,11 @@ export const CourseDetail = () => {
         props.navigation.pop();
         loadCourse();
     };
+
+    const onViewExamByStudent = () => {
+        props.navigation.navigate('ExamList', { navigation: props.navigation, idCourse: course?.id });
+    };
+    
     
     useEffect(() => {
         loadCourse();
@@ -192,7 +197,7 @@ export const CourseDetail = () => {
             {
                 (isStudent && isInscription && course) &&         
                     <View style={generalStyle.contentBottomLogin}>
-                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={() => props.navigation.navigate('ExamList', { navigation: props.navigation, idCourse: course?.id })}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={onViewExamByStudent}>
                             <Text style={generalStyle.textBottomColor}>Ver exámenes</Text>
                         </TouchableOpacity>
                     </View>

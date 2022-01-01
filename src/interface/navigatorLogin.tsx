@@ -15,6 +15,7 @@ export type RooteStackParams = {
     CourseUpdate: any,
     SubscriptionAdd: any,
     Perfil: any,
+    ExamDo: any,
     ExamNew: any,
     ExamList: any,
     ExamView: any,

@@ -35,7 +35,7 @@ export const ExamList = () => {
     const getExamStudent = () => {
         loaderContext.changeStateLoder(true);
         
-        examApi.getExamsPublishedByCourse(8/* props.idCourse */)
+        examApi.getExamsPublishedByCourse(props.idCourse)
         .then(async (values) => {
             let auxStatus : StatusExamStudentWithExam[] = [];
             if (values.data)
@@ -75,7 +75,21 @@ export const ExamList = () => {
     }
 
     const onClickExam = (exam: Exam) => {
+        if (isStudent) onClickExamStudent(exam);
+        else if (isTeacher) onClickExamTeacher(exam);
+    }
+
+    const onClickExamTeacher = (exam: Exam) => {
         props.navigation.navigate('ExamView', 
+            { 
+                exam: exam, 
+                navigation: props.navigation,
+                onSubmit: onSubmitNewExam
+            });
+    }
+
+    const onClickExamStudent = (exam: Exam) => {
+        props.navigation.navigate('ExamDo', 
             { 
                 exam: exam, 
                 navigation: props.navigation,
