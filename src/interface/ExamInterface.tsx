@@ -31,3 +31,11 @@ export interface StatusExamStudentWithExam {
     id_exam: number,
     status: StatusExamStudent | undefined 
 }
+
+
+export interface AnswerStudent {
+    id_exam: number,
+    num_question: number,
+    answer: boolean | null,
+    id_student: number
+}

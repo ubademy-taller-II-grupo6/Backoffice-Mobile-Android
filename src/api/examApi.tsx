@@ -201,11 +201,17 @@ export const examApi = {
         return responseFinal;
     },
 
-    sendAnswer: async (answerStudent: QuestionAnswerStudent) : Promise<Response<string>> => {
+    sendAnswer: async (idExam: number, num_question: number, id_student: number, answer: boolean) : Promise<Response<string>> => {
+        var body = {
+            "id_exam": idExam,
+            "num_question": num_question,
+            "answer": answer,
+            "id_student": id_student
+        };
 
         let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/questions/answers`, {
           method: 'POST',
-          body: JSON.stringify(answerStudent),
+          body: JSON.stringify(body),
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

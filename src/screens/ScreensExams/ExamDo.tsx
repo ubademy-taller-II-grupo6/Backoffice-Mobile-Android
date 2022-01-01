@@ -12,7 +12,7 @@ import { LoaderComponent } from '../../components/LoaderComponent';
 import { QuestionComponent } from '../../components/QuestionComponent';
 import { AuthContext } from '../../context/AuthContext';
 import { LoderContext } from '../../context/LoderContext';
-import { Exam, Question, StatusExamStudent, StatusExamStudentWithExam } from '../../interface/ExamInterface';
+import { AnswerStudent, Exam, Question, StatusExamStudent, StatusExamStudentWithExam } from '../../interface/ExamInterface';
 import { RooteStackParams } from '../../interface/navigatorLogin';
 import { TypesUser } from '../../interface/userInterface';
 import examComponentStyle from '../../styles/examComponentStyle';
@@ -23,7 +23,7 @@ interface ExamDoProps extends NativeStackScreenProps<RooteStackParams,'ExamDo'>{
     exam: Exam,
     onSubmit: () => void
 };
-
+  
 export const ExamDo = () => {
     const loaderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext);
@@ -35,12 +35,28 @@ export const ExamDo = () => {
     const isStudent : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
     const isTeacher : boolean = authContext.authState.typeUser === TypesUser.Profesor;
 
+    const [lstAnswer, setLstAnswer] = useState<AnswerStudent[]>([]);
+
     const getQuestions = () => {
         loaderContext.changeStateLoder(true);
         
         examApi.getQuestionsByExam(15/* props.exam.id_exam */)
         .then((values) => {
+
+            let auxAnswerStudent : AnswerStudent[] = []
+
+            if (values.data)
+                for(let i = 0; i < values.data.length; i++){
+                    auxAnswerStudent.push({                        
+                        id_exam: props.exam.id_exam,
+                        num_question: values.data[i].num_question,
+                        answer: null,
+                        id_student: authContext.authState.userProfile.id
+                    })
+                }
+
             setLstQuestions(values.data ?? []);
+            setLstAnswer(auxAnswerStudent);
             loaderContext.changeStateLoder(false);
         });        
     }
@@ -54,14 +70,35 @@ export const ExamDo = () => {
         props.navigation.pop();
     }
 
-    const publishedExam = () => {
+    const sendExam = async () => {
+
+        if (lstAnswer.some(x => x.answer == null)) {
+            alert("Faltan responder");
+            return;
+        }
+
         loaderContext.changeStateLoder(true);
         
-        examApi.publishExam(props.exam)
-        .then((values) => {
-            loaderContext.changeStateLoder(false);
-            props.onSubmit();
+        for(let i = 0; i < lstAnswer.length; i++){
+            let oneAnswer : AnswerStudent = lstAnswer[i];
+            await examApi.sendAnswer(
+                oneAnswer.id_exam, oneAnswer.num_question, oneAnswer.id_student, oneAnswer.answer ?? false
+            );
+        }
+        
+        loaderContext.changeStateLoder(false);
+    }
+
+    const onChangeAnswer = (num_question: number, answer: boolean | null) => {
+        let auxAnswerStudent : AnswerStudent[] = lstAnswer.filter(x => x.num_question !== num_question);
+        auxAnswerStudent.push({                        
+            id_exam: props.exam.id_exam,
+            num_question: num_question,
+            answer: answer,
+            id_student: authContext.authState.userProfile.id
         });
+        
+        setLstAnswer(auxAnswerStudent);
     }
 
     const onEditQuestion = (question: Question) => {
@@ -117,7 +154,7 @@ export const ExamDo = () => {
                     }       
 
                     <View style={[generalStyle.contentBottomLogin, { marginTop: 10 }]}>
-                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={publishedExam}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={sendExam}>
                             <Text style={generalStyle.textBottomColor}>Enviar examen</Text>
                         </TouchableOpacity>    
                     </View>
@@ -128,7 +165,7 @@ export const ExamDo = () => {
                 <View style={[examStyle.contentCards, { marginBottom: 30 }]} >
                     <FlatList
                         data={lstQuestions}
-                        renderItem={(item) => <AnswerComponent question={item.item} />}
+                        renderItem={(item) => <AnswerComponent question={item.item} onChangeAnswer={onChangeAnswer} />}
                         keyExtractor={(item) => `${item.description}-${item.num_question}`}
                     />
                 </View>  

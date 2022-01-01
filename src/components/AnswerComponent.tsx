@@ -16,7 +16,8 @@ import courseFilterStyle from "../styles/courseFilterStyle";
 import { answerFormService } from "../service/answerFormService";
 
 interface AnswerComponentProps {
-    question: Question
+    question: Question,
+    onChangeAnswer: (num_question: number, answer: boolean | null) => void
 }
 
 export const AnswerComponent = (props: AnswerComponentProps) => {
@@ -26,8 +27,10 @@ export const AnswerComponent = (props: AnswerComponentProps) => {
     const isStudent : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
     const isTeacher : boolean = authContext.authState.typeUser === TypesUser.Profesor;
 
-    const changeFavorite = () => {
- 
+    const onChange = (itemValue: string) => {
+        changeValue('answer', itemValue);
+        let answer : boolean | null = (itemValue == "") ? null : (itemValue == "true");
+        props.onChangeAnswer(props.question.num_question, answer);
     }
 
 /*     useEffect(() => setFavorite(props.isFavorite)); */
@@ -46,11 +49,10 @@ export const AnswerComponent = (props: AnswerComponentProps) => {
                     <Text style={courseFilterStyle.titlePickers}>Respuesta</Text>
                     <Picker
                         selectedValue={answerForm.answer.value}
-                        onValueChange={(itemValue, itemIndex) => changeValue('answer', itemValue)
-                        }>
-                        <Picker.Item label="-" value="" />
-                        <Picker.Item label="Verdadero" value="true" />
-                        <Picker.Item label="Falso" value="false" />
+                        onValueChange={(itemValue, itemIndex) => onChange(itemValue) }>
+                            <Picker.Item label="-" value="" />
+                            <Picker.Item label="Verdadero" value="true" />
+                            <Picker.Item label="Falso" value="false" />
                     </Picker>
                 </View>
         </View>
