@@ -11,6 +11,7 @@ import Checkbox from 'expo-checkbox';
 import { signInAsync2 } from '../../firebase';
 import { LoderContext } from '../context/LoderContext';
 import { AuthContext } from '../context/AuthContext';
+import { notificationsApi } from '../api/notificationsApi';
 
 export const RegisterComponent = () => {
     const [x, setx] = useState({})
@@ -23,7 +24,7 @@ export const RegisterComponent = () => {
         let response:any =await onPress2()
         //console.log(response)
         loderContext.changeStateLoder(false)
-        authContext.signIn({
+        let authData:any = {
             isLoggedIn:true,
             provider:"GOOGLE",
             emailVerified:response.user.emailVerified,
@@ -37,7 +38,21 @@ export const RegisterComponent = () => {
                 refreshToken:response.user.refreshToken,
                 uid:response.user.uid
             }
-        })
+        }
+        let body = {
+            "id": response.user.uid,
+            "name": response.user.displayName,
+            "lastname": "Paredes",
+            "email": response.user.email,
+            "latitude": "",
+            "longitude": ""
+        }
+        loginApi().registerGateway(body)   
+        authContext.signIn(authData)
+        let data:any = {
+            token:notificationsApi().getToken()
+        }
+        notificationsApi().setTokenInFirebaseWithId('notificationsUsers',data,response.user.uid)
         alert('onPressWithGoogle_:' + JSON.stringify(authContext.authState, null, 2));
     }
     let onPressWithGoogle_ = async () => {
@@ -54,7 +69,7 @@ export const RegisterComponent = () => {
         alert('displayName:' + JSON.stringify(response.user.displayName));
         alert('email:' + JSON.stringify(response.user.email, null, 2));*/
         loderContext.changeStateLoder(false)
-        authContext.signIn({
+        let authData:any = {
             isLoggedIn:true,
             provider:"GOOGLE",
             username:response.user.displayName,
@@ -68,7 +83,22 @@ export const RegisterComponent = () => {
                 refreshToken:response.user.toJSON().stsTokenManager.refreshToken,
                 uid:response.user.uid
             }
-        })
+        }
+        authContext.signIn(authData)
+
+    let data:any = {
+        token:notificationsApi().getToken()
+    }
+    let body = {
+        "id": response.user.uid,
+        "name": response.user.displayName,
+        "lastname": "Paredes",
+        "email": response.user.email,
+        "latitude": "",
+        "longitude": ""
+    }
+    loginApi().registerGateway(body)    
+    notificationsApi().setTokenInFirebaseWithId('notificationsUsers',data,response.user.uid)
         alert('onPressWithGoogle_:' + JSON.stringify(authContext.authState, null, 2));
     }
     let submitForm = async() => {
@@ -84,8 +114,7 @@ export const RegisterComponent = () => {
         }*/
         let response:any = await loginApi().registerWithEmailFirebase(register.email.value,register.rePassword.value)
         loderContext.changeStateLoder(false)
-        //console.log(response)
-        authContext.signIn({
+        let autData:any = {
             isLoggedIn:true,
             provider:"EMAIL",
             username:(response.user.displayName)?response.user.displayName:"",
@@ -99,10 +128,27 @@ export const RegisterComponent = () => {
                 refreshToken:response.user.refreshToken,
                 uid:response.user.uid
             }
-        })
-        
+        }
+        //console.log(response)
+        authContext.signIn(autData)
+        let body = {
+            "id": response.user.uid,
+            "name": response.user.displayName,
+            "lastname": "Paredes",
+            "email": response.user.email,
+            "latitude": "",
+            "longitude": ""
+        }
+        let data:any = {
+            token:notificationsApi().getToken()
+        }
+        loginApi().registerGateway(body)
+        notificationsApi().setTokenInFirebaseWithId('notificationsUsers',data,response.user.uid)
+            alert('onPressWithGoogle_:' + JSON.stringify(authContext.authState, null, 2));
+        }
+
         // uiService().alertaInformativa("",response)
-    }
+    
     return (
         <View style={generalStyle.content}>
             {loderContext.loderState.isLoder==true?<LoaderComponent/>:<View></View>}

@@ -26,11 +26,29 @@ export const loginApi = () => {
     let json:[userProfileInterface] = await user.json();
     return {user_,profile:json[0]}
   }
+  
+  let registerGateway = async (body:any) => {
+    // console.log(user)
+    let response = await  fetch('https://obscure-wildwood-00771.herokuapp.com/users', {
+      method: 'POST',
+      body,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+    return response
+  }
 
   return { 
     registerWithEmailFirebase,
-    loginWithEmailFirebase
+    loginWithEmailFirebase,
+    registerGateway
   }
+
+  
+
 }
 /*
 export const loginApi =async  () => {

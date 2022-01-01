@@ -139,7 +139,11 @@ export const Perfil = ({navigation} : Props) => {
                     }
                 </>
             }
-
+{/* <View style={[generalStyle.contentBottomLogin,pefilStyle.space]}>
+                                    <TouchableOpacity style={generalStyle.bottomLogin} onPress={()=>{logOut()}}>
+                                        <Text style={generalStyle.textBottomColor}>CERRAR SESIÓN</Text>
+                                    </TouchableOpacity>    
+                            </View> */}
         </View>
     )
 }

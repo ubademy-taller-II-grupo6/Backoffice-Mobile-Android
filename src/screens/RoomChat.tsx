@@ -41,6 +41,7 @@ export const RoomChat = ({navigation}:Props) => {
                     return { ...message, createdAt: message.createdAt.toDate() }
                 })
                 .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+            // console.log(messagesFirestore)
             appendMessages(messagesFirestore)
         })
         return () => unsubscribe()

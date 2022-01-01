@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import { localStorage } from '../localStorage/localStorage';
 import { userProfileInterface } from '../interface/userInterface';
 import { userApi } from '../api/userApi';
+import { notificationsApi } from '../api/notificationsApi';
 interface Props extends NativeStackScreenProps<RooteStackParams,'Login'>{};
 
 let letra = ""
@@ -39,7 +40,7 @@ export const Login = ({navigation}:Props) => {
             uiService().alertaInformativa("",user_.message)
             return
         }
-
+        //notificationsApi().setTokenInFirebaseWithId('notificationsUsers',)
         userApi.getUserByMail(user_.user.email)
             .then((value) => {
                 localStorage.save(value.id, value.name, value.lastname, value.email, value.blocked, value.subscription)
@@ -63,8 +64,11 @@ export const Login = ({navigation}:Props) => {
                     });
                     loderContext.changeStateLoder(false)
                 }); 
-            })
-               
+            }) 
+            let data:any = {
+                token:await notificationsApi().getToken()
+            }
+            notificationsApi().setTokenInFirebaseWithId('notificationsUsers',data,user_.user.uid)
     }
     let onPressWithGoogle_ = async() => {
         loderContext.changeStateLoder(true)
