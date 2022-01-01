@@ -18,6 +18,10 @@ const examComponentStyle = StyleSheet.create({
     },
     colorDescription: {
         color: "#64676D"
+    },
+    colorPublished: {
+        fontWeight: "bold",
+        color: "green"
     }
 })
 

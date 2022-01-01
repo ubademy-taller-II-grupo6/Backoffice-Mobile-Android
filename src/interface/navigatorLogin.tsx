@@ -17,5 +17,7 @@ export type RooteStackParams = {
     Perfil: any,
     ExamNew: any,
     ExamList: any,
-    QuestionNew: any
+    ExamView: any,
+    QuestionNew: any,
+    QuestionUpdate: any
 }

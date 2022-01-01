@@ -59,7 +59,7 @@ export const ExamList = () => {
         
         examApi.getExamsByCourse(props.idCourse)
         .then((values) => {
-            setLstExams(values.data ?? []);
+            setLstExams(values.data?.sort((a, b) => a.id_exam - b.id_exam) ?? []);
             loaderContext.changeStateLoder(false);
         });        
     }
@@ -72,6 +72,15 @@ export const ExamList = () => {
     const onSubmitNewExam = () => {
         props.navigation.pop();
         getExams();
+    }
+
+    const onClickExam = (exam: Exam) => {
+        props.navigation.navigate('ExamView', 
+            { 
+                exam: exam, 
+                navigation: props.navigation,
+                onSubmit: onSubmitNewExam
+            });
     }
 
     useEffect(() => {
@@ -111,7 +120,7 @@ export const ExamList = () => {
                         renderItem={(item) => <ExamComponent 
                                                         exam={item.item} 
                                                         status={lstStatus?.find((x => x.id_exam === item.item.id_exam))?.status || undefined}
-                                                        onClick={() => console.log("EXAM")}
+                                                        onClick={() => onClickExam(item.item)}
                                                         onReload={getExams}/>}
                         keyExtractor={(item) => `${item.title}-${item.id_exam}`}
                     />

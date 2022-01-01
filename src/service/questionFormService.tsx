@@ -21,13 +21,13 @@ export const questionFormService = (initialValue?: Question) => {
     let initialState : questionFormInterface = {
         description:{
             value: initialValue?.description || "",
-            isValid: false,
+            isValid: !!initialValue?.description,
             hasFocus:false,
             isFocus:false,
         },
         answer: {
             value: (!!initialValue ?  (initialValue.answer ? "true" : "false") : ""),
-            isValid: false,
+            isValid: !!initialValue,
             hasFocus:false,
             isFocus:false,
         },
