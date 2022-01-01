@@ -246,8 +246,7 @@ export const examApi = {
         });
         let json = await response.json();
         let responseFinal : Response<string> = {} as Response<string>;
-        console.log(`${idExam} - ${num_question}`);
-        console.log(json);
+        
         if (json.detail != null)
             responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
         else
@@ -268,8 +267,7 @@ export const examApi = {
         });
         let json = await response.json();
         let responseFinal : Response<string> = {} as Response<string>;
-        console.log(`CORRECT : ${idExam} - ${idStudent}`);
-        console.log(json);
+        
         responseFinal.data = json;
         
         return responseFinal;

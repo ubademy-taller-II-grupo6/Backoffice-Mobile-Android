@@ -41,8 +41,8 @@ export const ExamDo = () => {
         examApi.getQuestionsByExam(props.exam.id_exam)
         .then((values) => {
 
-            let auxAnswerStudent : AnswerStudent[] = []
-
+            let auxAnswerStudent : AnswerStudent[] = [];
+            
             if (values.data)
                 for(let i = 0; i < values.data.length; i++){
                     auxAnswerStudent.push({                        
@@ -120,15 +120,7 @@ export const ExamDo = () => {
                         <Text style={examComponentStyle.colorDescription}>
                             {props.exam.description}
                         </Text>
-                    </View>
-                    {
-                        lstQuestions?.length == 0 && 
-                            <View style={{marginTop: 15}}>
-                                <View style={{marginLeft: 15}}>
-                                    <Text>No se encontraron exámenes</Text>
-                                </View>
-                            </View>
-                    }       
+                    </View>    
 
                     <View style={[generalStyle.contentBottomLogin, { marginTop: 10 }]}>
                         <TouchableOpacity style={generalStyle.bottomLogin} onPress={sendExam}>
@@ -141,7 +133,16 @@ export const ExamDo = () => {
                             <View style={{marginBottom: 10, marginLeft: 15}}>
                                 <Text style={{color: 'red'}}>{error}</Text>
                             </View>
-                    }                    
+                    }   
+
+                    {
+                        lstQuestions?.length == 0 && 
+                            <View style={{marginTop: 15}}>
+                                <View style={{marginLeft: 15}}>
+                                    <Text>No se encontraron preguntas</Text>
+                                </View>
+                            </View>
+                    }                   
                 </View>
                 
 
