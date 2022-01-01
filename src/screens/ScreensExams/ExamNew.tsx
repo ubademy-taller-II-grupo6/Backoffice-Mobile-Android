@@ -68,12 +68,11 @@ export const ExamNew = () => {
         if (exam)
             examApi.createExam(exam)
                 .then(async (response) => {
-
+                    
                     if (response.data)
                         for(let i = 0; i < lstQuestions.length; i++){
                             await examApi.createQuestion(lstQuestions[i], response.data);
                         }
-
 
                     loaderContext.changeStateLoder(false);
                     props.onSubmit();

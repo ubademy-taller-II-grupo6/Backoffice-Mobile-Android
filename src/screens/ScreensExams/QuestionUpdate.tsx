@@ -16,6 +16,7 @@ import { questionFormService } from '../../service/questionFormService';
 
 import courseFilterStyle from '../../styles/courseFilterStyle';
 import generalStyle from '../../styles/generalStyle';
+import { examApi } from '../../api/examApi';
 
 interface QuestionUpdateProps extends NativeStackScreenProps<RooteStackParams,'QuestionUpdate'> {
     question: Question,
@@ -45,8 +46,12 @@ export const QuestionUpdate = () => {
             id_creator: authContext.authState.userProfile.id
         } as Question;
         
-        loaderContext.changeStateLoder(false);
-        props.onSubmit();
+        examApi.updateQuestion(newQuestion, props.question.id_exam)
+            .then(() => {
+                loaderContext.changeStateLoder(false);
+                props.onSubmit();
+            })
+
     };
     
     const onUpdateQuestion = () => {

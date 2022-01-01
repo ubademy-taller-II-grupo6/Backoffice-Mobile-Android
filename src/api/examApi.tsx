@@ -98,15 +98,16 @@ export const examApi = {
         return responseFinal;
     },
 
-    createQuestion: async (question: Question, idExam: number) : Promise<Response<number>> => {       
+    createQuestion: async (question: Question, idExam: number) : Promise<Response<string>> => {       
         var body = {
             "id_exam": idExam,
+            "id_creator": question.id_creator,
             "num_question": question.num_question,
             "description": question.description,
             "answer": question.answer
         };
 
-        let response = await  fetch(`https://ubademy-exams.herokuapp.com/exams/questions/`, {
+        let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/questions/`, {
           method: 'POST',
           body: JSON.stringify(body),
           headers: {
@@ -115,13 +116,14 @@ export const examApi = {
             'Access-Control-Allow-Origin': '*'
           }
         });
+        
         let json = await response.json();
-        let responseFinal : Response<number> = {} as Response<number>;
-
-        if (json.idquestion != null)
-            responseFinal.data = json.idquestion;
+        let responseFinal : Response<string> = {} as Response<string>;
+        
+        if (json.message == "La pregunta se añadió con éxito")
+            responseFinal.data = json.message;
         else
-            responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
+            responseFinal.message = json.message ?? "Ha ocurrido un error inexperado al crear el exámen";
         
         return responseFinal;
     },
@@ -134,8 +136,8 @@ export const examApi = {
             "description": question.description,
             "answer": question.answer
         };
-
-        let response = await  fetch(`https://ubademy-exams.herokuapp.com/exams/questions/`, {
+        
+        let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/questions`, {
           method: 'PUT',
           body: JSON.stringify(body),
           headers: {
@@ -181,6 +183,32 @@ export const examApi = {
         return responseFinal;
     },
 
+    getQuestionsByExamTeacher: async (idExam: number, idCreator: number) : Promise<Response<Question[]>> => {
+        
+        let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/questions/${idExam}/${idCreator}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        let responseFinal : Response<Question[]> = {} as Response<Question[]>;
+
+        let stringExamWithoutQuesions : string = "El examen no tiene preguntas asociadas";
+
+        if (json.message == null)
+            responseFinal.data = json;
+        else
+            if (json.message == stringExamWithoutQuesions)
+                responseFinal.data = [];
+            else
+                responseFinal.message = json.detail?.error ?? "Ha ocurrido un error inexperado";
+
+        return responseFinal;
+    },
+    
     getExamsScoreByStudent: async (idExam: number, idStudent: number) : Promise<Response<StatusExamStudent>> => {
         
         let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/${idExam}/${idStudent}`, {
@@ -218,7 +246,8 @@ export const examApi = {
         });
         let json = await response.json();
         let responseFinal : Response<string> = {} as Response<string>;
-
+        console.log(`${idExam} - ${num_question}`);
+        console.log(json);
         if (json.detail != null)
             responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
         else
@@ -239,7 +268,8 @@ export const examApi = {
         });
         let json = await response.json();
         let responseFinal : Response<string> = {} as Response<string>;
-
+        console.log(`CORRECT : ${idExam} - ${idStudent}`);
+        console.log(json);
         responseFinal.data = json;
         
         return responseFinal;

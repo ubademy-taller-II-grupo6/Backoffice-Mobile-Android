@@ -38,7 +38,7 @@ export const ExamDo = () => {
     const getQuestions = () => {
         loaderContext.changeStateLoder(true);
         
-        examApi.getQuestionsByExam(15/* props.exam.id_exam */)
+        examApi.getQuestionsByExam(props.exam.id_exam)
         .then((values) => {
 
             let auxAnswerStudent : AnswerStudent[] = []
@@ -68,7 +68,7 @@ export const ExamDo = () => {
 
         loaderContext.changeStateLoder(true);
         
-/*         for(let i = 0; i < lstAnswer.length; i++){
+        for(let i = 0; i < lstAnswer.length; i++){
             let oneAnswer : AnswerStudent = lstAnswer[i];
             await examApi.sendAnswer(
                 oneAnswer.id_exam, oneAnswer.num_question, oneAnswer.id_student, oneAnswer.answer ?? false
@@ -76,7 +76,7 @@ export const ExamDo = () => {
         }
         
         await examApi.correctExam(props.exam.id_exam, authContext.authState.userProfile.id);
- */
+
         loaderContext.changeStateLoder(false);
 
         props.onSubmit();

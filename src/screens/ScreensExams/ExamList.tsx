@@ -37,7 +37,7 @@ export const ExamList = () => {
     const getExamStudent = () => {
         loaderContext.changeStateLoder(true);
         
-        examApi.getExamsPublishedByCourse(/* props.idCourse */ 8)
+        examApi.getExamsPublishedByCourse(props.idCourse)
         .then(async (values) => {
             let auxStatus : StatusExamStudentWithExam[] = [];
             if (values.data)

@@ -41,6 +41,12 @@ export const QuestionComponent = (props: QuestionComponentProps) => {
                     <Text style={examComponentStyle.colorDescription}>
                         {props.question.description}
                     </Text>
+                    {
+                        isTeacher && 
+                            <Text style={examComponentStyle.colorDescription}>
+                                {`Respuesta: ${props.question.answer ? "Verdadero" : "Falso"}`}
+                            </Text>
+                    }
                 </View>
             </TouchableOpacity>
         </View>

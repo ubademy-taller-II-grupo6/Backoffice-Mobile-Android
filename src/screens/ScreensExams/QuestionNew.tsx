@@ -156,14 +156,11 @@ export const QuestionNew = (props: QuestionNewProps) => {
                         </TouchableOpacity>    
                     </View>
 
-                    {
-                        lstQuestion.length > 0 &&
-                            <View style={generalStyle.contentBottomLogin}>
-                                <TouchableOpacity style={generalStyle.bottomLogin} onPress={onConfirmQuestion}>
-                                    <Text style={generalStyle.textBottomColor}>Confirmar</Text>
-                                </TouchableOpacity>    
-                            </View>
-                    }
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={onConfirmQuestion}>
+                            <Text style={generalStyle.textBottomColor}>Confirmar</Text>
+                        </TouchableOpacity>    
+                    </View>
 
                     <View style={generalStyle.contentBottomLogin}>
                         <TouchableOpacity style={[generalStyle.bottomLogin, {backgroundColor:'rgb(218,76,53)'}]} onPress={onCancel}>

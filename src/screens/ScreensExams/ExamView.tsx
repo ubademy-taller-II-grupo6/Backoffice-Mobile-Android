@@ -32,14 +32,29 @@ export const ExamView = () => {
     const isStudent : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
     const isTeacher : boolean = authContext.authState.typeUser === TypesUser.Profesor;
 
-    const getQuestions = () => {
+    const getQuestionsStudent = () => {
         loaderContext.changeStateLoder(true);
         
-        examApi.getQuestionsByExam(15/* props.exam.id_exam */)
+        examApi.getQuestionsByExam(props.exam.id_exam)
         .then((values) => {
             setLstQuestions(values.data ?? []);
             loaderContext.changeStateLoder(false);
         });        
+    }
+    
+    const getQuestionsTeacher = () => {
+        loaderContext.changeStateLoder(true);
+        
+        examApi.getQuestionsByExamTeacher(props.exam.id_exam, authContext.authState.userProfile.id)
+        .then((values) => {
+            setLstQuestions(values.data ?? []);
+            loaderContext.changeStateLoder(false);
+        });        
+    }
+
+    const getQuestions = () => {
+        if (isStudent) getQuestionsStudent();
+        else if (isTeacher) getQuestionsTeacher();
     }
 
     const onBackAndReload = () => {
@@ -62,6 +77,7 @@ export const ExamView = () => {
     }
 
     const onEditQuestion = (question: Question) => {
+        
         if (props.exam.published)
             Alert.alert(
                 `Atención!`,
@@ -103,15 +119,7 @@ export const ExamView = () => {
                         <Text style={examComponentStyle.colorDescription}>
                             {props.exam.description}
                         </Text>
-                    </View>
-                    {
-                        lstQuestions?.length == 0 && 
-                            <View style={{marginTop: 15}}>
-                                <View style={{marginLeft: 15}}>
-                                    <Text>No se encontraron exámenes</Text>
-                                </View>
-                            </View>
-                    }       
+                    </View>    
                     {
                         (isTeacher && !props.exam.published) &&
                             <View style={[generalStyle.contentBottomLogin, { marginTop: 10 }]}>
@@ -128,6 +136,14 @@ export const ExamView = () => {
                                 </Text>
                             </View>
                     }
+                    {
+                        lstQuestions?.length == 0 && 
+                            <View style={{marginTop: 15}}>
+                                <View style={{marginLeft: 15}}>
+                                    <Text>No se encontraron preguntas del examen</Text>
+                                </View>
+                            </View>
+                    }   
                 </View>
                 
 
