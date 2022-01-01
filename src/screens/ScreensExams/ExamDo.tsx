@@ -28,12 +28,10 @@ export const ExamDo = () => {
     const loaderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext);
     const [lstQuestions, setLstQuestions] = useState<Question[]>();
+    const [error, setError] = useState<string>();
     
     const route = useRoute();
     const props = route.params as ExamDoProps;
-
-    const isStudent : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
-    const isTeacher : boolean = authContext.authState.typeUser === TypesUser.Profesor;
 
     const [lstAnswer, setLstAnswer] = useState<AnswerStudent[]>([]);
 
@@ -61,32 +59,27 @@ export const ExamDo = () => {
         });        
     }
 
-    const onBackAndReload = () => {
-        props.navigation.pop();
-        getQuestions();
-    }
-
-    const onBack = () => {
-        props.navigation.pop();
-    }
-
     const sendExam = async () => {
 
         if (lstAnswer.some(x => x.answer == null)) {
-            alert("Faltan responder");
+            setError("Operación inválida: faltan preguntas por responder");
             return;
         }
 
         loaderContext.changeStateLoder(true);
         
-        for(let i = 0; i < lstAnswer.length; i++){
+/*         for(let i = 0; i < lstAnswer.length; i++){
             let oneAnswer : AnswerStudent = lstAnswer[i];
             await examApi.sendAnswer(
                 oneAnswer.id_exam, oneAnswer.num_question, oneAnswer.id_student, oneAnswer.answer ?? false
             );
         }
         
+        await examApi.correctExam(props.exam.id_exam, authContext.authState.userProfile.id);
+ */
         loaderContext.changeStateLoder(false);
+
+        props.onSubmit();
     }
 
     const onChangeAnswer = (num_question: number, answer: boolean | null) => {
@@ -98,24 +91,8 @@ export const ExamDo = () => {
             id_student: authContext.authState.userProfile.id
         });
         
+        setError(undefined);
         setLstAnswer(auxAnswerStudent);
-    }
-
-    const onEditQuestion = (question: Question) => {
-        if (props.exam.published)
-            Alert.alert(
-                `Atención!`,
-                `No puede editar la pregunta porque el examen ya se encuentra publicado`,
-                [
-                    {
-                        text: "Cancelar",
-                        onPress: () => {},
-                        style: "cancel"
-                    }
-                ]
-            );
-        else
-            props.navigation.navigate('QuestionUpdate', { question: question, onSubmit: onBackAndReload, onCancel: onBack });
     }
 
     useEffect(() => {
@@ -158,7 +135,13 @@ export const ExamDo = () => {
                             <Text style={generalStyle.textBottomColor}>Enviar examen</Text>
                         </TouchableOpacity>    
                     </View>
-                    
+            
+                    {
+                        error &&
+                            <View style={{marginBottom: 10, marginLeft: 15}}>
+                                <Text style={{color: 'red'}}>{error}</Text>
+                            </View>
+                    }                    
                 </View>
                 
 

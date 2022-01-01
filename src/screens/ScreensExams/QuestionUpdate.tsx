@@ -1,23 +1,21 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { Picker } from '@react-native-picker/picker';
 import { useRoute } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Alert, View, SafeAreaView, Text, TouchableOpacity, TextInput } from 'react-native'
+import { View, SafeAreaView, Text, TouchableOpacity, TextInput } from 'react-native'
 
-import { examApi } from '../../api/examApi';
 import { AuthContext } from '../../context/AuthContext';
 import { LoderContext } from '../../context/LoderContext';
 
 import { LoaderComponent } from '../../components/LoaderComponent';
 
-import { Exam, Question } from '../../interface/ExamInterface';
+import { Question } from '../../interface/ExamInterface';
 import { RooteStackParams } from '../../interface/navigatorLogin';
 import { questionFormService } from '../../service/questionFormService';
 
 import courseFilterStyle from '../../styles/courseFilterStyle';
 import generalStyle from '../../styles/generalStyle';
-import { useEffect } from 'react';
 
 interface QuestionUpdateProps extends NativeStackScreenProps<RooteStackParams,'QuestionUpdate'> {
     question: Question,
@@ -32,8 +30,7 @@ export const QuestionUpdate = () => {
     const loaderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext);
     const [error, setError] = useState<string>();
-    const { questionForm, changeValue, changeFocus, errorSubmit, cleanForm } = questionFormService(props.question); 
-    const [question, setQuestion] = useState<Question>();
+    const { questionForm, changeValue, changeFocus, errorSubmit } = questionFormService(props.question); 
     
     const updateQuestion = () => {
         setError(undefined);
@@ -49,7 +46,7 @@ export const QuestionUpdate = () => {
         } as Question;
         
         loaderContext.changeStateLoder(false);
-
+        props.onSubmit();
     };
     
     const onUpdateQuestion = () => {
@@ -120,7 +117,7 @@ export const QuestionUpdate = () => {
                     }
 
                     <View style={generalStyle.contentBottomLogin}>
-                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={props.onSubmit}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={onUpdateQuestion}>
                             <Text style={generalStyle.textBottomColor}>Confirmar</Text>
                         </TouchableOpacity>    
                     </View>

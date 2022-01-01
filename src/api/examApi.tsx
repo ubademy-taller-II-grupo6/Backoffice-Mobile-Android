@@ -1,7 +1,5 @@
-import { Exam, Question, QuestionAnswerStudent, StatusExamStudent } from "../interface/ExamInterface";
+import { Exam, Question, StatusExamStudent } from "../interface/ExamInterface";
 import { Response } from "../interface/ResponseInterface";
-import { Subscription } from "../interface/SubscriptionInterface";
-import { userProfileInterface } from "../interface/userInterface";
 
 export const examApi = {
     getExamsByCourse: async (idCourse: number) : Promise<Response<Exam[]>> => {
@@ -225,6 +223,24 @@ export const examApi = {
             responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
         else
             responseFinal.data = "Respuesta enviada exitosamente";
+        
+        return responseFinal;
+    },
+
+    correctExam: async (idExam: number, idStudent: number) : Promise<Response<string>> => {
+        
+        let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/${idExam}/${idStudent}`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+        let json = await response.json();
+        let responseFinal : Response<string> = {} as Response<string>;
+
+        responseFinal.data = json;
         
         return responseFinal;
     },

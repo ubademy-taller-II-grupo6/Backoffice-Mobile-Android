@@ -1,17 +1,15 @@
-import { Picker } from '@react-native-picker/picker';
-import { useLinkProps, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext } from 'react'
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { Alert, View, SafeAreaView, Text, TouchableOpacity, TextInput, ScrollView, RefreshControl, FlatList } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react';
+
+import { Alert, View, SafeAreaView, Text, TouchableOpacity, ScrollView, RefreshControl, FlatList } from 'react-native'
 import { examApi } from '../../api/examApi';
-import { ExamComponent } from '../../components/ExamComponent';
+
 import { LoaderComponent } from '../../components/LoaderComponent';
 import { QuestionComponent } from '../../components/QuestionComponent';
 import { AuthContext } from '../../context/AuthContext';
 import { LoderContext } from '../../context/LoderContext';
-import { Exam, Question, StatusExamStudent, StatusExamStudentWithExam } from '../../interface/ExamInterface';
+import { Exam, Question  } from '../../interface/ExamInterface';
 import { RooteStackParams } from '../../interface/navigatorLogin';
 import { TypesUser } from '../../interface/userInterface';
 import examComponentStyle from '../../styles/examComponentStyle';

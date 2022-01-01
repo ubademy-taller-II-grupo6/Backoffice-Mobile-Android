@@ -1,16 +1,13 @@
 import React, { useContext } from "react";
-import { Ionicons } from '@expo/vector-icons';
 import { Text, TouchableOpacity, View } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
+
+import { AuthContext } from "../context/AuthContext";
+
+import { TypesUser } from "../interface/userInterface";
 import { Exam, StatusExamStudent } from "../interface/ExamInterface";
 
-import { StyleSheet } from "react-native";
-import { useState } from "react";
-import {Dimensions} from 'react-native';
 import examComponentStyle from "../styles/examComponentStyle";
-import { useEffect } from "react";
-import { examApi } from "../api/examApi";
-import { AuthContext } from "../context/AuthContext";
-import { TypesUser } from "../interface/userInterface";
 
 interface ExamComponentProps {
     exam: Exam,
@@ -20,7 +17,6 @@ interface ExamComponentProps {
 }
 
 export const ExamComponent = (props: ExamComponentProps) => {
-    const [finalFavorite, setFavorite] = useState<boolean>();
     const authContext = useContext(AuthContext);
     const isStudent : boolean = authContext.authState.typeUser === TypesUser.Estudiante;
     const isTeacher : boolean = authContext.authState.typeUser === TypesUser.Profesor;
@@ -30,8 +26,6 @@ export const ExamComponent = (props: ExamComponentProps) => {
     const onClick = () => {
         if (!(isStudent && qualified)) props.onClick();
     }
-
-/*     useEffect(() => setFavorite(props.isFavorite)); */
 
     return (
         <View style={examComponentStyle.container}>
@@ -51,13 +45,13 @@ export const ExamComponent = (props: ExamComponentProps) => {
                     }
                     {
                         isStudent &&
-                            <Text style={examComponentStyle.colorDescription}>
+                            <Text style={[examComponentStyle.colorDescription, { fontWeight: 'bold' }]}>
                                 { props.status?.status ?? "Sin responder" }
                             </Text>
                     }
                     {
                         (isStudent && qualified) &&
-                            <Text style={examComponentStyle.colorDescription}>
+                            <Text style={[examComponentStyle.colorDescription, { fontWeight: 'bold', color:`${approved ? "green" : "red"}` }]}>
                                 {`Nota: ${props.status?.score}`}
                             </Text>
                     }

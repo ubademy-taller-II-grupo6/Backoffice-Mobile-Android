@@ -1,38 +1,32 @@
 import React, { useContext, useState } from 'react'
 
 import { Picker } from '@react-native-picker/picker';
-import { useRoute } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Alert, View, SafeAreaView, Text, TouchableOpacity, TextInput } from 'react-native'
 
-import { examApi } from '../../api/examApi';
 import { AuthContext } from '../../context/AuthContext';
 import { LoderContext } from '../../context/LoderContext';
 
 import { LoaderComponent } from '../../components/LoaderComponent';
 
-import { Exam, Question } from '../../interface/ExamInterface';
-import { RooteStackParams } from '../../interface/navigatorLogin';
+import { Question } from '../../interface/ExamInterface';
 import { questionFormService } from '../../service/questionFormService';
 
 import courseFilterStyle from '../../styles/courseFilterStyle';
 import generalStyle from '../../styles/generalStyle';
 
-interface QuestionNewProps /* extends NativeStackScreenProps<RooteStackParams,'QuestionNew'> */{
+interface QuestionNewProps {
     onSubmit: (lstQuestions : Question[]) => void,
     onCancel: () => void
 };
 
 export const QuestionNew = (props: QuestionNewProps) => {
-/*     const route = useRoute();
-    const props = route.params as QuestionNewProps; */
-
     const loaderContext = useContext(LoderContext);
     const authContext = useContext(AuthContext);
-    const [error, setError] = useState<string>();
     const { questionForm, changeValue, changeFocus, errorSubmit, cleanForm } = questionFormService();  
+
     const [lstQuestion, setLstQuestion] = useState<Question[]>([]);
     const [textInputDescription, settextInputDescription] = useState<TextInput | null>();
+    const [error, setError] = useState<string>();
 
     const onNewQuestion = () => {
         setError(undefined);
