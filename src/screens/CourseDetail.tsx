@@ -117,6 +117,11 @@ export const CourseDetail = () => {
         props.navigation.pop();
         loadCourse();
     };
+
+    const onViewExamByStudent = () => {
+        props.navigation.navigate('ExamList', { navigation: props.navigation, idCourse: course?.id });
+    };
+    
     
     useEffect(() => {
         loadCourse();
@@ -172,7 +177,7 @@ export const CourseDetail = () => {
             }
 
             {
-                isTeacher &&         
+                (isTeacher && course) &&         
                     <View style={generalStyle.contentBottomLogin}>
                         <TouchableOpacity style={generalStyle.bottomLogin} onPress={() => props.navigation.navigate('CourseUpdate', {course: course, onSubmit: onUpdateCourse})}>
                             <Text style={generalStyle.textBottomColor}>Editar curso</Text>
@@ -181,7 +186,25 @@ export const CourseDetail = () => {
             }
 
             {
-                isTeacher && <>
+                (isTeacher && course) &&         
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={() => props.navigation.navigate('ExamList', { navigation: props.navigation, idCourse: course?.id })}>
+                            <Text style={generalStyle.textBottomColor}>Ver exámenes</Text>
+                        </TouchableOpacity>
+                    </View>
+            }
+
+            {
+                (isStudent && isInscription && course) &&         
+                    <View style={generalStyle.contentBottomLogin}>
+                        <TouchableOpacity style={generalStyle.bottomLogin} onPress={onViewExamByStudent}>
+                            <Text style={generalStyle.textBottomColor}>Ver exámenes</Text>
+                        </TouchableOpacity>
+                    </View>
+            }
+
+            {
+                (isTeacher && course) && <>
                     <View>
                         <CollaboratorByCourseComponent idCourse={props.idCourse}/>
                     </View>

@@ -2,11 +2,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef } from 'react';
 import { notificationsApi } from './src/api/notificationsApi';
+import { LogBox } from 'react-native';
 import { AuthProvider } from './src/context/AuthContext';
 import { LoderProvider } from './src/context/LoderContext';
 import { PermissionsProvider } from './src/context/PermissionsContext';
 import { InicioNavigator } from './src/navigators/InicioNavigator';
 import { Tabs } from './src/navigators/TabsNavigator';
+
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 export default function App() {
   const notificationsListener = useRef()
   const responseListener = useRef()

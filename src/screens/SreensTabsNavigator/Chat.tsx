@@ -70,7 +70,10 @@ export const Chat = ({navigation}:Props) => {
                     </View>
                     <Text style={chatStyle.textAvatar} onPress={()=>navigation.navigate({name:'RoomChat',params: { user },})}>
                         {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
-                    </Text>     
+                    </Text>
+                    <View style={{position: 'absolute', top: 5, right: 15}}>
+                        <Ionicons onPress={()=>navigation.navigate('ProfileUser', { idUser: user.id })} name="information-circle-outline" size={30} color="rgba(28, 166, 206, 1)" />
+                    </View>     
                 </View>
             )}
             </View>

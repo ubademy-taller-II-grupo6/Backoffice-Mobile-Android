@@ -18,6 +18,14 @@ import { TypesUser } from '../interface/userInterface';
 import { CourseNew } from '../screens/CourseNew';
 import { CourseUpdate } from '../screens/CourseUpdate';
 import { SubscriptionAdd } from '../screens/SubscriptionAdd';
+import { ExamNew } from '../screens/ScreensExams/ExamNew';
+import { ExamList } from '../screens/ScreensExams/ExamList';
+import { QuestionNew } from '../screens/ScreensExams/QuestionNew';
+import { ExamView } from '../screens/ScreensExams/ExamView';
+import { QuestionUpdate } from '../screens/ScreensExams/QuestionUpdate';
+import { ExamDo } from '../screens/ScreensExams/ExamDo';
+import { ExamUpdate } from '../screens/ScreensExams/ExamUpdate';
+import { ProfileUser } from '../screens/ProfileUser';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
@@ -46,8 +54,18 @@ export const InicioNavigator = () => {
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="Tabs" options={{ headerShown: false }} component={Tabs} />}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="CourseDetail" component={CourseDetail} />}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="RoomChat" component={RoomChat} />}
+                        {(userContext.authState.typeUser!='none')&&<Stack.Screen name="ExamList" component={ExamList} />}
+                        {(userContext.authState.typeUser!='none')&&<Stack.Screen name="ProfileUser" component={ProfileUser} />}
+
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="CourseNew" component={CourseNew} />}
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="CourseUpdate" component={CourseUpdate} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="ExamNew" component={ExamNew} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="ExamView" component={ExamView} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="ExamUpdate" component={ExamUpdate} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="QuestionNew" component={QuestionNew} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="QuestionUpdate" component={QuestionUpdate} />}
+                        
+                        {(userContext.authState.typeUser==TypesUser.Estudiante)&&<Stack.Screen name="ExamDo" component={ExamDo} />}
                         {(userContext.authState.typeUser==TypesUser.Estudiante)&&<Stack.Screen name="SubscriptionAdd" component={SubscriptionAdd} />}
                         {/* <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} /> */}
                     </>
