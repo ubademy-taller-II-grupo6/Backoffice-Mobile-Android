@@ -38,6 +38,37 @@ export const examApi = {
         return responseFinal;
     },
 
+    updateExam: async (exam: Exam) : Promise<Response<number>> => {
+        
+        var body = {
+            "id_editor": exam.id_creator,
+            "id_course": exam.id_course,
+            "title": exam.title,
+            "description": exam.description,
+            "published": false
+        };
+        
+        let response = await  fetch(`http://desolate-bastion-59697.herokuapp.com/exams/${exam.id_exam}`, {
+            method: 'PUT',
+            body: JSON.stringify(body),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        
+        let json = await response.json();
+        let responseFinal : Response<number> = {} as Response<number>;
+        
+        if (json.id_exam != null)
+            responseFinal.data = json.id_exam;
+        else
+            responseFinal.message = "Ha ocurrido un error inexperado al crear el exámen";
+        
+        return responseFinal;
+    },
+
     createExam: async (exam: Exam) : Promise<Response<number>> => {    
         
         var body = {

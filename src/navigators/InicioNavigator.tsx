@@ -24,6 +24,7 @@ import { QuestionNew } from '../screens/ScreensExams/QuestionNew';
 import { ExamView } from '../screens/ScreensExams/ExamView';
 import { QuestionUpdate } from '../screens/ScreensExams/QuestionUpdate';
 import { ExamDo } from '../screens/ScreensExams/ExamDo';
+import { ExamUpdate } from '../screens/ScreensExams/ExamUpdate';
 
 const Stack = createNativeStackNavigator<RooteStackParams>();
 
@@ -58,6 +59,7 @@ export const InicioNavigator = () => {
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="CourseUpdate" component={CourseUpdate} />}
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="ExamNew" component={ExamNew} />}
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="ExamView" component={ExamView} />}
+                        {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="ExamUpdate" component={ExamUpdate} />}
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="QuestionNew" component={QuestionNew} />}
                         {(userContext.authState.typeUser==TypesUser.Profesor)&&<Stack.Screen name="QuestionUpdate" component={QuestionUpdate} />}
                         

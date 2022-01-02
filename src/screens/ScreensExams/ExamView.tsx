@@ -76,6 +76,15 @@ export const ExamView = () => {
         });
     }
 
+    const onBackPrevious = () => {
+        props.navigation.pop();
+        props.onSubmit();
+    }
+
+    const updateExam = () => {
+        props.navigation.navigate('ExamUpdate', { exam: props.exam, navigation: props.navigation, onSubmit: onBackPrevious  });
+    }
+
     const onEditQuestion = (question: Question) => {
         
         if (props.exam.published)
@@ -119,7 +128,15 @@ export const ExamView = () => {
                         <Text style={examComponentStyle.colorDescription}>
                             {props.exam.description}
                         </Text>
-                    </View>    
+                    </View>   
+                    {
+                        (isTeacher && !props.exam.published) &&
+                            <View style={[generalStyle.contentBottomLogin, { marginTop: 10 }]}>
+                                <TouchableOpacity style={generalStyle.bottomLogin} onPress={updateExam}>
+                                    <Text style={generalStyle.textBottomColor}>Editar examen</Text>
+                                </TouchableOpacity>    
+                            </View>
+                    }     
                     {
                         (isTeacher && !props.exam.published) &&
                             <View style={[generalStyle.contentBottomLogin, { marginTop: 10 }]}>

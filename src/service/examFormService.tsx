@@ -21,13 +21,13 @@ export const examFormService = (initialValue?: Exam) => {
     let initialState:examFormInterface = {
         title:{
             value: initialValue?.title || "",
-            isValid: false,
+            isValid: !!initialValue?.title,
             hasFocus:false,
             isFocus:false,
         },
         description:{
             value: initialValue?.description || "",
-            isValid: false,
+            isValid: !!initialValue?.description,
             hasFocus:false,
             isFocus:false,
         },
