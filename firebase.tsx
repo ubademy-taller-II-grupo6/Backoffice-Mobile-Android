@@ -30,8 +30,11 @@ let firebaseResponseCode:FirebaseResponseCode = {
 
 let authFirebase = firebase.auth()
 let authFirebase_ = firebase.auth
+let firestore = firebase.firestore()
 var providerGoogle = new firebase.auth.GoogleAuthProvider();
-
+ export const getFirestore = () => {
+   return firestore
+ }
 export const createUserWithEmailAndPassword_ = async(email:string, password:string) => {
   let response = await  authFirebase.createUserWithEmailAndPassword( email, password)
     .then( (userCredential:any) => {

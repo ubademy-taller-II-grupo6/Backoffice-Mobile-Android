@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { notificationsApi } from '../api/notificationsApi';
 import { RooteStackParams } from '../interface/navigatorLogin';
 import generalStyle from '../styles/generalStyle';
 import inicioStyle from '../styles/inicioStyle';
@@ -8,7 +9,11 @@ import inicioStyle from '../styles/inicioStyle';
 interface Props extends NativeStackScreenProps<RooteStackParams,'Inicio'>{};
 
 export const Inicio = ({navigation}:Props) => {
-
+    const notificationsListener = useRef()
+    const responseListener = useRef()
+    useEffect(() => {
+        notificationsApi().startNotifications(notificationsListener,responseListener)
+     }, [])
     return (
             <View style={generalStyle.content}>
                 <Image
