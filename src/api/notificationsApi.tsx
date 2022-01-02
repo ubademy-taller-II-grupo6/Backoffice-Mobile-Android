@@ -7,8 +7,9 @@ import { getFirestore } from '../../firebase';
 const db = getFirestore()//firebase.default.firestore()
 
 let testUbademy:any = {
+  "cuenca@gmail.com":"ExponentPushToken[KM6WJvCypXoMMSWpifBmeF]",
   "testubademy@gmail.com":"ExponentPushToken[ktx0jvL63vANCly0BPOFG-]",
-  "cuenca@gmail.com":"ExponentPushToken[qTsPEPHjUatTPhtmQiqJEW]"
+  "mromerov@fi.uba.ar":"ExponentPushToken[43nDWGFTW5lv-nnzYeKKSH]"
 }
 
 Notifications.setNotificationHandler({
@@ -83,10 +84,10 @@ export const notificationsApi = () => {
     });
     
     notificationsListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log(notification)
+      //console.log(notification)
     })
     responseListener.current = Notifications.addNotificationResponseReceivedListener(notification => {
-      console.log(notification)
+      //console.log(notification)
     })
     return () => {
       Notifications.removeNotificationSubscription(notificationsListener)
