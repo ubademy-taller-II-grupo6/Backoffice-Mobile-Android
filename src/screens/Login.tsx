@@ -34,15 +34,18 @@ export const Login = ({navigation}:Props) => {
             return ;
         }*/
         let {user_,profile} = await loginApi().loginWithEmailFirebase(login.email.value,login.password.value)
-        console.log(profile)
         if(user_.isError){
             loderContext.changeStateLoder(false)
             uiService().alertaInformativa("",user_.message)
             return
         }
         //notificationsApi().setTokenInFirebaseWithId('notificationsUsers',)
+        console.log("user_.user.email")
+        console.log(user_.user.email)
         userApi.getUserByMail(user_.user.email)
             .then((value) => {
+                console.log("value")
+                console.log(value)
                 localStorage.save(value.id, value.name, value.lastname, value.email, value.blocked, value.subscription)
                 .then(() => {
                     authContext.signIn({

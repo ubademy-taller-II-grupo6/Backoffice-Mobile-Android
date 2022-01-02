@@ -51,6 +51,7 @@ export const RoomChat = ({navigation}:Props) => {
         (messages) => {
             let messagesFilter = messages.filter((x: any) => (x?.user?.name === props.user.name) || ((x?.user?.name === authContext.authState.userProfile.name)));
             setMessages((previousMessages) => GiftedChat.append(previousMessages, messagesFilter))
+
         },
         [messages]
     )
@@ -68,7 +69,10 @@ export const RoomChat = ({navigation}:Props) => {
         setUser(user)
     }*/
     async function handleSend(messages:any) {
-        const writes = messages.map((m:any) => chatsRef.add(m))
+        const writes = messages.map((m:any) => {
+            chatsRef.add(m)
+            console.log(m)
+        })
         await Promise.all(writes)
     }
 
