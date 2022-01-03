@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
+//import AsyncStorage from '@react-native-community/async-storage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StyleSheet, TextInput, View, YellowBox, Button, LogBox, Text } from 'react-native'
 import * as firebase from 'firebase'
@@ -24,8 +25,8 @@ export const RoomChat = ({navigation}:Props) => {
     const props = route.params as Props;
     const authContext = useContext(AuthContext);
 
-    let initialUserState:any = authContext.authState.userProfile//null
-    const [user, setUser] = useState(initialUserState)
+    let initialUserState:any = null
+    const [user, setUser] = useState(authContext.authState.userProfile)
     const [name, setName] = useState('')
     const [messages, setMessages] = useState([])
 
@@ -37,6 +38,8 @@ export const RoomChat = ({navigation}:Props) => {
                 .filter(({ type }) => type === 'added')
                 .map(({ doc }) => {
                     const message = doc.data()
+                    //createdAt is firebase.firestore.Timestamp instance
+                    //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
                     return { ...message, createdAt: message.createdAt.toDate() }
                 })
                 .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
@@ -49,7 +52,6 @@ export const RoomChat = ({navigation}:Props) => {
         (messages) => {
             let messagesFilter = messages.filter((x: any) => (x?.user?.name === props.user.name) || ((x?.user?.name === authContext.authState.userProfile.name)));
             setMessages((previousMessages) => GiftedChat.append(previousMessages, messagesFilter))
-
         },
         [messages]
     )
@@ -60,14 +62,16 @@ export const RoomChat = ({navigation}:Props) => {
             setUser(JSON.parse(user))
         }
     }
+    
     async function handleSend(messages:any) {
         const writes = messages.map(async (m:any) => {
             chatsRef.add(m)
             let email = navigation.getState().routes[1].params?.user.email
-            let name = navigation.getState().routes[1].params?.user.name
+            let name = authContext.authState.userProfile.name;//navigation.getState().routes[1].params?.user.name
             await notificationsApi().sendPushNotification("ExponentPushToken[KM6WJvCypXoMMSWpifBmeF]",name,m,email)//notificationsApi().schedulePushNotification("Rogger","Primer Mensaje",2)      
         })
         await Promise.all(writes)
     }
+
     return <GiftedChat messages={messages} user={user} onSend={handleSend} />
 }
