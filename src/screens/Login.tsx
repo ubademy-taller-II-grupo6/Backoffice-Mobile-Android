@@ -76,31 +76,66 @@ export const Login = ({navigation}:Props) => {
     let onPressWithGoogle_ = async() => {
         loderContext.changeStateLoder(true)
         let response = await onPressWithGoogle()
-        loderContext.changeStateLoder(false)
+        let users = await userApi.getAllUser()
+        let newId = await userApi.getNewId(users)
+        let displayName = response.user.displayName
+        if(!response) return 
+        let newUser = {
+            "id": newId,
+            "name":displayName,
+            "lastname": "",
+            "email":response.user.email,
+            "latitude": "",
+            "longitude": "",
+            "blocked": false,
+            "subscription": "FREE"
+        }
+        let body = {
+            "id": newId,
+            "name": displayName,
+            "lastname": "None",
+            "email":response.user.email,
+            "latitude": "",
+            "longitude": ""
+        }
+        await alert('body:' + JSON.stringify(body));
+        let register = await userApi.registerUser(body)
+        // await alert('register:' + JSON.stringify(register));
+        let response2 = await userApi.getUserByMail(response.user.email)
+        
+        newUser = {
+            "id": newId,
+            "name": response2.name,
+            "lastname": response2.lastname,
+            "email": response2.email,
+            "latitude": response2.latitude,
+            "longitude": response2.longitude,
+            "blocked": response2.blocked,
+            "subscription": response2.subscription
+        }
+        // alert('onPressWithGoogle_ response:' + JSON.stringify(response2, null, 2));
         authContext.signIn({
             isLoggedIn:true,
             provider:"GOOGLE",
-            username:response.user.displayName,
-            email:response.user.email,
-            potho:response.user.photoURL,
             emailVerified:response.user.emailVerified,
+            username:response.user.username,
+            email:response.user.email,
+            potho:"",
             stsTokenManager:{
-                accessToken:response.user.stsTokenManager.accessToken,
-                apiKey:response.user.apiKey,
-                expirationTime:0,
-                refreshToken:response.user.stsTokenManager.refreshToken,
-                uid:response.user.uid
+                accessToken: response.user.toJSON().stsTokenManager.accessToken,
+                apiKey: response.user.apiKey,
+                expirationTime: 0,
+                refreshToken: response.user.toJSON().stsTokenManager.refreshToken,
+                uid: response.user.uid
             },
-            typeUser:"",
-            userProfile:{
-                blocked: false,
-                email: "",
-                id: 0,
-                lastname: "",
-                name: "",
-                subscription: ""
-            }
-        })
+            typeUser:"none",
+            userProfile:newUser
+        });
+        let data: any = {
+            token: notificationsApi().getToken()
+        }
+        notificationsApi().setTokenInFirebaseWithId('notificationsUsers', data, response.user.uid)
+        loderContext.changeStateLoder(false)
     }
 
     useEffect(() => {
@@ -126,7 +161,7 @@ export const Login = ({navigation}:Props) => {
                                     refreshToken:"",
                                     uid:""
                                 },
-                                typeUser:"",
+                                typeUser:"none",
                                 userProfile: userLoged
                             });
 

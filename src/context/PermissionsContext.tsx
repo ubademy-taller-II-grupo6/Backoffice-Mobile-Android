@@ -3,15 +3,24 @@ import { PermissionContextProps, permissionsInitState, PermissionsState } from '
 import * as Location from 'expo-location';
 import { AppState } from 'react-native';
 import { AuthContext } from './AuthContext';
-
+import { uiService } from '../service/uiService';
 export const PermissionsContext = createContext({} as PermissionContextProps);
 
 export const PermissionsProvider = ({children}:any) => {
 
     const [permission, setPermission] = useState(permissionsInitState)
     const askLocationPermission = async () =>{
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        setPermissionObject(status)
+        //let { status } = await Location.requestForegroundPermissionsAsync();
+        console.log("askLocationPermission")
+        Location.requestForegroundPermissionsAsync().then((status:any)=>{
+             setPermission({...permission,locationStatus:status.status})
+         })
+        /*let {status} = await Location.requestForegroundPermissionsAsync();
+        console.log(status)
+        uiService().alertaInformativa("",status)*/
+        //uiService().alertaInformativa("",requestPermission)
+        
+        //await setPermissionObject("granted")
         /*console.log("permission")
         console.log(newSatatus)
         if (status == 'granted') {
@@ -24,7 +33,7 @@ export const PermissionsProvider = ({children}:any) => {
         let newSatatus:PermissionsState={
             locationStatus:status
         }
-        setPermission(newSatatus)
+        setPermission({...permission,locationStatus:status})
     }
     const checkLocationPermission = async () => {
         console.log("checkLocationPermission")
@@ -49,14 +58,11 @@ export const PermissionsProvider = ({children}:any) => {
             
         })*/
     }
-    /*useEffect(() => {
-        (async () => {
-          let { status } = await Location.requestForegroundPermissionsAsync();
-          console.log("useEffect")
-          let location = await Location.getCurrentPositionAsync({});
-          setPermissionObject(status);
-        })();
-      }, []);*/
+    // useEffect(() => {
+    //       Location.getForegroundPermissionsAsync().then((status:any)=>{
+    //             setPermissionObject(status.status);
+    //       })
+    //   }, []);
     
     return (
         <PermissionsContext.Provider value = {{permission,askLocationPermission,checkLocationPermission,listenerPermissionLocations,setPermissionObject}}>

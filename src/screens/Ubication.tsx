@@ -14,21 +14,25 @@ export const Ubication = ({ navigation }: Props) => {
     const authContext = useContext(AuthContext);
 
   let initialState: LocationInterface = {
-    latitude: 0,
-    longitude: 0
+    latitude: 30,
+    longitude: 30
   }
 
   const [location, setLocation] = useState(initialState);
   
   useEffect(() => {
-    (async () => {
-      let location: Location.LocationObject = await Location.getCurrentPositionAsync({});
+    
+     /*(async () => {
+     let location_: Location.LocationObject = await Location.getCurrentPositionAsync({});
+      console.log(location)
+      console.log(location_)
       setLocation({
         ...location,
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude
+        latitude: location_.coords.latitude,
+        longitude: location_.coords.longitude
       })
-    })();
+      console.log(location.latitude)
+    })();*/
   }, []);
   let onPressButton = () => {
 
@@ -43,14 +47,15 @@ export const Ubication = ({ navigation }: Props) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         }} >
-        <Marker
+        {/* <Marker
           coordinate={{ latitude: location.latitude, longitude: location.longitude }}
           title={"scasc"}
           draggable={true}
           description={"csdcdsds"}
-        />
+        /> */}
 
-      </MapView><TouchableOpacity onPress={() => { onPressButton() }}>
+      </MapView>
+      <TouchableOpacity onPress={() => { onPressButton() }}>
       <View style={generalStyle.buttonSiguiente}>
         
           <Text onPress={()=>authContext.changeAuthState('estudiante')} style={generalStyle.textButtonSiguiente}>SIGUIENTE</Text> 

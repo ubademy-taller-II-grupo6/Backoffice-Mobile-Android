@@ -1,10 +1,12 @@
 export interface userProfileInterface {
-    id: number;
-    blocked: boolean;
-    email: string;
-    lastname: string;
-    name: string;
-    subscription: string;
+    id: number,
+    name: string,
+    lastname: string,
+    email: string,
+    latitude: string,
+    longitude: string,
+    blocked: boolean,
+    subscription: string
 }
  
 export interface profileUsers {

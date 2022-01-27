@@ -20,11 +20,14 @@ export const authInitialState:AuthState={
     },
     typeUser:"none",
     userProfile:{
-        blocked: false,
-        email: "",
-        id: "",
-        lastname: "",
+        id: 0,
         name: "",
+        lastname: "",
+        email: "",
+        latitude: "",
+        longitude: "",
+        blocked: false,
+        subscription: ""
     }
 }
 

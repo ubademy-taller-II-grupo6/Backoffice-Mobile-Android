@@ -24,17 +24,9 @@ export const Permissions = () => {
           let location:any = await Location.getCurrentPositionAsync({});
         })();
       }, []); */
-      useEffect(() => {
-        permissionContext.askLocationPermission()
-        console.log("status")
-        // Actualiza el título del documento usando la API del navegador
-        //document.title = `You clicked ${count} times`;
-      });
-
-      // useState(async()=s>{
-      //   console.log("aca")
-      //   await permissionContext.listenerPermissionLocations()
-      // })
+      // useEffect(() => {
+      //   permissionContext.askLocationPermission()
+      // });
 
       let onPressButton = async () => {
         console.log("startActivityAsync")

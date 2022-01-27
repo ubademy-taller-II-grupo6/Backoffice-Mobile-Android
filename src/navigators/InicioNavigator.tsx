@@ -49,7 +49,7 @@ export const InicioNavigator = () => {
                 userContext.authState.isLoggedIn&&(//cambiar !
                     <>
                         {(permissionContext.permission.locationStatus!='granted')&&(<Stack.Screen name="Permissions" component={Permissions} />)}
-                        {(userContext.authState.typeUser=='none')&&(<Stack.Screen name="Ubication"  component={Ubication} />)}
+                        {/* {(userContext.authState.typeUser=='none')&&(<Stack.Screen name="Ubication"  component={Ubication} />)} */}
                         {(userContext.authState.typeUser=='none')&&(<Stack.Screen name="TypeUser"  component={TypeUser} />)}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="Tabs" options={{ headerShown: false }} component={Tabs} />}
                         {(userContext.authState.typeUser!='none')&&<Stack.Screen name="CourseDetail" component={CourseDetail} />}

@@ -101,7 +101,9 @@ export const SubscriptionAdd = ({navigation} : Props) => {
                                     id: user.id,
                                     lastname: user.lastname,
                                     name: user.name,
-                                    subscription: subscription.subscription_id
+                                    subscription: subscription.subscription_id,
+                                    latitude: "",
+                                    longitude: "",
                                 }
                             });
                             loderContext.changeStateLoder(false);
@@ -144,7 +146,9 @@ export const SubscriptionAdd = ({navigation} : Props) => {
                                                 id: user.id,
                                                 lastname: user.lastname,
                                                 name: user.name,
-                                                subscription: subscription.subscription_id
+                                                subscription: subscription.subscription_id,
+                                                latitude: "",
+                                                longitude: "",
                                             }
                                         });
                                         loderContext.changeStateLoder(false);

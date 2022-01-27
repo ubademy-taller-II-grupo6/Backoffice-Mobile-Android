@@ -66,6 +66,41 @@ export const userApi = {
         return (responseFinal.data !== null) ? responseFinal.data : {} as userProfileInterface;
     },
 
+    getAllUser: async () : Promise<any> => {
+        
+        let response = await  fetch(`https://obscure-wildwood-00771.herokuapp.com/users`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        let responseFinal : Response<any> = {} as Response<any>;
+
+        if (json.message != null)
+            responseFinal.message = json;
+        else
+            responseFinal.data = json;
+
+        return (responseFinal.data !== null) ? responseFinal.data : {} as any;
+    },
+
+    getNewId: async (users:any) : Promise<any> => {
+        let encontrado = false
+        let userEncontrado = null
+        let newId = 0
+        while (!encontrado) {
+            newId = Math.floor(Math.random() * (1000 - 0)) + 0
+            userEncontrado = users.find((x:any) => {
+                return x.id == newId
+            })
+            if(!userEncontrado) encontrado = true
+        }
+        return newId
+    },
+
     updateUser: async (user: userProfileInterface) : Promise<Response<void>> => {
         
         let response = await  fetch(`https://obscure-wildwood-00771.herokuapp.com/users/${user.id}`, {
@@ -84,6 +119,28 @@ export const userApi = {
             responseFinal.message = json.message;
         else
             responseFinal.data = json[0];
+
+        return responseFinal;
+    },
+
+    registerUser: async (user: any) : Promise<any> => {
+        
+        let response = await  fetch(`https://obscure-wildwood-00771.herokuapp.com/users`, {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+        let json = await response.json();
+        let responseFinal : Response<any> = {} as Response<any>;
+        
+        if ((json.message != null) && (json.message != "El usuario fue registrado con éxito"))
+            responseFinal.message = json.message;
+        else
+            responseFinal.data = json;
 
         return responseFinal;
     },

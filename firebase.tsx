@@ -45,7 +45,8 @@ export const createUserWithEmailAndPassword_ = async(email:string, password:stri
     })
     .catch((error:any) => {
       let encontrado = firebaseResponseCode.codes.find(x => x.code == error.code)
-      uiService().alertaInformativa("",encontrado!=undefined?encontrado.response:"")
+      console.log(encontrado)
+      uiService().alertaInformativa("",encontrado!=undefined?encontrado.response:"Hubo problemas en el registro")
       return null
     });  
   return response
