@@ -37,7 +37,9 @@ export const notificationsApi = () => {
   }
 
   let setTokenInFirebaseWithId = async (nameCollection:any, data:any,doc:any) => {
-    console.log()
+    
+    console.log("setTokenInFirebaseWithId")
+    console.log(nameCollection)
     console.log(data)
     console.log(doc)
     const result = {statusResponse:true,error:null}
@@ -51,15 +53,36 @@ export const notificationsApi = () => {
     return result
   }
 
+  
+
+  let getDataDoc = async (nameCollection:any,nameDoc:any) => {
+    var docRef = db.collection(nameCollection).doc(nameDoc)
+    return docRef.get().then((doc) => {
+      if (doc.exists) {
+          console.log("Document data:", doc.data());
+          return doc.data()
+      } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+      }
+  }).catch((error) => {
+      console.log("Error getting document:", error);
+  });
+  }
+
   let sendPushNotification = async (expoPushToken:any,title:any,body:any,email:string) => {
-    let token = testUbademy[email]
+    let token:any = await getDataDoc('notificationsUsers',expoPushToken)//testUbademy[email]
+    console.log('elToken se obtuvo ')
+    console.log(token)
+    //console.log(token)
     const message = {
-      to: token,
+      to: token.token,
       sound: 'default',
       title: title,
       body: body.text,
     };
-
+    //sendPushNotification
+    console.log("sendPushNotification")
     console.log(message)
     
     await fetch('https://exp.host/--/api/v2/push/send', {

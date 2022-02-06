@@ -11,7 +11,9 @@ class LocalStorage {
             lastname: lastname,
             name: name,
             blocked: blocked,
-            subscription: subscription
+            subscription: subscription,
+            latitude: "",
+            longitude: "",
         }
         const jsonValue = JSON.stringify(user)
 

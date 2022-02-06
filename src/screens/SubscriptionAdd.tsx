@@ -116,6 +116,7 @@ export const SubscriptionAdd = ({navigation} : Props) => {
             .then((response) => {
                 if (response.message != null) {
                     loderContext.changeStateLoder(false);
+                    console.log("paySubscription");
                     console.log(response.message);
                     showInsufficient();
                 } else {

@@ -34,7 +34,10 @@ export const userApi = {
                 'Access-Control-Allow-Origin': '*'
             }
         });
+        //console.log("https://obscure-wildwood-00771.herokuapp.com/users")
+        
         let json = await response.json();
+        //console.log(json)
         let responseFinal : Response<userProfileInterface[]> = {} as Response<userProfileInterface[]>;
 
         if (json.message != null)
@@ -42,7 +45,7 @@ export const userApi = {
         else
             responseFinal.data = json;
 
-        return responseFinal.data?.find(x => x.email === email) ?? {} as userProfileInterface;
+        return responseFinal.data?.find(x => x.email.toLowerCase() === email.toLowerCase()) ?? {} as userProfileInterface;
     },
     
     getUserById: async (id: number) : Promise<userProfileInterface> => {

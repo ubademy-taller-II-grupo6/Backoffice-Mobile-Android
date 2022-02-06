@@ -42,7 +42,7 @@ export const RegisterComponent = () => {
             "name": displayName,
             "lastname": "None",
             "email":response.user.email,
-            "latitude": "",
+            "latitude": response.user.uid,
             "longitude": ""
         }
         await alert('body:' + JSON.stringify(body));
@@ -111,7 +111,7 @@ export const RegisterComponent = () => {
             "name": register.name.value,
             "lastname": register.lastname.value,
             "email": register.email.value,
-            "latitude": "",
+            "latitude": response.user.uid,
             "longitude": ""
         }
         let response2 = await userApi.registerUser(body)
@@ -296,7 +296,7 @@ export const RegisterComponent = () => {
                 </TouchableOpacity>
             </View>
 
-            <View style={generalStyle.contentBottomLogin} >
+            {/* <View style={generalStyle.contentBottomLogin} >
                 <TouchableOpacity onPress={() => signOutAsync()} style={[generalStyle.bottomLogin, registroStyle.google]}>
                     <Text style={generalStyle.textBottomColor}>desploguearse 1 CON GOOGLE</Text>
                 </TouchableOpacity>
@@ -306,7 +306,7 @@ export const RegisterComponent = () => {
                 <TouchableOpacity onPress={() => signOutAsync2()} style={[generalStyle.bottomLogin, registroStyle.google]}>
                     <Text style={generalStyle.textBottomColor}>desploguearse 2 CON GOOGLE</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </View>
     )
 }

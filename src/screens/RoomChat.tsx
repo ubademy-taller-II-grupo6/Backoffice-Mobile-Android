@@ -18,7 +18,7 @@ interface Props extends NativeStackScreenProps<RooteStackParams,"RoomChat">{
 };
 
 const db = firebase.default.firestore()
-const chatsRef = db.collection('chats')
+const chatsRef = db.collection('chats2')
 export const RoomChat = ({navigation}:Props) => {
     const route = useRoute();
     const props = route.params as Props;
@@ -47,7 +47,13 @@ export const RoomChat = ({navigation}:Props) => {
 
     const appendMessages = useCallback(
         (messages) => {
-            let messagesFilter = messages.filter((x: any) => (x?.user?.name === props.user.name) || ((x?.user?.name === authContext.authState.userProfile.name)));
+            //|| ((x?.user?.name === authContext.authState.userProfile.name))
+            //console.log(authContext.authState.userProfile.email)
+            //console.log(navigation.getState().routes[1].params?.user.email)
+            
+            let messagesFilter = messages.filter((x: any) =>( ((x?.user?._id === authContext.authState.userProfile.email)&&(x?.name === navigation.getState().routes[1].params?.user.email)))
+                                                            || ((x?.user?._id === navigation.getState().routes[1].params?.user.email)&&(x?.name === authContext.authState.userProfile.email )) );
+            //console.log(messagesFilter)
             setMessages((previousMessages) => GiftedChat.append(previousMessages, messagesFilter))
 
         },
@@ -62,12 +68,17 @@ export const RoomChat = ({navigation}:Props) => {
     }
     async function handleSend(messages:any) {
         const writes = messages.map(async (m:any) => {
+            m.name = navigation.getState().routes[1].params?.user.email
             chatsRef.add(m)
             let email = navigation.getState().routes[1].params?.user.email
             let name = navigation.getState().routes[1].params?.user.name
-            await notificationsApi().sendPushNotification("ExponentPushToken[KM6WJvCypXoMMSWpifBmeF]",name,m,email)//notificationsApi().schedulePushNotification("Rogger","Primer Mensaje",2)      
+            console.log(navigation.getState().routes[1].params?.user)
+            await notificationsApi().sendPushNotification(navigation.getState().routes[1].params?.user.latitude,authContext.authState.userProfile.name,m,email)//notificationsApi().schedulePushNotification("Rogger","Primer Mensaje",2)      
         })
         await Promise.all(writes)
     }
-    return <GiftedChat messages={messages} user={user} onSend={handleSend} />
+    return <GiftedChat messages={messages} user={{
+        _id: authContext.authState.userProfile.email,
+        name: authContext.authState.userProfile.name
+    }} onSend={handleSend} showAvatarForEveryMessage={true}/>
 }

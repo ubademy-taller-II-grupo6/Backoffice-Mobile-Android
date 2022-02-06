@@ -81,6 +81,7 @@ export const signInWithEmailAndPassword_ = (email:string, password:string) => fi
 
   export const signOut_ = () => authFirebase.signOut().then(() => {
   }).catch((error) => {
+    console.log("signOut_")
     console.log(error.message)
     console.log(error.code)
   });
@@ -111,6 +112,7 @@ export const registerWithGoogleWeb = async ()=>{
   .then((result) => {
     ///** @type {firebase.auth.OAuthCredential} */
     var credential = result.credential;
+    console.log("registerWithGoogleWeb")
     console.log(result)
     //alert('login:' + JSON.stringify(result, null, 2));
     console.log(credential)

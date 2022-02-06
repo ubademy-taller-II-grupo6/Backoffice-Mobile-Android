@@ -66,7 +66,7 @@ export const Chat = ({navigation}:Props) => {
                     <View>             
                         {/* <Text>{JSON.stringify(user.email)}</Text> */}
 
-                        <Ionicons onPress={()=>navigation.navigate('RoomChat')} name="person-circle" size={40} color="rgba(28, 166, 206, 1)" />
+                        <Ionicons onPress={()=>navigation.navigate({name:'RoomChat',params: { user },})} name="person-circle" size={40} color="rgba(28, 166, 206, 1)" />
                     </View>
                     <Text style={chatStyle.textAvatar} onPress={()=>navigation.navigate({name:'RoomChat',params: { user },})}>
                         {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
