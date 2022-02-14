@@ -61,7 +61,7 @@ export const Chat = ({navigation}:Props) => {
         
             
             <View >
-            {userContext.authState.email!=user.email && (
+            {userContext.authState.email.toUpperCase()!=user.email.toUpperCase() && (
                 <View style={chatStyle.contentAvatar}>
                     <View>             
                         {/* <Text>{JSON.stringify(user.email)}</Text> */}

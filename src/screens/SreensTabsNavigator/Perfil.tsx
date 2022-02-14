@@ -12,7 +12,7 @@ import { LoaderComponent } from '../../components/LoaderComponent'
 import { localStorage } from '../../localStorage/localStorage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RooteStackParams } from '../../interface/navigatorLogin'
-
+import { registerService } from '../../service/registerService';
 interface Props extends NativeStackScreenProps<RooteStackParams,'Perfil'>{};
 
 export const Perfil = ({navigation} : Props) => {
@@ -21,10 +21,14 @@ export const Perfil = ({navigation} : Props) => {
     const authContext = useContext(AuthContext)
     const [edit, setedit] = useState(false)
     const [perfil, setPerfil] = useState<userProfileInterface>()
+    const { signOutAsync, signOutAsync2 } = registerService()
     let getFirstCharacter = () => {
         return authContext.authState.userProfile.name.charAt(0).toUpperCase() ?? "-";
     }
-    let logOut= () => {
+    let logOut= async () => {
+        if(authContext.authState.provider==='GOOGLE'){
+            await signOutAsync()
+        }
         localStorage.remove().then(() => authContext.lognOut());        
     }
     let guardarCambios = () => {
@@ -56,8 +60,9 @@ export const Perfil = ({navigation} : Props) => {
     }
 
     let getUserInfo = ( ) =>{
-        loaderContext.changeStateLoder(true);
+        loaderContext.changeStateLoder(true);//alert('onPressWithGoogle_ response:' + JSON.stringify(authContext.authState.userProfile, null, 2));
         userApi.getUserById(authContext.authState.userProfile.id)
+        
             .then((user) => {
                 if (user) setPerfil(user);
                 loaderContext.changeStateLoder(false);

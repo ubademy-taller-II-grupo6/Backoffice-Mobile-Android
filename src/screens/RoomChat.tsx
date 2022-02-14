@@ -70,7 +70,7 @@ export const RoomChat = ({navigation}:Props) => {
         const writes = messages.map(async (m:any) => {
             m.name = navigation.getState().routes[1].params?.user.email
             chatsRef.add(m)
-            let email = navigation.getState().routes[1].params?.user.email
+            let email = navigation.getState().routes[1].params?.user.email.toUpperCase()
             let name = navigation.getState().routes[1].params?.user.name
             console.log(navigation.getState().routes[1].params?.user)
             await notificationsApi().sendPushNotification(navigation.getState().routes[1].params?.user.latitude,authContext.authState.userProfile.name,m,email)//notificationsApi().schedulePushNotification("Rogger","Primer Mensaje",2)      

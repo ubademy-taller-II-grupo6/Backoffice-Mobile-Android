@@ -51,7 +51,7 @@ export const RegisterComponent = () => {
         let response2 = await userApi.getUserByMail(response.user.email)
         
         newUser = {
-            "id": newId,
+            "id": response2.id,
             "name": response2.name,
             "lastname": response2.lastname,
             "email": response2.email,
@@ -79,7 +79,7 @@ export const RegisterComponent = () => {
             userProfile:newUser
         });
         let data: any = {
-            token: notificationsApi().getToken()
+            token:await notificationsApi().getToken()
         }
         notificationsApi().setTokenInFirebaseWithId('notificationsUsers', data, response.user.uid)
         loderContext.changeStateLoder(false)

@@ -22,6 +22,7 @@ export const Favoritos = () => {
             courseApi.getListCoursesByUser(authContext.authState.userProfile.id)
         ])
         .then((values) => {
+            console.log(values)
             setLstFavorites(values[0].data ?? []);
             loderContext.changeStateLoder(false);
         });

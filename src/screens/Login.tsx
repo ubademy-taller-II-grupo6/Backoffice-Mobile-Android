@@ -43,8 +43,6 @@ export const Login = ({ navigation }: Props) => {
         //console.log(user_.user.email)
         userApi.getUserByMail(user_.user.email)
             .then((value) => {
-                //console.log("value")
-                //console.log(value)
                 let newStatus = {
                     id: value.id,
                     name: value.name,
@@ -87,6 +85,7 @@ export const Login = ({ navigation }: Props) => {
     let onPressWithGoogle_ = async () => {
         loderContext.changeStateLoder(true)
         let response = await onPressWithGoogle()
+        //await alert('register:' + JSON.stringify(response));
         let users = await userApi.getAllUser()
         let newId = await userApi.getNewId(users)
         let displayName = response.user.displayName
@@ -109,13 +108,13 @@ export const Login = ({ navigation }: Props) => {
             "latitude": response.user.uid,
             "longitude": ""
         }
-        await alert('body:' + JSON.stringify(body));
+
         let register = await userApi.registerUser(body)
         // await alert('register:' + JSON.stringify(register));
         let response2 = await userApi.getUserByMail(response.user.email)
-
+        //await alert('response2:' + JSON.stringify(response2));
         newUser = {
-            "id": newId,
+            "id": response2.id,
             "name": response2.name,
             "lastname": response2.lastname,
             "email": response2.email,
@@ -143,7 +142,7 @@ export const Login = ({ navigation }: Props) => {
             userProfile: newUser
         });
         let data: any = {
-            token: notificationsApi().getToken()
+            token: await notificationsApi().getToken()
         }
         notificationsApi().setTokenInFirebaseWithId('notificationsUsers', data, response.user.uid)
         loderContext.changeStateLoder(false)
